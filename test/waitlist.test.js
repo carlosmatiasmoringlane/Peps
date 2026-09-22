@@ -133,3 +133,45 @@ test("the landing page is served and traversal outside public/ is refused", asyn
     assert.ok(escaped.status === 403 || escaped.status === 404, `got ${escaped.status}`);
   });
 });
+
+test("responses carry the security headers, and HEAD sends no body", async () => {
+  await withServer(async ({ base }) => {
+    const page = await fetch(`${base}/`);
+    const csp = page.headers.get("content-security-policy");
+    assert.match(csp, /default-src 'self'/);
+    assert.match(csp, /frame-ancestors 'none'/);
+    assert.match(csp, /style-src 'self' https:\/\/fonts\.googleapis\.com/);
+    assert.equal(page.headers.get("x-content-type-options"), "nosniff");
+    assert.equal(page.headers.get("referrer-policy"), "strict-origin-when-cross-origin");
+    // HSTS is only correct behind TLS, which TRUST_PROXY stands in for.
+    assert.equal(page.headers.get("strict-transport-security"), null);
+    await page.text();
+
+    const head = await fetch(`${base}/`, { method: "HEAD" });
+    assert.equal(head.status, 200);
+    assert.ok(Number(head.headers.get("content-length")) > 0, "Content-Length is set");
+    assert.equal(await head.text(), "", "HEAD carries no body");
+
+    const api = await fetch(`${base}/api/nope`);
+    assert.equal(api.status, 404);
+    assert.match(api.headers.get("content-security-policy"), /default-src 'self'/);
+    await api.text();
+  });
+});
+
+test("the page loads no inline script or style, so the CSP cannot break it", async () => {
+  await withServer(async ({ base }) => {
+    const html = await (await fetch(`${base}/`)).text();
+    assert.equal(/\sstyle=["']/.test(html), false, "no inline style attributes");
+    assert.equal(/<script(?![^>]*\ssrc=)/i.test(html), false, "no inline <script> blocks");
+  });
+});
+
+test("queued writes are flushed before shutdown reports done", async () => {
+  await withServer(async ({ base, store }) => {
+    await join_(base, "ada@lab.edu");
+    await join_(base, "grace@lab.edu");
+    await store.flush();
+    assert.equal(store.count(), 2);
+  });
+});

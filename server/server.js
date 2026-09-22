@@ -83,9 +83,43 @@ function clientIp(req) {
   return req.socket.remoteAddress || "unknown";
 }
 
+/**
+ * Applied to every response. The CSP is tight because the page loads no
+ * inline script or style: everything but the Google Fonts stylesheet and
+ * its font files comes from this origin.
+ */
+const CSP = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'none'",
+  "form-action 'self'",
+  "img-src 'self' data:",
+  "script-src 'self'",
+  "connect-src 'self'",
+  "style-src 'self' https://fonts.googleapis.com",
+  "font-src https://fonts.gstatic.com"
+].join("; ");
+
+function securityHeaders() {
+  const headers = {
+    "Content-Security-Policy": CSP,
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+  };
+  // Only meaningful behind TLS, which TRUST_PROXY implies. Sending it over
+  // plain http on localhost would pin the dev machine to https.
+  if (TRUST_PROXY) {
+    headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+  }
+  return headers;
+}
+
 function sendJson(res, status, payload) {
   const body = JSON.stringify(payload);
   res.writeHead(status, {
+    ...securityHeaders(),
     "Content-Type": "application/json; charset=utf-8",
     "Content-Length": Buffer.byteLength(body),
     "Cache-Control": "no-store"
@@ -124,7 +158,7 @@ async function serveStatic(req, res, pathname) {
 
   // Refuse anything that normalises outside public/.
   if (target !== PUBLIC_DIR && !target.startsWith(PUBLIC_DIR + sep)) {
-    res.writeHead(403).end("Forbidden");
+    res.writeHead(403, securityHeaders()).end("Forbidden");
     return;
   }
 
@@ -132,19 +166,37 @@ async function serveStatic(req, res, pathname) {
   try {
     info = await stat(target);
   } catch {
-    res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" }).end("Not found");
+    res.writeHead(404, { ...securityHeaders(), "Content-Type": "text/plain; charset=utf-8" }).end("Not found");
     return;
   }
 
-  const file = info.isDirectory() ? join(target, "index.html") : target;
+  let file = target;
+  if (info.isDirectory()) {
+    file = join(target, "index.html");
+    try {
+      info = await stat(file);
+    } catch {
+      res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" }).end("Not found");
+      return;
+    }
+  }
+
   const type = MIME[extname(file).toLowerCase()] || "application/octet-stream";
   const cacheable = extname(file) !== ".html";
 
   res.writeHead(200, {
+    ...securityHeaders(),
     "Content-Type": type,
-    "Cache-Control": cacheable ? "public, max-age=3600" : "no-cache",
-    "X-Content-Type-Options": "nosniff"
+    "Content-Length": info.size,
+    "Cache-Control": cacheable ? "public, max-age=3600" : "no-cache"
   });
+
+  // A HEAD response carries the headers and no body.
+  if (req.method === "HEAD") {
+    res.end();
+    return;
+  }
+
   createReadStream(file).on("error", () => res.destroy()).pipe(res);
 }
 
@@ -242,9 +294,40 @@ const isEntrypoint = process.argv[1] && resolve(process.argv[1]) === fileURLToPa
 
 if (isEntrypoint) {
   const { server, store } = await createApp();
+
   server.listen(PORT, () => {
     console.log(`Peptra listening on http://localhost:${PORT}`);
     console.log(`  waitlist file : ${DATA_FILE} (${store.count()} signups)`);
     console.log(`  CSV export    : ${ADMIN_TOKEN ? "enabled" : "disabled (set ADMIN_TOKEN)"}`);
+    console.log(`  proxy headers : ${TRUST_PROXY ? "trusted" : "ignored (set TRUST_PROXY=1 behind TLS)"}`);
   });
+
+  // Container platforms send SIGTERM and kill the process shortly after.
+  // Stop taking connections, let in-flight requests finish, and make sure
+  // every acknowledged signup has actually reached disk.
+  let shuttingDown = false;
+  for (const signal of ["SIGTERM", "SIGINT"]) {
+    process.on(signal, () => {
+      if (shuttingDown) return;
+      shuttingDown = true;
+      console.log(`\n${signal} received — draining`);
+
+      const forced = setTimeout(() => {
+        console.error("drain timed out after 10s — exiting anyway");
+        process.exit(1);
+      }, 10_000);
+      forced.unref();
+
+      server.close(async () => {
+        try {
+          await store.flush();
+          console.log(`drained — ${store.count()} signups safe on disk`);
+          process.exit(0);
+        } catch (error) {
+          console.error("flush failed on shutdown:", error);
+          process.exit(1);
+        }
+      });
+    });
+  }
 }

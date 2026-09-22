@@ -88,6 +88,12 @@ export async function createStore({ file }) {
       return { position, duplicate: false };
     },
 
+    /** Await any queued appends — used on shutdown so a container restart
+     *  cannot drop a signup that was acknowledged to the browser. */
+    async flush() {
+      await writeQueue;
+    },
+
     toCsv() {
       const escape = (value) => {
         const text = String(value ?? "");

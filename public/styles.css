@@ -675,3 +675,8 @@ img { max-width: 100%; }
   .site-header .chip { display: none; }
   .chroma-head .lot { margin-left: 0; width: 100%; }
 }
+
+/* Set as classes rather than style attributes so the deployed
+   Content-Security-Policy can refuse inline styles outright. */
+figure.chroma-card { margin: 0; }
+.lede.lede-narrow { max-width: 46ch; }

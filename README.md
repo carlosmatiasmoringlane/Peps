@@ -85,14 +85,20 @@ is gitignored — it is personal data, and it must not end up in the repository.
 
 ## Deploying
 
-Any host that runs a Node process works — Fly.io, Render, Railway, a small VPS.
-There is no build step.
+**Copy-paste commands for Fly.io, Render and plain Docker: [`DEPLOY.md`](DEPLOY.md).**
 
-1. Put it behind TLS, and set `TRUST_PROXY=1` so the rate limiter sees real
-   client addresses instead of your proxy's.
-2. Set `ADMIN_TOKEN` to a random secret.
-3. Mount a persistent volume at `data/`, or the list dies with the container.
-   On an ephemeral filesystem, move the store first — see below.
+`Dockerfile`, `fly.toml` and `render.yaml` are checked in and ready. There is no
+build step. Three things are not optional:
+
+1. **A persistent volume at `/data`**, or every redeploy wipes the waitlist.
+2. **`TRUST_PROXY=1`** behind TLS, so the rate limiter sees real client
+   addresses instead of your proxy's — and so HSTS is sent.
+3. **`ADMIN_TOKEN`** set to a random secret, or CSV export stays disabled.
+
+Responses carry a strict `Content-Security-Policy` (the page loads no inline
+script or style), plus `nosniff`, `Referrer-Policy` and `Permissions-Policy`.
+`SIGTERM` drains in-flight requests and flushes queued writes before exit, so a
+redeploy cannot drop an acknowledged signup.
 
 ### When to replace the flat file
 
@@ -110,13 +116,14 @@ becomes true:
 
 ### Still to build
 
-- **Double opt-in.** Right now an address joins on one click, so anyone can
-  enter someone else's. Before you send a single broadcast, add a confirmation
-  email — it is also what keeps you deliverable and on the right side of
-  GDPR/CAN-SPAM.
-- **A one-click unsubscribe**, which the page already promises.
-- **Analytics**, if you want to know which section converts. Nothing on the page
-  tracks anyone today.
+Collecting signups works today. **Sending to them does not** — there is no mail
+provider wired in, and the page already promises a launch email and a one-click
+unsubscribe. Before any broadcast you need double opt-in, `List-Unsubscribe`,
+and SPF/DKIM/DMARC on the sending domain. See
+[`DEPLOY.md`](DEPLOY.md#still-required-before-you-send-email).
+
+Nothing on the page tracks anyone today; add analytics if you want to know which
+section converts.
 
 ## Before you launch
 
