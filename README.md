@@ -47,6 +47,8 @@ Data behind that split: `research/02-what-gets-views.md`
 research/01-channel-name-analysis.md   How top channels are named, and why
 research/02-what-gets-views.md         2026 format, retention, hook, title data
 scripts/ep01-the-box.md                Episode 1 — full script, 3 hooks, titles
+scripts/ep02-which-side.md             Episode 2 — full script, 3 hooks, titles
+scripts/shorts/ep01-hook-tests.md      5 Shorts + the measurement protocol
 scripts/plain-language-system.md       The 6-pass simplification method
 animation/README.md                    Visual identity + Higgsfield status
 animation/higgsfield-shotlist.md       12 paste-ready generation prompts
@@ -64,6 +66,33 @@ Script: `scripts/ep01-the-box.md` — includes three testable hooks, four
 title options, a thumbnail spec, and a **pre-publication fact-check list**
 (several widely repeated shipping statistics need sourcing before they go
 in a video).
+
+## Episode 02 — "Why Does Half The World Drive On The Wrong Side?"
+
+Neither side is safer. Neither is better. Two empires exported their own
+habit, then cars, bus doors, toll booths and intersections quietly made
+the choice permanent. Sweden forced it open anyway, on one morning in
+1967, with the whole country stopped in the road.
+
+Where Episode 01 is about the power of **agreeing** on a standard, this
+one is its mirror: **lock-in** — what happens when you agree too late to
+change. Deliberately a different lesson, so the channel doesn't repeat one
+thesis forever.
+
+Script: `scripts/ep02-which-side.md`. History-heavy, so the fact-check
+list is longer and the script keeps its hedges (the sword-arm origin is
+flagged as tradition, not fact — keep it that way in the cut).
+
+## Shorts
+
+`scripts/shorts/ep01-hook-tests.md` — five 35–45s vertical Shorts. Three
+build out the Episode 01 hooks as standalone videos; two probe future
+topics, including one that demand-tests Episode 02.
+
+Each pays off completely on its own — a Short ending in "watch the full
+video" is an ad and gets treated like one. Includes a 7-day measurement
+protocol: judge on 3-second retention first, completion second, raw views
+last, and never test two variables at once.
 
 ## Status of the original brief
 
