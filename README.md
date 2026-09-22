@@ -54,7 +54,9 @@ brand/channel-copy.md                  About page, trailer, tone rules
 brand/visual-assets.md                 Avatar, banner, thumbnail specs
 animation/README.md                    Visual identity + Higgsfield status
 animation/generate.sh                  Two-stage generation pipeline
-animation/prompts/ep01.tsv             Editable shot prompts
+animation/prompts/ep01.tsv             Editable shot prompts (source of truth)
+animation/paste-into-higgsfield.md     38 paste-ready prompts for the web UI
+.claude/agents/higgsfield.md           Subagent that owns Higgsfield contact
 animation/higgsfield-shotlist.md       12 paste-ready generation prompts
 ```
 
