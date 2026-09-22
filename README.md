@@ -50,7 +50,11 @@ scripts/ep01-the-box.md                Episode 1 — full script, 3 hooks, title
 scripts/ep02-which-side.md             Episode 2 — full script, 3 hooks, titles
 scripts/shorts/ep01-hook-tests.md      5 Shorts + the measurement protocol
 scripts/plain-language-system.md       The 6-pass simplification method
+brand/channel-copy.md                  About page, trailer, tone rules
+brand/visual-assets.md                 Avatar, banner, thumbnail specs
 animation/README.md                    Visual identity + Higgsfield status
+animation/generate.sh                  Two-stage generation pipeline
+animation/prompts/ep01.tsv             Editable shot prompts
 animation/higgsfield-shotlist.md       12 paste-ready generation prompts
 ```
 
@@ -93,6 +97,27 @@ Each pays off completely on its own — a Short ending in "watch the full
 video" is an ad and gets treated like one. Includes a 7-day measurement
 protocol: judge on 3-second retention first, completion second, raw views
 last, and never test two variables at once.
+
+## Channel setup
+
+`brand/channel-copy.md` — handle, About page (707 chars against a 1,000
+limit), a 60-second trailer script, homepage section order, a per-episode
+description template, and the tone rules.
+
+`brand/visual-assets.md` — avatar, banner, watermark and thumbnail specs
+built on the episode visual identity, so the channel page and the videos
+read as one system.
+
+Two things worth doing before anything else:
+
+1. **Check handle parity** across YouTube, TikTok, Instagram and the
+   domain. If `@plainsight` is taken, change the *name* rather than
+   mangling the handle — you say it aloud in every outro.
+2. **Make it a Brand Account**, not a personal channel. Brand Accounts
+   transfer owners and add managers cleanly; personal channels don't.
+
+Creating the account is yours to do — it needs phone verification and
+binds you personally to Google's terms.
 
 ## Status of the original brief
 
