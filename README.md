@@ -47,15 +47,12 @@ the page. **If you change the peaks, update the table.**
 
 ## Deploying
 
-Connected to a Cloudflare Worker named **peps**; every push to `main` deploys.
-`wrangler.jsonc` declares `assets: { directory: "./public" }` and no `main`, so
-Cloudflare serves the directory as a static site and runs no Worker code.
+Copy-paste instructions for Cloudflare Pages, GitHub Pages and Netlify:
+[`DEPLOY.md`](DEPLOY.md).
 
-Custom domains, response headers and the alternatives (Cloudflare Pages,
-Netlify, GitHub Pages) are in [`DEPLOY.md`](DEPLOY.md).
-
-`public/_headers` carries a strict `Content-Security-Policy`. The page loads no
-inline style or script — enforced by a test — so the policy costs nothing.
+The short version: point any static host at `public/`. The page loads no inline
+style or script, so a strict `Content-Security-Policy` costs nothing — the
+header block is in `DEPLOY.md` and the no-inline property is enforced by a test.
 
 ## Before you launch
 

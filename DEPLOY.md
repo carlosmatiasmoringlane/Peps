@@ -1,72 +1,79 @@
 # Deploying Peptra
 
-Three files in `public/` — no build step, no server, no database.
+Three files in `public/` — no build step, no server, no database. Any static
+host will serve it, most of them free.
 
-## Cloudflare Workers (what this repo is set up for)
+## Cloudflare Pages (recommended)
 
-The repo is connected to a Worker called **peps**, so every push builds and
-deploys automatically. `wrangler.jsonc` is what makes that work:
+Sensible default if your domain is already at Cloudflare, since DNS is then
+one click rather than a record you copy by hand.
 
-```jsonc
-{
-  "name": "peps",
-  "compatibility_date": "2026-09-22",
-  "assets": { "directory": "./public" }
-}
+1. **Workers & Pages → Create → Pages → Connect to Git**, pick this repository.
+2. Build settings:
+   - Framework preset: **None**
+   - Build command: *leave empty*
+   - Build output directory: **`public`**
+3. **Save and Deploy.** You get a `*.pages.dev` URL in about a minute.
+4. **Custom domains → Set up a domain →** `peptra.com.co`. Cloudflare adds the
+   DNS record itself and issues the certificate.
+
+Every push to `main` redeploys. Pull requests get their own preview URL.
+
+## GitHub Pages
+
+No extra account, but it serves from the repository root, so `public/` needs
+publishing as the site root via an action rather than a branch setting.
+
+1. **Settings → Pages → Source: GitHub Actions.**
+2. Add `.github/workflows/pages.yml`:
+
+```yaml
+name: Pages
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - id: deploy
+        uses: actions/deploy-pages@v4
 ```
 
-There is deliberately **no `main`**. A Worker with `assets` and no entry script
-serves the directory as a static site and runs no code — which is exactly what
-this is. Without this file, Workers Builds has nothing to deploy and fails in
-about a second.
+3. **Settings → Pages → Custom domain →** `peptra.com.co`, then add the
+   `CNAME` record it shows you at your registrar.
 
-If the dashboard asks for build settings:
+## Netlify
 
-- Build command: `npm run build` (a no-op) or leave empty
-- Deploy command: `npx wrangler deploy`
-- Root directory: leave as the repo root, **not** `public`
+**Add new site → Import an existing project.** Publish directory `public`,
+build command empty. Custom domain under **Domain management**.
 
-### Custom domain
+## Headers worth setting
 
-Worker → **Settings → Domains & Routes → Add → Custom domain** →
-`peptra.com.co`. If the domain's DNS is already at Cloudflare, the record and
-the certificate are created for you. If it is registered elsewhere, move its
-nameservers to Cloudflare first — custom domains on Workers require it.
+The page loads no inline style or script, so a strict policy costs nothing and
+is enforced by the test suite. On Cloudflare Pages, add `public/_headers`:
 
-### Response headers
-
-`public/_headers` sets a strict `Content-Security-Policy` plus `nosniff`,
-`Referrer-Policy` and `Permissions-Policy`. The page loads no inline style or
-script, and a test enforces that, so the policy cannot quietly break the site.
-
-Confirm it is actually applied once deployed — support for `_headers` on
-Workers static assets is newer than on Pages:
-
-```bash
-curl -sSI https://peptra.com.co/ | grep -i content-security-policy
+```
+/*
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; img-src 'self' data:; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
 ```
 
-If nothing comes back, the file is being ignored; move the headers into a small
-Worker script, or switch the project to Cloudflare Pages, which has supported
-`_headers` for years.
-
-## Alternatives
-
-**Cloudflare Pages** — same company, older product, `_headers` definitely
-works. Build command empty, output directory `public`.
-
-**Netlify** — *Add new site → Import an existing project*, publish directory
-`public`, build command empty. Reads the same `_headers` file.
-
-**GitHub Pages** — free and simple, and `.github/workflows/pages.yml` deploys
-to it on every push to `main`. It **cannot set response headers at all**, so
-`public/_headers` is ignored there and the CSP does not apply.
-
-Its one real advantage: the build runs in GitHub Actions, so when it breaks the
-log is readable in the Actions tab rather than behind a vendor dashboard.
-
-**Enable it before merging**, or the workflow fails for want of a configured
-Pages source: Settings → Pages → Source → **GitHub Actions**.
+Netlify reads the same file. GitHub Pages cannot set headers at all — a reason
+to prefer one of the other two.
 
 ## The mailboxes have to exist
 
@@ -77,5 +84,5 @@ that bounces is a customer lost silently:
 - `coa@peptra.com.co`
 
 Forwarding is enough to start. Cloudflare Email Routing is free and takes about
-five minutes. **Send a test message to both before you point anyone at the
-site.**
+five minutes; most registrars offer something similar. **Send a test message to
+both before you point anyone at the site.**
