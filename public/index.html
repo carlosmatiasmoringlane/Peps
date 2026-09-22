@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Peptra — research peptides, traced to the assay</title>
+<meta name="description" content="Peptra supplies research-grade peptides with the full certificate of analysis published for every lot — HPLC purity, LC-MS identity, endotoxin — before you order. Join the waitlist.">
+<meta property="og:title" content="Peptra">
+<meta property="og:description" content="Research-grade peptides with the certificate of analysis published for every lot, before you order.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="#top"><span class="mark" aria-hidden="true"></span>Peptra</a>
+    <span class="chip">Research use only</span>
+    <span class="spacer"></span>
+    <a class="btn btn-quiet btn-sm" href="#waitlist">Join the waitlist</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+
+      <div class="hero-copy">
+        <p class="eyebrow">Opening 2026 · Waitlist now</p>
+        <h1 class="display">Every vial, traced to <em>its own assay</em>.</h1>
+        <p class="lede">
+          Peptra is a research peptide supplier that publishes the complete certificate of
+          analysis for every lot — HPLC purity, LC-MS identity, water content, endotoxin —
+          before you order, not after you ask. Same lot number on the vial, the COA and the
+          packing slip.
+        </p>
+
+        <form class="hero-form" id="hero-form" novalidate>
+          <div class="row">
+            <label class="hp" for="hero-company">Company (leave blank)</label>
+            <input class="hp" id="hero-company" name="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <input id="hero-email" name="email" type="email" inputmode="email" autocomplete="email"
+                   placeholder="you@lab.edu" aria-label="Email address" required>
+            <button class="btn btn-primary" id="hero-submit" type="submit">Request early access</button>
+          </div>
+          <p class="form-status" id="hero-status" role="status" hidden></p>
+          <p class="form-note">
+            One email when we open, one when the COA library goes live. Nothing else, and no
+            sharing with third parties.
+          </p>
+        </form>
+      </div>
+
+      <!-- chromatogram: the page's thesis, drawn from real integration data -->
+      <figure class="chroma-card" style="margin:0">
+        <div class="chroma-head">
+          <p class="title">BPC-157 · RP-HPLC-UV, 214 nm</p>
+          <p class="lot mono">LOT PTR-0114-A</p>
+        </div>
+        <div class="chroma-canvas-box">
+          <canvas id="chromatogram" role="img"
+                  aria-label="Reversed-phase HPLC trace for lot PTR-0114-A: a single dominant peak at 8.42 minutes integrating to 99.21 percent of total peak area, with three impurity peaks below 0.4 percent shown at fifty times magnification.">
+          </canvas>
+        </div>
+        <table class="integration">
+          <caption>Peak integration · area normalisation · mAU·s</caption>
+          <thead>
+            <tr>
+              <th scope="col">Peak</th>
+              <th scope="col">RT (min)</th>
+              <th scope="col">Area</th>
+              <th scope="col">Area %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>3.15</td><td>0.81</td><td>0.40</td></tr>
+            <tr><td>2</td><td>7.12</td><td>0.60</td><td>0.29</td></tr>
+            <tr class="main"><td>3 · main</td><td>8.42</td><td>202.03</td><td>99.21</td></tr>
+            <tr><td>4</td><td>9.61</td><td>0.20</td><td>0.10</td></tr>
+          </tbody>
+        </table>
+        <figcaption class="chroma-readout">
+          <span class="readout-item"><span class="k">Purity</span><span class="v hero-figure">99.21 %</span></span>
+          <span class="readout-item"><span class="k">Identity Δ</span><span class="v">0.02 %</span></span>
+          <span class="readout-item"><span class="k">Endotoxin</span><span class="v">&lt; 10 EU/mg</span></span>
+          <span class="readout-item"><span class="k">Released</span><span class="v">2026-08-14</span></span>
+        </figcaption>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ============ §01 ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">§ 01 — Problem</p>
+        <div class="head-copy">
+          <h2 class="h2">Three things go wrong between the synthesiser and your bench.</h2>
+          <p class="lede">
+            None of them are exotic. They are the ordinary failure modes of a market where the
+            paperwork is optional.
+          </p>
+        </div>
+      </div>
+
+      <ul class="rule-list">
+        <li class="rule-row">
+          <span class="idx mono">01 / 03</span>
+          <div class="body">
+            <h3 class="h3">The COA arrives after the money does</h3>
+            <p>
+              Most suppliers will send a certificate if you email and ask, and some of what comes
+              back is a PDF for a different lot entirely. You cannot evaluate a reagent you have
+              already paid for.
+            </p>
+          </div>
+        </li>
+        <li class="rule-row">
+          <span class="idx mono">02 / 03</span>
+          <div class="body">
+            <h3 class="h3">The lot number on the vial isn't on the certificate</h3>
+            <p>
+              A purity figure that can't be tied to the vial in your hand is a marketing number.
+              Traceability is a two-way link or it is nothing.
+            </p>
+          </div>
+        </li>
+        <li class="rule-row">
+          <span class="idx mono">03 / 03</span>
+          <div class="body">
+            <h3 class="h3">Nobody can tell you how it was stored</h3>
+            <p>
+              Lyophilised peptide is stable; it stops being stable after a week on a loading dock
+              in August. Without a handling record, the assay describes a material that no longer
+              exists.
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ §02 ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">§ 02 — Release spec</p>
+        <div class="head-copy">
+          <h2 class="h2">What ships with every vial.</h2>
+          <p class="lede">
+            The release specification is the same for every catalogue item. A lot that misses any
+            line does not ship — it is quarantined and the COA for the failed assay is published
+            anyway.
+          </p>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table class="spec-table">
+          <thead>
+            <tr>
+              <th scope="col">Assay</th>
+              <th scope="col">Method</th>
+              <th scope="col">Specification</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Purity</th><td>RP-HPLC-UV, 214 nm, gradient elution</td><td class="num">≥ 98.0 % area</td></tr>
+            <tr><th scope="row">Identity</th><td>LC-MS, ESI positive, monoisotopic</td><td class="num">Δ ≤ 0.1 % of theoretical</td></tr>
+            <tr><th scope="row">Net peptide content</th><td>Nitrogen determination</td><td class="num">Reported per lot</td></tr>
+            <tr><th scope="row">Water content</th><td>Karl Fischer, coulometric</td><td class="num">≤ 6.0 %</td></tr>
+            <tr><th scope="row">Bacterial endotoxin</th><td>LAL, kinetic chromogenic</td><td class="num">&lt; 10 EU/mg</td></tr>
+            <tr><th scope="row">Residual TFA</th><td>Ion chromatography</td><td class="num">≤ 1.0 %</td></tr>
+            <tr><th scope="row">Appearance</th><td>Visual inspection</td><td>White to off-white lyophilised powder</td></tr>
+            <tr><th scope="row">Handling</th><td>Logged from release to delivery</td><td class="num">−20 °C store · 2–8 °C transit</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">§ 03 — Catalogue</p>
+        <div class="head-copy">
+          <h2 class="h2">Twelve sequences at launch.</h2>
+          <p class="lede">
+            Deliberately narrow. Every sequence we list is one we can source from a single
+            qualified manufacturer and re-assay on a fixed method, so lot-to-lot comparison
+            actually means something.
+          </p>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table class="catalog">
+          <thead>
+            <tr>
+              <th scope="col">Cat. no.</th>
+              <th scope="col">Sequence</th>
+              <th scope="col">Molecular formula</th>
+              <th scope="col">MW (g/mol)</th>
+              <th scope="col">Format</th>
+              <th scope="col">Spec</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row" class="mono">PTR-0114</th>
+              <td>BPC-157</td>
+              <td class="formula">C<sub>62</sub>H<sub>98</sub>N<sub>16</sub>O<sub>22</sub></td>
+              <td class="num">1419.53</td>
+              <td class="num">5 mg</td>
+              <td class="num">≥ 99 %</td>
+            </tr>
+            <tr>
+              <th scope="row" class="mono">PTR-0207</th>
+              <td>Thymosin β4</td>
+              <td class="formula">C<sub>212</sub>H<sub>350</sub>N<sub>56</sub>O<sub>78</sub>S</td>
+              <td class="num">4963.44</td>
+              <td class="num">10 mg</td>
+              <td class="num">≥ 98 %</td>
+            </tr>
+            <tr>
+              <th scope="row" class="mono">PTR-0331</th>
+              <td>Ipamorelin</td>
+              <td class="formula">C<sub>38</sub>H<sub>49</sub>N<sub>9</sub>O<sub>5</sub></td>
+              <td class="num">711.85</td>
+              <td class="num">5 mg</td>
+              <td class="num">≥ 99 %</td>
+            </tr>
+            <tr>
+              <th scope="row" class="mono">PTR-0402</th>
+              <td>GHK-Cu</td>
+              <td class="formula">C<sub>14</sub>H<sub>22</sub>CuN<sub>6</sub>O<sub>4</sub></td>
+              <td class="num">403.94</td>
+              <td class="num">50 mg</td>
+              <td class="num">≥ 99 %</td>
+            </tr>
+            <tr>
+              <th scope="row" class="mono">PTR-0519</th>
+              <td>Epitalon</td>
+              <td class="formula">C<sub>14</sub>H<sub>22</sub>N<sub>4</sub>O<sub>9</sub></td>
+              <td class="num">390.35</td>
+              <td class="num">10 mg</td>
+              <td class="num">≥ 98 %</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="catalog-note mono">Remaining seven sequences published with the catalogue at open.</p>
+    </div>
+  </section>
+
+  <!-- ============ §04 ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">§ 04 — Chain of custody</p>
+        <div class="head-copy">
+          <h2 class="h2">How a lot reaches you.</h2>
+          <p class="lede">
+            We are not a synthesis house and we don't pretend to be. We qualify manufacturers,
+            re-test what they send, and take responsibility for the number we publish.
+          </p>
+        </div>
+      </div>
+
+      <ul class="rule-list">
+        <li class="rule-row">
+          <span class="idx mono">Step 01</span>
+          <div class="body">
+            <h3 class="h3">Sourced from a qualified manufacturer</h3>
+            <p>
+              Solid-phase synthesis at a facility we have audited, against a fixed specification
+              and a single method per sequence. One manufacturer per sequence — we would rather
+              carry less than reconcile two suppliers' chromatography.
+            </p>
+          </div>
+        </li>
+        <li class="rule-row">
+          <span class="idx mono">Step 02</span>
+          <div class="body">
+            <h3 class="h3">Re-assayed independently on arrival</h3>
+            <p>
+              Every lot is re-tested by an ISO/IEC 17025 accredited laboratory that has no
+              commercial relationship with the manufacturer. We publish that lab's numbers, not
+              the ones that came in the box.
+            </p>
+          </div>
+        </li>
+        <li class="rule-row">
+          <span class="idx mono">Step 03</span>
+          <div class="body">
+            <h3 class="h3">Released, published, and shipped cold</h3>
+            <p>
+              The COA goes into a public library indexed by lot number before the lot is listed
+              for sale. Vials ship on gel packs with a temperature record you can read against
+              the certificate.
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ §05 WAITLIST ============ -->
+  <section class="section" id="waitlist">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">§ 05 — Waitlist</p>
+        <div class="head-copy">
+          <h2 class="h2">Founding accounts open first.</h2>
+        </div>
+      </div>
+
+      <div class="waitlist-panel">
+        <div class="panel-copy">
+          <p class="lede" style="max-width:46ch">
+            We are opening to a limited number of accounts so that every early order gets a real
+            conversation about what you need assayed.
+          </p>
+          <ul class="perk-list">
+            <li>First access to the catalogue at open, in waitlist order.</li>
+            <li>The full COA library, searchable by lot, before it is public.</li>
+            <li>Founding pricing held for twelve months from your first order.</li>
+            <li>A direct line to whoever released your lot, not a ticket queue.</li>
+          </ul>
+        </div>
+
+        <form class="waitlist-form" id="waitlist-form" novalidate>
+          <div class="field">
+            <label for="wl-email">Email</label>
+            <input id="wl-email" name="email" type="email" inputmode="email" autocomplete="email"
+                   placeholder="you@lab.edu" required>
+          </div>
+
+          <div class="field">
+            <label for="wl-context">What are you working on?</label>
+            <select id="wl-context" name="context">
+              <option value="">Optional — helps us prioritise sequences</option>
+              <option value="academic">Academic laboratory</option>
+              <option value="biotech">Biotech / pharma R&amp;D</option>
+              <option value="cro">Contract research organisation</option>
+              <option value="independent">Independent researcher</option>
+              <option value="other">Something else</option>
+            </select>
+          </div>
+
+          <div class="hp">
+            <label for="wl-company">Company (leave blank)</label>
+            <input id="wl-company" name="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+          </div>
+
+          <button class="btn btn-primary" id="wl-submit" type="submit">Join the waitlist</button>
+
+          <p class="form-status" id="wl-status" role="status" hidden></p>
+
+          <p class="form-note">
+            By joining you agree to receive launch email from Peptra. Unsubscribe in one click,
+            any time. We never sell or share the list.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §06 COMPLIANCE ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">§ 06 — Compliance</p>
+        <div class="head-copy">
+          <h2 class="h2">What these materials are, and are not.</h2>
+        </div>
+      </div>
+
+      <div class="compliance">
+        <p>
+          <strong>For laboratory research use only.</strong> Peptra products are sold as research
+          reagents for in-vitro and laboratory investigation by qualified personnel. They are not
+          drugs, foods, cosmetics or dietary supplements.
+        </p>
+        <p>
+          <strong>Not for human or veterinary use.</strong> These materials are not intended to
+          diagnose, treat, cure or prevent any disease, and must not be administered to humans or
+          animals. Peptra makes no therapeutic claim for any sequence it lists, publishes no
+          dosing guidance, and will decline orders where the stated use is not research.
+        </p>
+        <p>
+          <strong>Buyer responsibilities.</strong> Purchasers must be affiliated with a research
+          institution or business and are responsible for handling, storage, and compliance with
+          the law in their own jurisdiction. Availability varies by country; some sequences cannot
+          be shipped to some destinations.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <a class="wordmark" href="#top"><span class="mark" aria-hidden="true"></span>Peptra</a>
+    <span class="spacer"></span>
+    <span class="copy-line">
+      <span class="addr mono" id="contact-address">hello@peptra.com</span>
+      <button class="btn btn-quiet btn-sm" id="copy-email" type="button">Copy</button>
+    </span>
+    <p class="legal">© 2026 Peptra · Research use only</p>
+  </div>
+</footer>
+
+<script src="./app.js"></script>
+</body>
+</html>
