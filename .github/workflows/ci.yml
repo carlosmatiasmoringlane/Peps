@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  # Pushes to a branch with an open PR are covered by the pull_request
+  # trigger; running both doubles every CI run for no extra signal.
+  push:
+    branches: [main]
+  pull_request:
+
+# A new push supersedes the run still going for the same ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm test
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t peptra:ci .
+      - name: Boot the image and check it serves
+        run: |
+          docker run -d --name peptra -p 3000:3000 peptra:ci
+          for i in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:3000/healthz && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:3000/ | grep -q Peptra
+          docker rm -f peptra

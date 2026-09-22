@@ -222,7 +222,10 @@
    * Waitlist
    * ------------------------------------------------------------------ */
 
-  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  /* Kept in step with EMAIL_RE in server/store.js — the server is still the
+     authority, this only saves a round trip. */
+  var EMAIL_RE =
+    /^[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/;
 
   /* Swapped out in the Artifact build, which writes to the artifact store
      instead of this origin's API. */
@@ -290,7 +293,16 @@
         source: source
       }).then(function (result) {
         form.reset();
-        if (result && result.duplicate) {
+        var state = result && result.state;
+
+        if (state === "already_confirmed") {
+          setStatus(statusEl, "ok", "You're already on the list" +
+            (result.position ? " at position #" + result.position : "") + ". Nothing more to do.");
+        } else if (state === "pending") {
+          setStatus(statusEl, "ok", (result.resent ? "We've sent that link again" : "Check your inbox") +
+            " — confirm at " + email + " and your place is held. " +
+            "Nothing is reserved until you do.");
+        } else if (result && result.duplicate) {
           setStatus(statusEl, "ok", "You're already on the list" +
             (result.position ? " at position #" + result.position : "") + ". Nothing more to do.");
         } else if (result && result.position) {
@@ -302,6 +314,8 @@
       }).catch(function (error) {
         if (error && error.status === 429) {
           setStatus(statusEl, "error", "Too many attempts from this connection. Give it a minute and try again.");
+        } else if (error && error.status === 502) {
+          setStatus(statusEl, "error", "We saved your details but the confirmation email didn't send. Try again in a moment.");
         } else if (error && error.code === "read_only") {
           setStatus(statusEl, "error", "This preview is read-only for your account, so the signup wasn't saved.");
         } else {

@@ -39,27 +39,54 @@ cannot drift apart. If you change the peaks, update the integration table in
 
 ## The waitlist
 
-`POST /api/waitlist`
+Double opt-in. Signing up records a **pending** subscriber and emails a
+confirmation link; **nobody joins the list and no position is assigned until
+that link is clicked.** The address you hold is therefore always one someone
+proved they control.
 
-```json
-{ "email": "you@lab.edu", "context": "academic", "source": "hero" }
+```
+POST /api/waitlist        {"email":"you@lab.edu","context":"academic"}
+  -> 201 {"ok":true,"state":"pending","resent":false}
+  -> 200 {"ok":true,"state":"pending","resent":true}          already pending
+  -> 200 {"ok":true,"state":"already_confirmed","position":4}  no second email
+
+GET  /confirm?token=...       assigns the next position, renders the result
+GET  /unsubscribe?token=...   removes them, renders the result
+POST /unsubscribe?token=...   RFC 8058 one-click, returns {"ok":true}
 ```
 
-Replies `201 {"ok":true,"position":1,"duplicate":false}`, or `200` with
-`"duplicate":true` if the address is already in. Errors come back as
-`{"error":"..."}` with a 400, 429 or 500.
+Storage is an **append-only event log** — `signup`, `confirm`, `unsubscribe`,
+one JSON object per line, replayed in order at boot. Nothing is ever rewritten,
+so a torn write costs at most the last event, the file stays readable with
+`tail` and `grep`, and the record of who confirmed when is the consent evidence
+you may later have to produce.
 
 What it does for you:
 
-- **Deduplicates** on the lowercased address, and tells a repeat signup their
-  original position instead of pretending it worked.
-- **Rate limits** to 8 requests per IP per 10 minutes (`RATE_LIMIT_MAX`,
-  `RATE_LIMIT_WINDOW_MS`).
-- **Catches bots** with a hidden `company` field. A filled honeypot gets a
-  cheerful `200` and is silently discarded, so scrapers learn nothing.
-- **Survives restarts.** Records append to `data/waitlist.jsonl`, one JSON
-  object per line, replayed into memory at boot. A torn final line from an
-  interrupted write is skipped rather than crashing the process.
+- **Assigns positions on confirmation, not signup**, so an unconfirmed address
+  can't sit on place #1 forever. Positions are never reused.
+- **Never emails a confirmed address again** from the form. Re-submitting is how
+  a signup form gets turned into an outbound spam cannon.
+- **Resends the original link** when someone pending signs up again, so the
+  earlier email keeps working.
+- **Reports a send failure honestly** (502) instead of saying "check your inbox"
+  when nothing was sent. The address is kept, so a retry resends.
+- **Rate limits** to 8 requests per IP per 10 minutes, checked before any work.
+- **Catches bots** with a hidden `company` field — a filled honeypot gets a
+  cheerful `200`, stores nothing and sends nothing.
+- **Treats unsubscribe as sacred**: idempotent, works on an unknown token, and
+  never makes someone trying to leave feel they failed.
+
+### Email
+
+Set `MAIL_PROVIDER` to `postmark` or `resend` (both over plain `fetch`, no
+dependency) and `PUBLIC_URL` to the real domain. The default, `console`, prints
+the confirmation link to the log and sends nothing — which is what you want in
+development, and which the server warns loudly about if it sees `NODE_ENV=production`.
+
+Every message carries `List-Unsubscribe` and `List-Unsubscribe-Post`, which
+Gmail and Yahoo require of bulk senders. Adding a provider is one adapter in
+`server/mailer.js`.
 
 ### Getting the list out
 
@@ -69,8 +96,16 @@ curl -H "Authorization: Bearer $ADMIN_TOKEN" \
      http://localhost:3000/api/waitlist/export.csv -o waitlist.csv
 ```
 
-Export is disabled entirely until `ADMIN_TOKEN` is set. `data/waitlist.jsonl`
-is gitignored — it is personal data, and it must not end up in the repository.
+The export is **confirmed subscribers only** — pending and unsubscribed rows are
+left out rather than waiting for a careless send to pick them up. `?all=1`
+returns everything with a `status` column, for auditing.
+
+Cells beginning `=`, `+`, `-` or `@` are prefixed with an apostrophe, because
+those characters are legal in an address local part and a spreadsheet would
+otherwise treat the cell as a formula.
+
+`data/waitlist.jsonl` is gitignored — it is personal data, and it must not end
+up in the repository.
 
 ### Configuration
 
@@ -82,17 +117,27 @@ is gitignored — it is personal data, and it must not end up in the repository.
 | `TRUST_PROXY` | `0` | Set to `1` to read the client IP from `X-Forwarded-For` |
 | `RATE_LIMIT_MAX` | `8` | Signup attempts per IP per window |
 | `RATE_LIMIT_WINDOW_MS` | `600000` | Rate limit window |
+| `PUBLIC_URL` | `http://localhost:$PORT` | Base for links in email — **must** be your real domain |
+| `MAIL_PROVIDER` | `console` | `console`, `postmark` or `resend` |
+| `MAIL_FROM` | `Peptra <hello@peptra.com>` | Envelope sender |
+| `POSTMARK_TOKEN` / `RESEND_API_KEY` | *unset* | Required by the matching provider |
 
 ## Deploying
 
-Any host that runs a Node process works — Fly.io, Render, Railway, a small VPS.
-There is no build step.
+**Copy-paste commands for Fly.io, Render and plain Docker: [`DEPLOY.md`](DEPLOY.md).**
 
-1. Put it behind TLS, and set `TRUST_PROXY=1` so the rate limiter sees real
-   client addresses instead of your proxy's.
-2. Set `ADMIN_TOKEN` to a random secret.
-3. Mount a persistent volume at `data/`, or the list dies with the container.
-   On an ephemeral filesystem, move the store first — see below.
+`Dockerfile`, `fly.toml` and `render.yaml` are checked in and ready. There is no
+build step. Three things are not optional:
+
+1. **A persistent volume at `/data`**, or every redeploy wipes the waitlist.
+2. **`TRUST_PROXY=1`** behind TLS, so the rate limiter sees real client
+   addresses instead of your proxy's — and so HSTS is sent.
+3. **`ADMIN_TOKEN`** set to a random secret, or CSV export stays disabled.
+
+Responses carry a strict `Content-Security-Policy` (the page loads no inline
+script or style), plus `nosniff`, `Referrer-Policy` and `Permissions-Policy`.
+`SIGTERM` drains in-flight requests and flushes queued writes before exit, so a
+redeploy cannot drop an acknowledged signup.
 
 ### When to replace the flat file
 
@@ -110,13 +155,15 @@ becomes true:
 
 ### Still to build
 
-- **Double opt-in.** Right now an address joins on one click, so anyone can
-  enter someone else's. Before you send a single broadcast, add a confirmation
-  email — it is also what keeps you deliverable and on the right side of
-  GDPR/CAN-SPAM.
-- **A one-click unsubscribe**, which the page already promises.
-- **Analytics**, if you want to know which section converts. Nothing on the page
-  tracks anyone today.
+Double opt-in, one-click unsubscribe and the consent log are in place. What is
+left is account setup, not code:
+
+- **A sending provider account** (Postmark or Resend) and its token.
+- **SPF, DKIM and DMARC** on the sending domain, or your launch announcement
+  lands in spam. Both providers walk you through the records.
+
+Nothing on the page tracks anyone today; add analytics if you want to know which
+section converts.
 
 ## Before you launch
 

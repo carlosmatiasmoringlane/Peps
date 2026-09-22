@@ -675,3 +675,56 @@ img { max-width: 100%; }
   .site-header .chip { display: none; }
   .chroma-head .lot { margin-left: 0; width: 100%; }
 }
+
+/* Set as classes rather than style attributes so the deployed
+   Content-Security-Policy can refuse inline styles outright. */
+figure.chroma-card { margin: 0; }
+.lede.lede-narrow { max-width: 46ch; }
+
+/* ---------- confirm / unsubscribe result pages ---------- */
+
+.result-main {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: clamp(40px, 8vw, 90px);
+}
+
+.result-card {
+  width: 100%;
+  max-width: 560px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  padding: clamp(26px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.result-card .h2 { font-size: clamp(24px, 3vw, 30px); }
+.result-card p { margin: 0; color: var(--ink-mute); }
+.result-card p.result-lede { color: var(--ink); font-size: 17px; }
+
+.result-position {
+  font-family: var(--f-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(34px, 6vw, 46px);
+  font-weight: 500;
+  color: var(--trace-ink);
+  line-height: 1;
+  margin: 4px 0;
+}
+
+.result-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+
+.result-fineprint {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-faint);
+  border-top: 1px solid var(--rule-soft);
+  padding-top: 14px;
+}
