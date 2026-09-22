@@ -14,6 +14,14 @@ services:
         value: /data/waitlist.jsonl
       - key: ADMIN_TOKEN
         generateValue: true
+      - key: MAIL_PROVIDER
+        value: postmark
+      - key: MAIL_FROM
+        value: Peptra <hello@peptra.com>
+      - key: PUBLIC_URL
+        sync: false          # set to your real domain in the dashboard
+      - key: POSTMARK_TOKEN
+        sync: false          # set in the dashboard, never in this file
     disk:
       name: peptra-data
       mountPath: /data

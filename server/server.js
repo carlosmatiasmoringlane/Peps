@@ -11,6 +11,8 @@ import { stat } from "node:fs/promises";
 import { extname, join, normalize, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createStore, isValidEmail, normalizeEmail } from "./store.js";
+import { createMailer } from "./mailer.js";
+import { confirmedPage, confirmFailedPage, unsubscribedPage } from "./pages.js";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const PUBLIC_DIR = join(ROOT, "public");
@@ -18,6 +20,10 @@ const DATA_FILE = process.env.WAITLIST_FILE || join(ROOT, "data", "waitlist.json
 const PORT = Number(process.env.PORT || 3000);
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "";
 const TRUST_PROXY = process.env.TRUST_PROXY === "1";
+
+// Absolute base for the links that go into email. Getting this wrong sends
+// people to localhost, so it is validated at boot rather than at send time.
+const PUBLIC_URL = (process.env.PUBLIC_URL || `http://localhost:${PORT}`).replace(/\/+$/, "");
 
 const MAX_BODY_BYTES = 4 * 1024;
 
@@ -127,6 +133,16 @@ function sendJson(res, status, payload) {
   res.end(body);
 }
 
+function sendHtml(res, status, html) {
+  res.writeHead(status, {
+    ...securityHeaders(),
+    "Content-Type": "text/html; charset=utf-8",
+    "Content-Length": Buffer.byteLength(html),
+    "Cache-Control": "no-store"
+  });
+  res.end(html);
+}
+
 function readJsonBody(req) {
   return new Promise((resolvePromise, rejectPromise) => {
     let size = 0;
@@ -200,7 +216,7 @@ async function serveStatic(req, res, pathname) {
   createReadStream(file).on("error", () => res.destroy()).pipe(res);
 }
 
-export async function createApp({ dataFile = DATA_FILE } = {}) {
+export async function createApp({ dataFile = DATA_FILE, mailer = createMailer() } = {}) {
   const store = await createStore({ file: dataFile });
 
   const handler = async (req, res) => {
@@ -208,7 +224,7 @@ export async function createApp({ dataFile = DATA_FILE } = {}) {
     const { pathname } = url;
 
     if (pathname === "/healthz") {
-      return sendJson(res, 200, { ok: true, signups: store.count() });
+      return sendJson(res, 200, { ok: true, ...store.counts() });
     }
 
     if (pathname === "/api/waitlist" && req.method === "POST") {
@@ -235,19 +251,70 @@ export async function createApp({ dataFile = DATA_FILE } = {}) {
         return sendJson(res, 400, { error: "Enter a valid email address." });
       }
 
+      let result;
       try {
-        const result = await store.add({
-          email,
-          context: body.context,
-          source: body.source,
-          ip,
-          userAgent: req.headers["user-agent"] || ""
-        });
-        return sendJson(res, result.duplicate ? 200 : 201, { ok: true, ...result });
+        result = await store.add({ email, context: body.context, source: body.source });
       } catch (error) {
         console.error("[waitlist] write failed:", error);
         return sendJson(res, 500, { error: "Could not save your signup. Please try again." });
       }
+
+      // Already confirmed: say so and send nothing. Re-mailing a confirmed
+      // address on every form submission is how a signup form gets turned
+      // into an outbound spam cannon.
+      if (result.state === "already_confirmed") {
+        return sendJson(res, 200, { ok: true, state: "already_confirmed", position: result.position });
+      }
+
+      try {
+        await mailer.sendConfirmation({
+          to: email,
+          confirmUrl: `${PUBLIC_URL}/confirm?token=${encodeURIComponent(result.token)}`,
+          unsubscribeUrl: `${PUBLIC_URL}/unsubscribe?token=${encodeURIComponent(result.token)}`
+        });
+      } catch (error) {
+        // The signup is already recorded, so the address is not lost — but
+        // without the email it can never be confirmed, and saying "check
+        // your inbox" would be a lie.
+        console.error("[waitlist] confirmation email failed:", error.message, error.body ?? "");
+        return sendJson(res, 502, {
+          error: "We saved your details but couldn't send the confirmation email. Try again shortly."
+        });
+      }
+
+      return sendJson(res, result.resent ? 200 : 201, {
+        ok: true,
+        state: "pending",
+        resent: Boolean(result.resent)
+      });
+    }
+
+    /* --- double opt-in: confirm ------------------------------------- */
+
+    if (pathname === "/confirm" && (req.method === "GET" || req.method === "HEAD")) {
+      const outcome = await store.confirm(url.searchParams.get("token"));
+      if (!outcome.ok) {
+        return sendHtml(res, 400, confirmFailedPage({ reason: outcome.reason }));
+      }
+      return sendHtml(res, 200, confirmedPage(outcome));
+    }
+
+    /* --- unsubscribe --------------------------------------------------
+     * GET serves the page a person reaches by clicking. POST is what
+     * RFC 8058 one-click unsubscribe sends, which Gmail and Yahoo require
+     * of bulk senders; both must work without a confirmation step.
+     * ------------------------------------------------------------------ */
+
+    if (pathname === "/unsubscribe" && ["GET", "HEAD", "POST"].includes(req.method)) {
+      const outcome = await store.unsubscribe(url.searchParams.get("token"));
+
+      if (req.method === "POST") {
+        return sendJson(res, 200, { ok: true });
+      }
+      return sendHtml(res, 200, unsubscribedPage({
+        email: outcome.email,
+        unknown: !outcome.ok
+      }));
     }
 
     if (pathname === "/api/waitlist/export.csv" && req.method === "GET") {
@@ -259,7 +326,7 @@ export async function createApp({ dataFile = DATA_FILE } = {}) {
         res.writeHead(401, { "WWW-Authenticate": "Bearer" });
         return res.end("Unauthorized");
       }
-      const csv = store.toCsv();
+      const csv = store.toCsv({ includeAll: url.searchParams.get("all") === "1" });
       res.writeHead(200, {
         "Content-Type": "text/csv; charset=utf-8",
         "Content-Length": Buffer.byteLength(csv),
@@ -274,7 +341,7 @@ export async function createApp({ dataFile = DATA_FILE } = {}) {
     }
 
     if (req.method !== "GET" && req.method !== "HEAD") {
-      res.writeHead(405, { Allow: "GET, HEAD" }).end("Method not allowed");
+      res.writeHead(405, { ...securityHeaders(), Allow: "GET, HEAD" }).end("Method not allowed");
       return;
     }
 
@@ -293,13 +360,32 @@ export async function createApp({ dataFile = DATA_FILE } = {}) {
 const isEntrypoint = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 
 if (isEntrypoint) {
-  const { server, store } = await createApp();
+  let mailer;
+  try {
+    mailer = createMailer();
+  } catch (error) {
+    console.error(`Mail configuration error: ${error.message}`);
+    process.exit(1);
+  }
+
+  const { server, store } = await createApp({ mailer });
 
   server.listen(PORT, () => {
     console.log(`Peptra listening on http://localhost:${PORT}`);
-    console.log(`  waitlist file : ${DATA_FILE} (${store.count()} signups)`);
+    console.log(`  waitlist file : ${DATA_FILE} (${store.counts().confirmed} confirmed, ${store.counts().pending} pending)`);
     console.log(`  CSV export    : ${ADMIN_TOKEN ? "enabled" : "disabled (set ADMIN_TOKEN)"}`);
     console.log(`  proxy headers : ${TRUST_PROXY ? "trusted" : "ignored (set TRUST_PROXY=1 behind TLS)"}`);
+    console.log(`  mail provider : ${mailer.name} (from ${mailer.from})`);
+    console.log(`  public url    : ${PUBLIC_URL}`);
+
+    if (mailer.name === "console" && process.env.NODE_ENV === "production") {
+      console.warn("\n  !! MAIL_PROVIDER=console in production: confirmation links are");
+      console.warn("     printed to the log and never delivered, so nobody can confirm.");
+      console.warn("     Set MAIL_PROVIDER=postmark or resend.\n");
+    }
+    if (!process.env.PUBLIC_URL && process.env.NODE_ENV === "production") {
+      console.warn("  !! PUBLIC_URL is unset: confirmation links will point at localhost.\n");
+    }
   });
 
   // Container platforms send SIGTERM and kill the process shortly after.
@@ -321,7 +407,7 @@ if (isEntrypoint) {
       server.close(async () => {
         try {
           await store.flush();
-          console.log(`drained — ${store.count()} signups safe on disk`);
+          console.log(`drained — ${store.counts().total} records safe on disk`);
           process.exit(0);
         } catch (error) {
           console.error("flush failed on shutdown:", error);

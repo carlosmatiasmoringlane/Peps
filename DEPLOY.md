@@ -68,19 +68,40 @@ curl -H "Authorization: Bearer $ADMIN_TOKEN" \
      https://peptra.com/api/waitlist/export.csv -o waitlist.csv
 ```
 
-## Still required before you send email
+## Email setup
 
-The page promises "one email when we open" and one-click unsubscribe. Neither
-exists yet — there is no mail provider wired in. Collecting addresses is fine
-today; **broadcasting to them is not**, until you add:
+Double opt-in, one-click unsubscribe and the consent log are built. Two things
+are account setup rather than code:
 
-1. **Double opt-in.** One click currently adds any address, so anyone can enter
-   someone else's. A confirmation email is what makes the list lawful under
-   GDPR and what keeps you out of spam folders.
-2. **One-click unsubscribe**, with the `List-Unsubscribe` header. Required by
-   Gmail and Yahoo for bulk senders.
-3. **SPF, DKIM and DMARC** on the sending domain, or your launch announcement
-   lands in spam.
+**1. A sending provider.** Postmark or Resend; both are one token.
 
-Postmark, Resend or SES all cover this. `server/store.js` is the only file that
-touches storage, so adding a `confirmed` flag is a contained change.
+```bash
+fly secrets set MAIL_PROVIDER=postmark POSTMARK_TOKEN=xxxxx
+fly secrets set PUBLIC_URL=https://peptra.com
+```
+
+`PUBLIC_URL` is not optional — it is the base for every confirmation link, and
+the server warns at boot if it is unset in production. Leave `MAIL_PROVIDER`
+on its `console` default and links are printed to the log and never delivered,
+so nobody can confirm and the waitlist silently collects nothing.
+
+**2. SPF, DKIM and DMARC** on the sending domain. Your provider generates the
+records; add them at your registrar alongside the A/AAAA records. Without them
+the launch announcement lands in spam. Start DMARC at `p=none` and tighten once
+the reports look clean:
+
+```
+_dmarc.peptra.com  TXT  "v=DMARC1; p=none; rua=mailto:dmarc@peptra.com"
+```
+
+### Verify the round trip on the real domain
+
+```bash
+curl -fsS -X POST https://peptra.com/api/waitlist \
+  -H 'Content-Type: application/json' -d '{"email":"you@yours.com"}'
+# -> {"ok":true,"state":"pending","resent":false}
+```
+
+Then click the link in the inbox. You should land on a page showing position
+#1, and `https://peptra.com/healthz` should report one confirmed subscriber.
+Check the message's raw headers for `List-Unsubscribe` while you are there.
