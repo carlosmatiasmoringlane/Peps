@@ -499,125 +499,45 @@ img { max-width: 100%; }
 
 .catalog-note { margin: 14px 0 0; color: var(--ink-faint); font-size: 14px; }
 
-/* ---------- waitlist ---------- */
+/* ---------- contact ---------- */
 
-.waitlist-panel {
-  background: var(--surface);
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-  box-shadow: var(--shadow);
-  padding: clamp(22px, 3.4vw, 34px);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(24px, 3.4vw, 44px);
-  align-items: start;
-}
+.contact-block { display: flex; flex-direction: column; gap: 8px; }
 
-@media (max-width: 820px) {
-  .waitlist-panel { grid-template-columns: minmax(0, 1fr); }
-}
-
-.waitlist-panel .panel-copy { display: flex; flex-direction: column; gap: 14px; }
-
-.perk-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-
-.perk-list li {
-  display: grid;
-  grid-template-columns: 16px minmax(0, 1fr);
-  gap: 10px;
-  color: var(--ink-mute);
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-.perk-list li::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 1px;
-  background: var(--trace);
-  translate: 3px 8px;
-}
-
-.waitlist-form { display: flex; flex-direction: column; gap: 14px; }
-
-.field { display: flex; flex-direction: column; gap: 6px; }
-
-.field label {
+.contact-label {
   font-family: var(--f-mono);
   font-size: 10.5px;
   letter-spacing: .11em;
   text-transform: uppercase;
   color: var(--ink-faint);
-}
-
-.field input,
-.field select {
-  font-family: var(--f-body);
-  font-size: 16px;
-  color: var(--ink);
-  background: var(--ground);
-  border: 1px solid var(--rule);
-  border-radius: 3px;
-  padding: 11px 12px;
-  width: 100%;
-  min-width: 0;
-}
-
-.field input::placeholder { color: var(--ink-faint); }
-
-.field input:focus,
-.field select:focus { border-color: var(--focus); }
-
-.field input[aria-invalid="true"] { border-color: #C0392B; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .field input[aria-invalid="true"] { border-color: #F07A6C; }
-}
-:root[data-theme="dark"] .field input[aria-invalid="true"] { border-color: #F07A6C; }
-
-/* honeypot — kept out of view and out of the tab order */
-.hp {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-.form-note { margin: 0; font-size: 13px; color: var(--ink-faint); line-height: 1.45; }
-
-.form-status {
   margin: 0;
-  font-family: var(--f-mono);
-  font-size: 13px;
-  line-height: 1.5;
-  padding: 10px 12px;
-  border-radius: 3px;
-  border: 1px solid var(--rule);
-  background: var(--surface-2);
+}
+
+.note {
+  margin: 0;
+  font-size: 14px;
   color: var(--ink-mute);
+  line-height: 1.5;
+  max-width: 52ch;
 }
 
-.form-status[data-state="ok"] {
-  border-color: color-mix(in srgb, var(--trace) 45%, var(--rule));
-  color: var(--trace-ink);
+.contact-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-.form-status[data-state="error"] { border-color: #C0392B; color: #A5311F; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .form-status[data-state="error"] { border-color: #8C3A30; color: #F0968A; }
+.contact-card {
+  background: var(--surface);
+  padding: clamp(20px, 3vw, 28px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-:root[data-theme="dark"] .form-status[data-state="error"] { border-color: #8C3A30; color: #F0968A; }
 
-.btn[aria-busy="true"] { opacity: .65; pointer-events: none; }
-
-/* inline hero form */
-
-.hero-form { display: flex; flex-direction: column; gap: 10px; max-width: 460px; }
-.hero-form .row { display: flex; gap: 10px; flex-wrap: wrap; }
-.hero-form .row input { flex: 1 1 220px; }
-.hero-form .row .btn { flex: 0 0 auto; }
 
 /* ---------- compliance ---------- */
 
@@ -676,55 +596,6 @@ img { max-width: 100%; }
   .chroma-head .lot { margin-left: 0; width: 100%; }
 }
 
-/* Set as classes rather than style attributes so the deployed
-   Content-Security-Policy can refuse inline styles outright. */
+/* Set as a class rather than a style attribute, so the page carries no
+   inline styles for a host's Content-Security-Policy to refuse. */
 figure.chroma-card { margin: 0; }
-.lede.lede-narrow { max-width: 46ch; }
-
-/* ---------- confirm / unsubscribe result pages ---------- */
-
-.result-main {
-  min-height: 70vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-block: clamp(40px, 8vw, 90px);
-}
-
-.result-card {
-  width: 100%;
-  max-width: 560px;
-  background: var(--surface);
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-  box-shadow: var(--shadow);
-  padding: clamp(26px, 4vw, 40px);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.result-card .h2 { font-size: clamp(24px, 3vw, 30px); }
-.result-card p { margin: 0; color: var(--ink-mute); }
-.result-card p.result-lede { color: var(--ink); font-size: 17px; }
-
-.result-position {
-  font-family: var(--f-mono);
-  font-variant-numeric: tabular-nums;
-  font-size: clamp(34px, 6vw, 46px);
-  font-weight: 500;
-  color: var(--trace-ink);
-  line-height: 1;
-  margin: 4px 0;
-}
-
-.result-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
-
-.result-fineprint {
-  font-family: var(--f-mono);
-  font-size: 12px;
-  line-height: 1.6;
-  color: var(--ink-faint);
-  border-top: 1px solid var(--rule-soft);
-  padding-top: 14px;
-}

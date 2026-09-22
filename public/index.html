@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Peptra — research peptides, traced to the assay</title>
-<meta name="description" content="Peptra supplies research-grade peptides with the full certificate of analysis published for every lot — HPLC purity, LC-MS identity, endotoxin — before you order. Join the waitlist.">
+<meta name="description" content="Peptra supplies research-grade peptides with the full certificate of analysis published for every lot — HPLC purity, LC-MS identity, endotoxin — before you order.">
 <meta property="og:title" content="Peptra">
 <meta property="og:description" content="Research-grade peptides with the certificate of analysis published for every lot, before you order.">
 <meta property="og:type" content="website">
@@ -20,7 +20,7 @@
     <a class="wordmark" href="#top"><span class="mark" aria-hidden="true"></span>Peptra</a>
     <span class="chip">Research use only</span>
     <span class="spacer"></span>
-    <a class="btn btn-quiet btn-sm" href="#waitlist">Join the waitlist</a>
+    <a class="btn btn-quiet btn-sm" href="#contact">Contact</a>
   </div>
 </header>
 
@@ -31,7 +31,7 @@
     <div class="wrap hero-grid">
 
       <div class="hero-copy">
-        <p class="eyebrow">Opening 2026 · Waitlist now</p>
+        <p class="eyebrow">Opening 2026</p>
         <h1 class="display">Every vial, traced to <em>its own assay</em>.</h1>
         <p class="lede">
           Peptra is a research peptide supplier that publishes the complete certificate of
@@ -40,20 +40,17 @@
           packing slip.
         </p>
 
-        <form class="hero-form" id="hero-form" novalidate>
-          <div class="row">
-            <label class="hp" for="hero-company">Company (leave blank)</label>
-            <input class="hp" id="hero-company" name="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
-            <input id="hero-email" name="email" type="email" inputmode="email" autocomplete="email"
-                   placeholder="you@lab.edu" aria-label="Email address" required>
-            <button class="btn btn-primary" id="hero-submit" type="submit">Request early access</button>
-          </div>
-          <p class="form-status" id="hero-status" role="status" hidden></p>
-          <p class="form-note">
-            We'll send one email to confirm it's you — your place isn't held until you
-            click it. After that, one email when we open. Nothing else, ever.
+        <div class="contact-block">
+          <p class="contact-label">Enquiries and quotes</p>
+          <p class="copy-line">
+            <span class="addr mono" id="hero-address">hello@peptra.com.co</span>
+            <button class="btn btn-quiet btn-sm" data-copy="hero-address" type="button">Copy</button>
           </p>
-        </form>
+          <p class="note">
+            Tell us the sequence, the quantity, and what you need assayed. We reply with
+            the current lot's certificate of analysis before you order anything.
+          </p>
+        </div>
       </div>
 
       <!-- chromatogram: the page's thesis, drawn from real integration data -->
@@ -312,64 +309,43 @@
     </div>
   </section>
 
-  <!-- ============ §05 WAITLIST ============ -->
-  <section class="section" id="waitlist">
+  <!-- ============ §05 CONTACT ============ -->
+  <section class="section" id="contact">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">§ 05 — Waitlist</p>
+        <p class="eyebrow">§ 05 — Contact</p>
         <div class="head-copy">
-          <h2 class="h2">Founding accounts open first.</h2>
+          <h2 class="h2">Talk to whoever released your lot.</h2>
+          <p class="lede">
+            Not a ticket queue. Tell us the sequence and the assay you care about, and
+            you will hear back from the person who signed the certificate.
+          </p>
         </div>
       </div>
 
-      <div class="waitlist-panel">
-        <div class="panel-copy">
-          <p class="lede lede-narrow">
-            We are opening to a limited number of accounts so that every early order gets a real
-            conversation about what you need assayed.
+      <div class="contact-panel">
+        <div class="contact-card">
+          <p class="contact-label">General and technical enquiries</p>
+          <p class="copy-line">
+            <span class="addr mono" id="contact-general">hello@peptra.com.co</span>
+            <button class="btn btn-quiet btn-sm" data-copy="contact-general" type="button">Copy</button>
           </p>
-          <ul class="perk-list">
-            <li>First access to the catalogue at open, in waitlist order.</li>
-            <li>The full COA library, searchable by lot, before it is public.</li>
-            <li>Founding pricing held for twelve months from your first order.</li>
-            <li>A direct line to whoever released your lot, not a ticket queue.</li>
-          </ul>
+          <p class="note">
+            Sequence availability, lot certificates, quantities and lead times.
+          </p>
         </div>
 
-        <form class="waitlist-form" id="waitlist-form" novalidate>
-          <div class="field">
-            <label for="wl-email">Email</label>
-            <input id="wl-email" name="email" type="email" inputmode="email" autocomplete="email"
-                   placeholder="you@lab.edu" required>
-          </div>
-
-          <div class="field">
-            <label for="wl-context">What are you working on?</label>
-            <select id="wl-context" name="context">
-              <option value="">Optional — helps us prioritise sequences</option>
-              <option value="academic">Academic laboratory</option>
-              <option value="biotech">Biotech / pharma R&amp;D</option>
-              <option value="cro">Contract research organisation</option>
-              <option value="independent">Independent researcher</option>
-              <option value="other">Something else</option>
-            </select>
-          </div>
-
-          <div class="hp">
-            <label for="wl-company">Company (leave blank)</label>
-            <input id="wl-company" name="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
-          </div>
-
-          <button class="btn btn-primary" id="wl-submit" type="submit">Join the waitlist</button>
-
-          <p class="form-status" id="wl-status" role="status" hidden></p>
-
-          <p class="form-note">
-            We'll email you once to confirm the address; your place is held from the
-            moment you click it. Unsubscribe in one click, any time, from any email we
-            send. We never sell or share the list.
+        <div class="contact-card">
+          <p class="contact-label">Certificates for a lot you already hold</p>
+          <p class="copy-line">
+            <span class="addr mono" id="contact-coa">coa@peptra.com.co</span>
+            <button class="btn btn-quiet btn-sm" data-copy="contact-coa" type="button">Copy</button>
           </p>
-        </form>
+          <p class="note">
+            Quote the lot number printed on the vial and we will send the full
+            certificate, including the chromatogram.
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -413,8 +389,8 @@
     <a class="wordmark" href="#top"><span class="mark" aria-hidden="true"></span>Peptra</a>
     <span class="spacer"></span>
     <span class="copy-line">
-      <span class="addr mono" id="contact-address">hello@peptra.com</span>
-      <button class="btn btn-quiet btn-sm" id="copy-email" type="button">Copy</button>
+      <span class="addr mono" id="contact-address">hello@peptra.com.co</span>
+      <button class="btn btn-quiet btn-sm" data-copy="contact-address" type="button">Copy</button>
     </span>
     <p class="legal">© 2026 Peptra · Research use only</p>
   </div>

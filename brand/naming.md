@@ -24,15 +24,28 @@ line — assay services, a COA registry — doesn't require a rename.
 | **Kestrel Bio** | Precision, a bird that holds dead still before it strikes | "Kestrel" is well used in biotech already — check carefully |
 | **Halcyon Peptides** | Descriptive, calm, trustworthy | Literal; harder to own, and pins you to one product line |
 
-### Before you commit
+### The domain
 
-None of this was verifiable from the build environment — outbound DNS and RDAP
-are blocked here, so **every availability claim below is unchecked**:
+**`peptra.com.co`**, registered. The `.com` was not available.
 
-- `peptra.com` and `getpeptra.com` — check registration, and check who holds
-  them if taken.
+The name holds regardless — "Peptra" was always the asset and the TLD is the
+part you can upgrade later. Two consequences worth planning around:
+
+- **Email deliverability needs more care on `.com.co` than it would on `.com`.**
+  Spam filters weight unfamiliar TLDs, and a cold domain sending its first
+  bulk message is the exact profile they score hardest. SPF, DKIM and DMARC
+  are not optional here, and it is worth sending to yourself across Gmail,
+  Outlook and a university address before the first real send.
+- **Watch for `peptra.com` changing hands.** If it lapses or the holder sells,
+  buy it and redirect — a scientific buyer reads the `.com` as the real
+  company, and you do not want someone else holding it.
+
+Still outstanding, and none of it was checkable from the build environment
+(outbound DNS and RDAP are blocked here):
+
 - USPTO TESS, Class 1 (chemicals for scientific use) and Class 5. "Pep-" marks
-  are dense; a clearance search by an attorney is cheap next to a rebrand.
+  are dense; a clearance search by an attorney is cheap next to a rebrand, and
+  owning a domain is not owning a mark.
 - Handles on X, LinkedIn and Instagram.
 - A Google search for `peptra` — the failure mode is an existing company in an
   adjacent field, not an identical one.

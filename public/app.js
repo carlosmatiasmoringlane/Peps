@@ -1,4 +1,4 @@
-/* Peptra landing page — chromatogram rendering and waitlist submission. */
+/* Peptra landing page — chromatogram rendering and copy-to-clipboard. */
 (function () {
   "use strict";
 
@@ -82,7 +82,9 @@
       ctx.moveTo(padL, gy);
       ctx.lineTo(padL + plotW, gy);
       ctx.stroke();
-      ctx.fillText(String(y), padL - 8, gy);
+      // The unit takes the place of the topmost number, which would
+      // otherwise collide with it at the corner of the plot.
+      ctx.fillText(y === Y_MAX ? "mAU" : String(y), padL - 8, gy);
     }
 
     ctx.textAlign = "center";
@@ -95,9 +97,6 @@
       ctx.stroke();
       ctx.fillText(t === X_MAX ? "min" : String(t), gx, padT + plotH + 7);
     }
-
-    ctx.textAlign = "left";
-    ctx.fillText("mAU", 6, padT - 4);
 
     /* clip everything that follows to the plot area so the magnified
        trace runs off the top the way it does on a real detector readout */
@@ -219,153 +218,51 @@
   }
 
   /* ------------------------------------------------------------------ *
-   * Waitlist
+   * Copy an address
+   *
+   * mailto: links are unreliable — plenty of people have no mail client
+   * wired up, and the click silently does nothing. Showing the address as
+   * selectable text with a copy button always works.
    * ------------------------------------------------------------------ */
 
-  /* Kept in step with EMAIL_RE in server/store.js — the server is still the
-     authority, this only saves a round trip. */
-  var EMAIL_RE =
-    /^[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/;
+  function initCopyButtons() {
+    document.addEventListener("click", function (event) {
+      var button = event.target.closest ? event.target.closest("[data-copy]") : null;
+      if (!button) return;
 
-  /* Swapped out in the Artifact build, which writes to the artifact store
-     instead of this origin's API. */
-  var submitSignup = window.PEPTRA_SUBMIT || function (payload) {
-    return fetch("/api/waitlist", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    }).then(function (res) {
-      return res.json().catch(function () { return {}; }).then(function (body) {
-        if (!res.ok) {
-          var err = new Error(body.error || "Request failed");
-          err.status = res.status;
-          throw err;
-        }
-        return body;
-      });
-    });
-  };
+      var source = document.getElementById(button.getAttribute("data-copy"));
+      if (!source) return;
 
-  function setStatus(el, state, message) {
-    if (!el) return;
-    el.textContent = message;
-    el.setAttribute("data-state", state);
-    el.hidden = false;
-  }
+      var text = source.textContent.trim();
+      var label = button.textContent;
 
-  function wireForm(formId, emailId, submitId, statusId, source) {
-    var form = document.getElementById(formId);
-    if (!form) return;
-
-    var emailEl = document.getElementById(emailId);
-    var submitEl = document.getElementById(submitId);
-    var statusEl = document.getElementById(statusId);
-    var contextEl = form.querySelector('select[name="context"]');
-    var honeypotEl = form.querySelector('input[name="company"]');
-    var busy = false;
-
-    emailEl.addEventListener("input", function () {
-      emailEl.removeAttribute("aria-invalid");
-    });
-
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-      if (busy) return;
-
-      var email = (emailEl.value || "").trim().toLowerCase();
-      if (!EMAIL_RE.test(email)) {
-        emailEl.setAttribute("aria-invalid", "true");
-        emailEl.focus();
-        setStatus(statusEl, "error", "That address doesn't look complete — check for a typo and try again.");
-        return;
-      }
-
-      busy = true;
-      submitEl.setAttribute("aria-busy", "true");
-      var originalLabel = submitEl.textContent;
-      submitEl.textContent = "Adding…";
-      setStatus(statusEl, "pending", "Adding you to the list…");
-
-      submitSignup({
-        email: email,
-        context: contextEl ? contextEl.value : "",
-        company: honeypotEl ? honeypotEl.value : "",
-        source: source
-      }).then(function (result) {
-        form.reset();
-        var state = result && result.state;
-
-        if (state === "already_confirmed") {
-          setStatus(statusEl, "ok", "You're already on the list" +
-            (result.position ? " at position #" + result.position : "") + ". Nothing more to do.");
-        } else if (state === "pending") {
-          setStatus(statusEl, "ok", (result.resent ? "We've sent that link again" : "Check your inbox") +
-            " — confirm at " + email + " and your place is held. " +
-            "Nothing is reserved until you do.");
-        } else if (result && result.duplicate) {
-          setStatus(statusEl, "ok", "You're already on the list" +
-            (result.position ? " at position #" + result.position : "") + ". Nothing more to do.");
-        } else if (result && result.position) {
-          setStatus(statusEl, "ok", "You're on the list at position #" + result.position +
-            ". We'll email " + email + " when founding accounts open.");
-        } else {
-          setStatus(statusEl, "ok", "You're on the list. We'll email " + email + " when founding accounts open.");
-        }
-      }).catch(function (error) {
-        if (error && error.status === 429) {
-          setStatus(statusEl, "error", "Too many attempts from this connection. Give it a minute and try again.");
-        } else if (error && error.status === 502) {
-          setStatus(statusEl, "error", "We saved your details but the confirmation email didn't send. Try again in a moment.");
-        } else if (error && error.code === "read_only") {
-          setStatus(statusEl, "error", "This preview is read-only for your account, so the signup wasn't saved.");
-        } else {
-          setStatus(statusEl, "error", "We couldn't reach the waitlist just now. Try again, or email hello@peptra.com.");
-        }
-      }).then(function () {
-        busy = false;
-        submitEl.removeAttribute("aria-busy");
-        submitEl.textContent = originalLabel;
-      });
-    });
-  }
-
-  /* ------------------------------------------------------------------ *
-   * Copy the contact address (links to mail clients are unreliable)
-   * ------------------------------------------------------------------ */
-
-  function initCopyEmail() {
-    var button = document.getElementById("copy-email");
-    var address = document.getElementById("contact-address");
-    if (!button || !address) return;
-
-    button.addEventListener("click", function () {
-      var text = address.textContent.trim();
-      var done = function () {
-        button.textContent = "Copied";
-        setTimeout(function () { button.textContent = "Copy"; }, 1800);
+      var restore = function (message, delay) {
+        button.textContent = message;
+        setTimeout(function () { button.textContent = label; }, delay);
       };
-      var fallback = function () {
+
+      var selectInstead = function () {
         var range = document.createRange();
-        range.selectNodeContents(address);
-        var sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
-        button.textContent = "Select & copy";
-        setTimeout(function () { button.textContent = "Copy"; }, 2400);
+        range.selectNodeContents(source);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        restore("Select & copy", 2400);
       };
+
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done, fallback);
+        navigator.clipboard.writeText(text).then(function () {
+          restore("Copied", 1800);
+        }, selectInstead);
       } else {
-        fallback();
+        selectInstead();
       }
     });
   }
 
   function init() {
     initChromatogram();
-    initCopyEmail();
-    wireForm("hero-form", "hero-email", "hero-submit", "hero-status", "hero");
-    wireForm("waitlist-form", "wl-email", "wl-submit", "wl-status", "waitlist-section");
+    initCopyButtons();
   }
 
   if (document.readyState === "loading") {
