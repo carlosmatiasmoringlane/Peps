@@ -86,3 +86,72 @@ pieces.
 
 Keep the style clause identical across every shot — that repetition is
 what makes the episode look like one piece rather than twelve.
+
+---
+
+## The generation pipeline
+
+`generate.sh` runs the whole episode against the Higgsfield CLI. Prompts
+live in `prompts/ep01.tsv` (shot id, duration, prompt) so you can edit
+wording without touching the script.
+
+**Two stages per shot:**
+
+1. `gpt_image_2_5` → a still keyframe at 2k. This is the documented
+   default for flat graphic/vector work.
+2. `seedance_2_5` → animates that keyframe via `--start-image`.
+
+Generating the still *first* is the important part. It locks the style
+before any motion exists, which is what keeps 19 clips looking like one
+episode rather than 19 unrelated videos. Going straight to text-to-video
+gives you 19 different drawing styles.
+
+```bash
+./generate.sh --probe          # s01 + s08b only — run this first
+./generate.sh --stills-only    # all keyframes, no video (cheap review)
+./generate.sh                  # full episode
+./generate.sh --only s06       # single shot
+./generate.sh --vertical       # 9:16 for the Shorts
+```
+
+Results download to `animation/out/` (gitignored) with a `manifest.tsv`
+of source URLs. Existing keyframes are skipped on re-run, so a failed
+shot can be retried without regenerating everything.
+
+**Start with `--probe`.** It generates s01 (sets the framing s12 must
+match) and s08b (the hardest shot, and the episode's thesis image). If
+the style holds on those two, the rest are variations. If it doesn't,
+you've spent two generations instead of nineteen finding out.
+
+Then `--stills-only` to review all 19 keyframes as images before paying
+for video. Video is the expensive stage; approve the stills first.
+
+### Shot durations
+
+Capped at 30s, the `seedance_2_5` ceiling. Script sections longer than
+that are split into `a`/`b` takes (s02a/s02b, s04a/s04b, and so on) and
+joined in the edit. 19 clips cover the 7-minute episode.
+
+### Status: not yet run
+
+**The script has never been executed against the live API.** Every
+Higgsfield host is blocked at the network layer in the environment where
+it was written, so no shot has been generated and no output verified.
+
+What *was* verified:
+- `bash -n` syntax check passes.
+- Full logic tested against a mock CLI: auth gate, TSV parsing, two-stage
+  chaining, URL extraction, download, manifest writes, skip-if-exists,
+  and the `--probe` filter all behave correctly.
+
+What could **not** be verified, and where breakage is most likely:
+- **The response JSON shape.** `extract_url` scrapes the first media URL
+  out of the response rather than reading a named field, because the
+  real shape was never observed. If it returns nothing, run one command
+  by hand with `--json`, look at the output, and fix that one function.
+- Exact parameter names accepted by each model. If a flag is rejected,
+  `higgsfield model get <model> --json` prints the real schema.
+- Whether `gpt_image_2_5` holds the flat-vector style tightly enough
+  across 19 prompts. That's what `--probe` is for.
+
+Treat the first run as a smoke test, not a batch job.
