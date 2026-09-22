@@ -1,9 +1,16 @@
 name: CI
 
 on:
+  # Pushes to a branch with an open PR are covered by the pull_request
+  # trigger; running both doubles every CI run for no extra signal.
   push:
-    branches: ["**"]
+    branches: [main]
   pull_request:
+
+# A new push supersedes the run still going for the same ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
