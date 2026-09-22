@@ -1,0 +1,45 @@
+b01	6	no	A single shipping container sits dead centre on an empty background, lit like a museum artifact on a plinth. Perfectly still and symmetrical, absolutely no movement. The container is the only orange object in frame. Locked-off camera.
+b02	6	yes	The centred shipping container rotates slowly and smoothly through exactly ninety degrees, then stops and holds completely still. Locked-off camera.
+b03	8	no	Wide cross-section of a 1940s cargo ship hold. Dozens of charcoal silhouette figures hand-stack mismatched cargo: sacks, barrels, crates of every different size, loose timber. Deliberately chaotic, no two objects alike, no grid or order. Slow lateral drift left to right.
+b04	8	no	Closer view inside a crowded ship hold, charcoal silhouette dockworkers lifting irregular sacks and barrels onto an uneven stack. Cluttered and disordered, continuous overlapping motion. Locked-off camera.
+b05	9	no	A ship hold packed with mismatched cargo, charcoal silhouette figures wedging a barrel into an awkward gap between crates of different sizes. Slow lateral camera drift.
+b06	8	no	Charcoal silhouette dockworkers fitting irregular cargo together like puzzle pieces in a ship hold, each item a different shape, nothing repeating. Continuous hand-stacking motion. Locked-off camera.
+b07	10	no	Wide side view of a cargo ship moored at a dock. A stylised sun arcs across the sky behind it three times. The ship itself does not move at all. Orange accent on the ship hull only. Locked-off camera.
+b08	10	yes	The same moored cargo ship, stylised suns arcing across the sky faster and faster, the ship still completely motionless. Orange accent on the hull only. Locked-off camera.
+b09	9	no	A horizontal route diagram draws itself across an empty frame: a dock segment, then a long open ocean segment, then another dock segment. Thin uniform charcoal lines. Locked-off camera.
+b10	9	yes	On the horizontal route diagram, the two end dock segments begin to swell thicker while the long middle ocean segment stays thin and pale. Locked-off camera.
+b11	9	no	A horizontal cost diagram where the long middle ocean segment is thin and pale and barely visible, emphasising how little it contributes. Gentle pulsing on the pale segment. Locked-off camera.
+b12	9	no	A horizontal diagram where the two short end segments are enormous and orange, dwarfing the thin pale line between them. The orange segments pulse gently. Locked-off camera.
+b13	9	no	A finished horizontal cost diagram, two massive orange blocks at either end joined by a thin pale thread, held steady and unchanging. Locked-off camera.
+b14	10	no	Side view: a truck parked beside a cargo ship at a dock, both rendered as clean charcoal outlines. Still and composed, nothing moving yet. Locked-off camera.
+b15	10	yes	Charcoal silhouette figures carry goods out of the parked truck and into the ship one item at a time, walking a repeating loop between the two. Continuous looping motion. Locked-off camera.
+b16	10	yes	The looping charcoal figures fade to low opacity and the walking path between truck and ship illuminates in orange, revealing the redundant double handling. Locked-off camera.
+b17	10	no	A converted tanker at a dock. One orange shipping container lifts smoothly from a truck chassis and lands precisely on the deck. Single smooth motion. Locked-off camera.
+b18	10	yes	The camera pulls back steadily from the tanker deck to reveal dozens of identical containers already aligned in a perfect orderly grid. One smooth continuous pull-back, no cuts.
+b19	10	no	One orange shipping container at centre. A charcoal outline crane descends to grip it and visibly fails to fit, the jaws too narrow for the container. The mismatch flashes briefly. Locked-off camera.
+b20	10	no	One orange shipping container at centre beside a charcoal outline ship slot. The container is lowered toward the slot and does not fit, too wide by a clear margin. Locked-off camera.
+b21	10	no	One orange shipping container above a charcoal outline truck chassis. It lowers and fails to seat, overhanging the chassis on both sides. Locked-off camera.
+b22	10	no	One orange shipping container above a charcoal outline rail car. It lowers and fails to fit, too tall and unstable on the flatbed. Locked-off camera.
+b23	10	no	One orange shipping container at a charcoal outline port gate. It approaches and cannot pass through, the opening plainly the wrong dimensions. Locked-off camera.
+b24	10	no	Four shipping containers of visibly different dimensions sit in a row, each outlined in a different shade of charcoal. Still and evenly spaced. Locked-off camera.
+b25	10	yes	Measurement lines and dimension arrows extend outward from each of the four mismatched containers, overlapping into a dense conflicting tangle. Locked-off camera.
+b26	10	no	A dense tangle of conflicting dimension lines and measurement arrows over four mismatched container outlines, the lines crossing and contradicting each other. Slight restless movement. Locked-off camera.
+b27	10	no	The tangle of conflicting dimension lines begins to resolve as two of the four mismatched containers shrink away and vanish. Locked-off camera.
+b28	10	yes	Exactly two containers remain, one short and one exactly twice its length, and both turn orange. The clean one-to-two length ratio reads instantly. Locked-off camera.
+b29	10	no	A single orange shipping container moves in smooth unbroken horizontal motion into a charcoal silhouette crane, which accepts it without pausing or adjusting. Camera tracks alongside at constant speed.
+b30	10	yes	The orange container continues its unbroken horizontal motion from the crane into a charcoal silhouette ship, accepted seamlessly. Camera tracks alongside at constant speed.
+b31	10	yes	The orange container continues its unbroken horizontal motion from the ship onto a charcoal silhouette train, accepted seamlessly. Camera tracks alongside at constant speed.
+b32	10	yes	The orange container continues its unbroken horizontal motion from the train onto a charcoal silhouette truck, accepted seamlessly. Camera tracks alongside at constant speed.
+b33	10	yes	The orange container continues moving in perfect mechanical rhythm through charcoal silhouette handling systems, hypnotic and constant. Camera tracks alongside at constant speed.
+b34	9	no	A dense crowd of charcoal silhouette dockworkers fills the entire frame, standing still. Entirely charcoal and off-white, no accent colour anywhere. Locked-off camera.
+b35	9	yes	The charcoal silhouette dockworkers at the edges of the crowd begin fading out one by one, slowly and unhurried. No accent colour anywhere. Locked-off camera.
+b36	9	yes	More charcoal silhouette dockworkers fade away from the outside inward, the crowd visibly thinning. No accent colour anywhere. Locked-off camera.
+b37	9	yes	Only a scattered few charcoal silhouette figures remain on a mostly empty dock, fading one at a time. No accent colour anywhere. Locked-off camera.
+b38	9	yes	An empty dock with a single automated crane moving alone, no people at all. Entirely charcoal and off-white, cold and still. Locked-off camera.
+b39	9	no	A charcoal screw thread appears at centre frame and turns smoothly into a matching orange threaded socket, seating cleanly and precisely. Locked-off camera.
+b40	9	no	A charcoal wooden pallet appears at centre frame and slides cleanly into a matching orange forklift opening, fitting exactly. Locked-off camera.
+b41	9	no	A charcoal railway track gauge appears at centre frame and aligns cleanly onto matching orange rails, seating perfectly. Locked-off camera.
+b42	9	no	A charcoal electrical plug appears at centre frame and tries to enter an orange socket, but does not fit and sits askew and unmatched. Locked-off camera.
+b43	9	no	A charcoal electrical plug rests unmatched and slightly askew beside an orange socket of plainly the wrong shape, held unresolved and motionless. Locked-off camera.
+b44	10	no	A single shipping container centred on a plinth, completely still, framed exactly like an opening museum shot. Absolute stillness. Locked-off camera.
+b45	10	yes	The centred shipping container on its plinth holds perfectly still and unchanging, composed and symmetrical, leaving clear empty space beneath it. Locked-off camera.
