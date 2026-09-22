@@ -1,0 +1,449 @@
+<title>Plainsight Animatic</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --chrome:#e8e6e1; --panel:#f7f6f3; --ink:#1a1a19; --ink-dim:#6b6a66;
+    --rule:#cfccc5; --hit:#1f1f1f; --hit-ink:#f7f6f3; --accent:#E2572B;
+    /* film stock — never themed, this is the artwork */
+    --paper:#F4F1EA; --charcoal:#1F1F1F; --signal:#E2572B;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --chrome:#16161a; --panel:#1e1e23; --ink:#eceae5; --ink-dim:#93918b;
+      --rule:#33333a; --hit:#eceae5; --hit-ink:#16161a;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --chrome:#16161a; --panel:#1e1e23; --ink:#eceae5; --ink-dim:#93918b;
+    --rule:#33333a; --hit:#eceae5; --hit-ink:#16161a;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--chrome); color:var(--ink);
+    font-family:"Archivo",system-ui,-apple-system,sans-serif;
+    padding:0 16px; padding-block:28px 44px;
+  }
+  .wrap{max-width:1000px; margin:0 auto; display:flex; flex-direction:column; gap:18px}
+
+  header{display:flex; flex-direction:column; gap:6px}
+  .eyebrow{
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--ink-dim);
+  }
+  h1{margin:0; font-size:clamp(22px,4vw,30px); font-weight:700; letter-spacing:-.02em; text-wrap:balance}
+  .sub{margin:0; color:var(--ink-dim); font-size:14px; max-width:62ch; line-height:1.5}
+
+  .film{
+    position:relative; width:100%; aspect-ratio:16/9; max-width:100%;
+    background:var(--paper); border:1px solid var(--rule); overflow:hidden;
+  }
+  .film svg{display:block; width:100%; height:100%}
+  .slate{
+    position:absolute; left:12px; top:12px; z-index:2;
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px;
+    letter-spacing:.08em; color:#8d8880; pointer-events:none;
+  }
+
+  .caption{
+    min-height:4.6em; padding:14px 16px; background:var(--panel);
+    border:1px solid var(--rule); border-radius:2px;
+    font-size:clamp(14px,2.2vw,17px); line-height:1.5; text-wrap:balance;
+  }
+  .caption em{font-style:normal; color:var(--accent); font-weight:600}
+
+  .transport{display:flex; align-items:center; gap:12px; flex-wrap:wrap}
+  button{font-family:inherit; cursor:pointer; border-radius:2px}
+  .play{
+    background:var(--hit); color:var(--hit-ink); border:none;
+    padding:10px 20px; font-size:14px; font-weight:600; min-width:96px;
+  }
+  .play:hover{opacity:.88}
+  .ghost{
+    background:transparent; color:var(--ink); border:1px solid var(--rule);
+    padding:10px 14px; font-size:13px; font-weight:500;
+  }
+  .ghost:hover{border-color:var(--ink-dim)}
+  .tc{
+    font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:13px;
+    color:var(--ink-dim); font-variant-numeric:tabular-nums; white-space:nowrap;
+  }
+  .tc b{color:var(--ink); font-weight:500}
+  input[type=range]{
+    flex:1 1 200px; min-width:160px; accent-color:var(--accent);
+    height:22px; background:transparent;
+  }
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  .shots{display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); gap:6px}
+  .shot{
+    text-align:left; background:var(--panel); border:1px solid var(--rule);
+    padding:8px 10px; display:flex; flex-direction:column; gap:3px; color:var(--ink);
+  }
+  .shot:hover{border-color:var(--ink-dim)}
+  .shot[aria-current="true"]{border-color:var(--accent); background:color-mix(in srgb,var(--accent) 9%,var(--panel))}
+  .shot .id{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:10px; letter-spacing:.1em; color:var(--ink-dim)}
+  .shot[aria-current="true"] .id{color:var(--accent)}
+  .shot .nm{font-size:12px; font-weight:500; line-height:1.3}
+
+  .note{
+    font-size:12.5px; line-height:1.6; color:var(--ink-dim);
+    border-top:1px solid var(--rule); padding-top:14px; max-width:70ch;
+  }
+  .note strong{color:var(--ink); font-weight:600}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Plainsight · Episode 01 · Animatic</span>
+    <h1>Why Is Every Shipping Container The Same Size?</h1>
+    <p class="sub">Timed previz of all twelve shots, rendered in code rather than generated. Scrub it, jump between shots, check the pacing before anything gets animated for real.</p>
+  </header>
+
+  <div class="film">
+    <div class="slate" id="slate">S01 · 00:00</div>
+    <svg id="stage" viewBox="0 0 1600 900" role="img" aria-label="Animatic playback of Episode 01"></svg>
+  </div>
+
+  <p class="caption" id="cap"></p>
+
+  <div class="transport">
+    <button class="play" id="play">Play</button>
+    <button class="ghost" id="restart">Restart</button>
+    <input type="range" id="scrub" min="0" max="1000" value="0" step="1" aria-label="Scrub timeline">
+    <span class="tc"><b id="cur">0:00</b> / <span id="tot">0:00</span></span>
+  </div>
+
+  <div class="shots" id="shots"></div>
+
+  <p class="note"><strong>This is an animatic, not the finished episode.</strong> Shot composition, timing and the voiceover beats are real and match the script; line quality and motion polish are not. It runs on the channel's own palette — paper <code>#F4F1EA</code>, charcoal <code>#1F1F1F</code>, one signal orange <code>#E2572B</code> — under the one-accent rule, including the deliberate exception in S10, which carries no orange at all.</p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var NS="http://www.w3.org/2000/svg";
+  var PAPER="#F4F1EA", CHAR="#1F1F1F", SIG="#E2572B";
+  var stage=document.getElementById("stage");
+
+  function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  function g(){return el("g",{});}
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function clamp(v,a,b){return v<a?a:v>b?b:v;}
+  function seg(p,a,b){return clamp((p-a)/(b-a),0,1);}      // sub-range 0..1
+  function ease(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;}
+  function rng(s){return function(){s=(s*1664525+1013904223)>>>0;return s/4294967296;};}
+
+  // simple faceless silhouette — scale reference, not a character
+  function figure(x,y,s,fill){
+    var k=g();
+    k.appendChild(el("circle",{cx:x,cy:y-26*s,r:7*s,fill:fill}));
+    k.appendChild(el("path",{d:"M"+(x-8*s)+","+(y-17*s)+" L"+(x+8*s)+","+(y-17*s)+" L"+(x+10*s)+","+y+" L"+(x-10*s)+","+y+" Z",fill:fill}));
+    return k;
+  }
+  function box(x,y,w,h,fill,stroke){
+    return el("rect",{x:x,y:y,width:w,height:h,fill:fill||"none",stroke:stroke||"none","stroke-width":3});
+  }
+
+  var SCENES=[];
+  function scene(id,name,dur,caption,build){SCENES.push({id:id,name:name,dur:dur,cap:caption,build:build});}
+
+  /* ---------- S01 hook ---------- */
+  scene("S01","Hook",12,"Loading a ship used to cost about six dollars a ton. Then it dropped to about <em>sixteen cents</em>.",function(){
+    var k=g();
+    k.appendChild(el("line",{x1:560,y1:560,x2:1040,y2:560,stroke:CHAR,"stroke-width":4}));
+    var c=g(); k.appendChild(c);
+    c.appendChild(box(700,420,200,120,SIG));
+    for(var i=1;i<4;i++) c.appendChild(el("line",{x1:700+i*50,y1:420,x2:700+i*50,y2:540,stroke:PAPER,"stroke-width":2,opacity:.5}));
+    return {node:k,update:function(p){
+      var r=ease(seg(p,.55,.9))*90;
+      c.setAttribute("transform","rotate("+r+" 800 480)");
+    }};
+  });
+
+  /* ---------- S02 break-bulk ---------- */
+  scene("S02","Break-bulk chaos",18,"Before the 1950s, a ship was loaded by hand. Every item a different shape, fitted like a puzzle piece by a person.",function(){
+    var k=g(), rnd=rng(7), items=[];
+    k.appendChild(el("path",{d:"M300,700 L1300,700 L1230,820 L370,820 Z",fill:"none",stroke:CHAR,"stroke-width":4}));
+    for(var i=0;i<46;i++){
+      var w=26+rnd()*54, h=20+rnd()*40;
+      var x=390+rnd()*790, y=780-Math.floor(rnd()*3)*46-h;
+      var n = rnd()<.28
+        ? el("ellipse",{cx:x+w/2,cy:y+h/2,rx:w/2,ry:h/2,fill:"none",stroke:CHAR,"stroke-width":3})
+        : box(x,y,w,h,"none",CHAR);
+      n.setAttribute("opacity","0"); k.appendChild(n);
+      items.push({n:n,t:rnd()*.8});
+    }
+    var f=[]; for(var j=0;j<5;j++){var fx=460+j*180; var ff=figure(fx,700,1.5,CHAR); k.appendChild(ff); f.push({n:ff,x:fx,ph:rnd()*6.28});}
+    return {node:k,update:function(p){
+      items.forEach(function(o){ o.n.setAttribute("opacity", p>o.t?"1":"0"); });
+      f.forEach(function(o){
+        var dy=Math.sin(p*26+o.ph)*9, dx=Math.cos(p*20+o.ph)*14;
+        o.n.setAttribute("transform","translate("+dx+","+dy+")");
+      });
+    }};
+  });
+
+  /* ---------- S03 ship waits ---------- */
+  scene("S03","The ship never moves",10,"So ships sat at the dock. Sometimes <em>longer than they spent at sea</em>.",function(){
+    var k=g();
+    k.appendChild(el("line",{x1:200,y1:700,x2:1400,y2:700,stroke:CHAR,"stroke-width":4}));
+    k.appendChild(el("path",{d:"M520,620 L1080,620 L1020,700 L580,700 Z",fill:SIG}));
+    k.appendChild(box(700,548,120,72,"none",CHAR));
+    var sun=el("circle",{cx:0,cy:0,r:30,fill:"none",stroke:CHAR,"stroke-width":3}); k.appendChild(sun);
+    return {node:k,update:function(p){
+      var n=6, u=(p*n)%1, i=Math.floor(p*n);
+      var sp=1+i*0.12, q=clamp(u*sp,0,1);
+      sun.setAttribute("cx",lerp(300,1300,q));
+      sun.setAttribute("cy",620-Math.sin(q*Math.PI)*400);
+      sun.setAttribute("opacity",q>=1?0:1);
+    }};
+  });
+
+  /* ---------- S04 cost at the edges ---------- */
+  scene("S04","The cost is at the edges",13,"The expensive part was never the ocean. It was <em>the edges</em> — the loading, the unloading, the weeks parked.",function(){
+    var k=g();
+    var mid=el("rect",{x:560,y:446,width:480,height:8,fill:"#BEB8AC"}); k.appendChild(mid);
+    var L=el("rect",{x:360,y:450,width:200,height:0,fill:SIG});
+    var R=el("rect",{x:1040,y:450,width:200,height:0,fill:SIG});
+    k.appendChild(L); k.appendChild(R);
+    var lab=el("text",{x:800,y:530,"text-anchor":"middle",fill:"#8d8880","font-family":"IBM Plex Mono, monospace","font-size":"22","letter-spacing":"4"});
+    lab.textContent="OCEAN"; k.appendChild(lab);
+    return {node:k,update:function(p){
+      var h=ease(seg(p,.1,.7))*170;
+      L.setAttribute("y",450-h/2); L.setAttribute("height",h);
+      R.setAttribute("y",450-h/2); R.setAttribute("height",h);
+      var pulse=1+Math.sin(p*14)*.02*seg(p,.7,1);
+      L.setAttribute("transform","scale(1,"+pulse+") translate(0,"+(450*(1-pulse)/pulse)+")");
+    }};
+  });
+
+  /* ---------- S05 double handling ---------- */
+  scene("S05","Double handling",12,"A trucking man looks at a dock and sees the same goods handled <em>twice</em>, for no reason but that the shapes differ.",function(){
+    var k=g();
+    k.appendChild(el("line",{x1:200,y1:700,x2:1400,y2:700,stroke:CHAR,"stroke-width":4}));
+    k.appendChild(box(300,580,260,120,"none",CHAR));
+    k.appendChild(el("path",{d:"M900,600 L1330,600 L1280,700 L950,700 Z",fill:"none",stroke:CHAR,"stroke-width":4}));
+    var path=el("path",{d:"M570,660 Q735,560 895,660",fill:"none",stroke:SIG,"stroke-width":7,opacity:0,"stroke-linecap":"round"});
+    k.appendChild(path);
+    var f=[]; for(var i=0;i<4;i++){var ff=figure(0,0,1.6,CHAR); k.appendChild(ff); f.push(ff);}
+    return {node:k,update:function(p){
+      var fade=seg(p,.62,.85);
+      path.setAttribute("opacity",fade);
+      f.forEach(function(n,i){
+        var u=((p*2.1)+i*.25)%1;
+        var x=lerp(570,895,u), y=660-Math.sin(u*Math.PI)*92;
+        n.setAttribute("transform","translate("+x+","+y+")");
+        n.setAttribute("opacity",1-fade*.8);
+      });
+    }};
+  });
+
+  /* ---------- S06 Ideal-X grid ---------- */
+  scene("S06","Ideal-X, 1956",12,"In 1956 a converted tanker sailed from Newark to Houston carrying <em>fifty-eight</em> of them.",function(){
+    var k=g(), inner=g(); k.appendChild(inner);
+    inner.appendChild(el("path",{d:"M260,640 L1340,640 L1270,760 L330,760 Z",fill:"none",stroke:CHAR,"stroke-width":4}));
+    var grid=g(); inner.appendChild(grid);
+    var cells=[];
+    for(var r=0;r<4;r++) for(var c=0;c<12;c++){
+      var n=box(320+c*84,500+r*34,74,28,SIG); n.setAttribute("opacity","0");
+      grid.appendChild(n); cells.push(n);
+    }
+    var drop=box(760,300,120,40,SIG); inner.appendChild(drop);
+    return {node:k,update:function(p){
+      var d=ease(seg(p,0,.3));
+      drop.setAttribute("y",lerp(200,602,d));
+      drop.setAttribute("opacity",p>.34?0:1);
+      var rev=ease(seg(p,.34,.86));
+      cells.forEach(function(n,i){ n.setAttribute("opacity", rev*cells.length>i?1:0); });
+      var s=lerp(1.5,0.92,ease(seg(p,.3,.95)));
+      inner.setAttribute("transform","translate(800,600) scale("+s+") translate(-800,-600)");
+    }};
+  });
+
+  /* ---------- S07 doesn't fit ---------- */
+  scene("S07","The box alone fails",13,"A box is only useful if the crane, the ship, the truck, the train and a port you don't own can <em>all</em> take it.",function(){
+    var k=g();
+    var cont=box(690,420,220,110,SIG);
+    var slot=box(640,400,0,0,"none",CHAR); slot.setAttribute("stroke-dasharray","10 8");
+    k.appendChild(slot); k.appendChild(cont);
+    var lab=el("text",{x:800,y:660,"text-anchor":"middle",fill:"#8d8880","font-family":"IBM Plex Mono, monospace","font-size":"24","letter-spacing":"5"});
+    k.appendChild(lab);
+    var names=["CRANE","SHIP SLOT","TRUCK","RAIL CAR","PORT GATE"];
+    var dims=[[150,150],[300,80],[170,140],[260,70],[140,170]];
+    return {node:k,update:function(p){
+      var n=5, i=Math.min(Math.floor(p*n),n-1), u=(p*n)%1;
+      lab.textContent=names[i];
+      var w=dims[i][0], h=dims[i][1];
+      slot.setAttribute("width",w); slot.setAttribute("height",h);
+      slot.setAttribute("x",800-w/2); slot.setAttribute("y",475-h/2);
+      var bad=u>.45;
+      slot.setAttribute("stroke",bad&&Math.floor(u*22)%2?SIG:CHAR);
+      cont.setAttribute("transform", bad?"translate("+Math.sin(u*70)*9+",0)":"translate(0,0)");
+    }};
+  });
+
+  /* ---------- S08 the argument ---------- */
+  scene("S08","The argument",14,"Twenty years of committee meetings. Not an engineering problem — an argument about <em>whose money got written off</em>.",function(){
+    var k=g();
+    var specs=[[170,86],[250,70],[120,120],[210,104]];
+    var boxes=[], lines=[];
+    specs.forEach(function(s,i){
+      var x=300+i*290, b=box(x,440-s[1]/2,s[0],s[1],"none",CHAR);
+      k.appendChild(b); boxes.push(b);
+      var ln=el("line",{x1:x,y1:410-s[1]/2,x2:x+s[0],y2:410-s[1]/2,stroke:"#9c958a","stroke-width":2,opacity:0});
+      k.appendChild(ln); lines.push(ln);
+    });
+    var final1=box(620,470,110,55,SIG), final2=box(760,470,220,55,SIG);
+    final1.setAttribute("opacity","0"); final2.setAttribute("opacity","0");
+    k.appendChild(final1); k.appendChild(final2);
+    var ratio=el("text",{x:800,y:600,"text-anchor":"middle",fill:SIG,"font-family":"IBM Plex Mono, monospace","font-size":"26","letter-spacing":"6",opacity:0});
+    ratio.textContent="1 : 2"; k.appendChild(ratio);
+    return {node:k,update:function(p){
+      var tangle=seg(p,.12,.45);
+      lines.forEach(function(l,i){ l.setAttribute("opacity",tangle); l.setAttribute("y1",410-specs[i][1]/2-Math.sin(p*18+i)*10); l.setAttribute("y2",410-specs[i][1]/2-Math.sin(p*18+i)*10); });
+      var kill=seg(p,.5,.78);
+      boxes.forEach(function(b,i){ b.setAttribute("opacity",1-kill); });
+      lines.forEach(function(l){ l.setAttribute("opacity",tangle*(1-kill)); });
+      var show=seg(p,.72,.95);
+      final1.setAttribute("opacity",show); final2.setAttribute("opacity",show);
+      ratio.setAttribute("opacity",seg(p,.86,1));
+    }};
+  });
+
+  /* ---------- S09 interface ---------- */
+  scene("S09","The box as interface",13,"The box stopped being an object and became <em>an interface</em>. One shape, one weight limit, everywhere on Earth.",function(){
+    var k=g();
+    k.appendChild(el("line",{x1:100,y1:640,x2:1500,y2:640,stroke:CHAR,"stroke-width":4}));
+    var names=["CRANE","SHIP","TRAIN","TRUCK"];
+    names.forEach(function(n,i){
+      var x=250+i*350;
+      k.appendChild(box(x-90,470,180,170,"none",CHAR));
+      var t=el("text",{x:x,y:690,"text-anchor":"middle",fill:"#8d8880","font-family":"IBM Plex Mono, monospace","font-size":"18","letter-spacing":"4"});
+      t.textContent=n; k.appendChild(t);
+    });
+    var cont=box(0,520,150,70,SIG); k.appendChild(cont);
+    return {node:k,update:function(p){
+      cont.setAttribute("x",lerp(-180,1620,p));
+    }};
+  });
+
+  /* ---------- S10 human cost — no accent colour ---------- */
+  scene("S10","The human cost",13,"Dockworkers had a real craft. In about a decade it was worth nothing. Efficiency isn't free — it's a transfer.",function(){
+    var k=g(), rnd=rng(23), crowd=[];
+    k.appendChild(el("line",{x1:100,y1:700,x2:1500,y2:700,stroke:CHAR,"stroke-width":4}));
+    for(var i=0;i<54;i++){
+      var x=180+rnd()*1240, y=560+rnd()*140, s=.9+rnd()*.8;
+      var f=figure(x,y,s,CHAR); k.appendChild(f);
+      crowd.push({n:f,d:Math.abs(x-800)/700+rnd()*.2});
+    }
+    var crane=g();
+    crane.appendChild(el("line",{x1:800,y1:700,x2:800,y2:380,stroke:CHAR,"stroke-width":5}));
+    crane.appendChild(el("line",{x1:700,y1:380,x2:940,y2:380,stroke:CHAR,"stroke-width":5}));
+    var hook=el("line",{x1:900,y1:380,x2:900,y2:470,stroke:CHAR,"stroke-width":3});
+    crane.appendChild(hook); crane.setAttribute("opacity","0"); k.appendChild(crane);
+    return {node:k,update:function(p){
+      var f=seg(p,.1,.82);
+      crowd.forEach(function(o){ o.n.setAttribute("opacity", clamp(1-(f*1.35-o.d*1.05)*3,0,1)); });
+      crane.setAttribute("opacity",seg(p,.45,.75));
+      hook.setAttribute("y2",470+Math.sin(p*9)*44);
+    }};
+  });
+
+  /* ---------- S11 the pattern ---------- */
+  scene("S11","The pattern everywhere",14,"Screw threads. Pallets. Railway gauge. And plug sockets — where we <em>failed</em> to agree, and everyone pays for adapters forever.",function(){
+    var k=g();
+    var socket=box(860,400,150,150,"none",SIG); k.appendChild(socket);
+    var part=box(600,430,140,90,CHAR); k.appendChild(part);
+    var lab=el("text",{x:800,y:650,"text-anchor":"middle",fill:"#8d8880","font-family":"IBM Plex Mono, monospace","font-size":"24","letter-spacing":"5"});
+    k.appendChild(lab);
+    var names=["SCREW THREAD","PALLET","RAIL GAUGE","PLUG"];
+    return {node:k,update:function(p){
+      var n=4, i=Math.min(Math.floor(p*n),n-1), u=(p*n)%1;
+      lab.textContent=names[i];
+      var fits=i<3;
+      var sw=fits?150:150, sh=fits?90:150;
+      socket.setAttribute("width",sw); socket.setAttribute("height",sh);
+      socket.setAttribute("x",860); socket.setAttribute("y",475-sh/2);
+      var travel=ease(clamp(u*1.7,0,1));
+      var endX=fits?860:800;
+      part.setAttribute("x",lerp(560,endX,travel));
+      part.setAttribute("y",fits?430:(430+ (u>.6? Math.sin(u*40)*4 :0)));
+      part.setAttribute("transform", (!fits&&u>.6)?"rotate(-9 "+(800+70)+" 475)":"rotate(0 870 475)");
+    }};
+  });
+
+  /* ---------- S12 outro ---------- */
+  scene("S12","Outro",10,"The most powerful objects in your life aren't the cleverest. They're the ones <em>everybody agreed on</em>.",function(){
+    var k=g();
+    k.appendChild(el("line",{x1:560,y1:560,x2:1040,y2:560,stroke:CHAR,"stroke-width":4}));
+    var c=box(700,420,200,120,SIG); k.appendChild(c);
+    var wm=el("text",{x:800,y:680,"text-anchor":"middle",fill:CHAR,"font-family":"Archivo, sans-serif","font-size":"44","font-weight":"600","letter-spacing":"-1",opacity:0});
+    wm.textContent="plainsight"; k.appendChild(wm);
+    var tag=el("text",{x:800,y:722,"text-anchor":"middle",fill:"#8d8880","font-family":"Archivo, sans-serif","font-size":"19",opacity:0});
+    tag.textContent="The hidden logic of ordinary things."; k.appendChild(tag);
+    return {node:k,update:function(p){
+      wm.setAttribute("opacity",seg(p,.3,.6));
+      tag.setAttribute("opacity",seg(p,.5,.8));
+    }};
+  });
+
+  /* ---------- engine ---------- */
+  var built=[], TOTAL=0;
+  SCENES.forEach(function(s){ s.start=TOTAL; TOTAL+=s.dur; var b=s.build(); b.node.setAttribute("visibility","hidden"); stage.appendChild(b.node); built.push(b); });
+
+  var t=0, playing=false, last=0, active=-1;
+  var capEl=document.getElementById("cap"), slate=document.getElementById("slate");
+  var scrub=document.getElementById("scrub"), curEl=document.getElementById("cur");
+  var playBtn=document.getElementById("play");
+
+  function fmt(s){var m=Math.floor(s/60),x=Math.floor(s%60);return m+":"+(x<10?"0":"")+x;}
+  document.getElementById("tot").textContent=fmt(TOTAL);
+
+  var shotWrap=document.getElementById("shots"), chips=[];
+  SCENES.forEach(function(s,i){
+    var b=document.createElement("button"); b.className="shot"; b.type="button";
+    b.innerHTML='<span class="id">'+s.id+' · '+s.dur+'s</span><span class="nm"></span>';
+    b.querySelector(".nm").textContent=s.name;
+    b.addEventListener("click",function(){ t=s.start+0.001; render(); });
+    shotWrap.appendChild(b); chips.push(b);
+  });
+
+  function render(){
+    var i=0;
+    for(var j=0;j<SCENES.length;j++){ if(t>=SCENES[j].start) i=j; }
+    var s=SCENES[i], p=clamp((t-s.start)/s.dur,0,1);
+    if(i!==active){
+      built.forEach(function(b,k){ b.node.setAttribute("visibility",k===i?"visible":"hidden"); });
+      capEl.innerHTML=s.cap;
+      chips.forEach(function(c,k){ c.setAttribute("aria-current",k===i?"true":"false"); });
+      active=i;
+    }
+    built[i].update(p);
+    slate.textContent=s.id+" · "+fmt(t);
+    curEl.textContent=fmt(t);
+    scrub.value=Math.round(t/TOTAL*1000);
+  }
+
+  function frame(ts){
+    if(!playing) return;
+    if(!last) last=ts;
+    t+=(ts-last)/1000; last=ts;
+    if(t>=TOTAL){ t=TOTAL; setPlay(false); }
+    render();
+    if(playing) requestAnimationFrame(frame);
+  }
+  function setPlay(v){
+    playing=v; last=0; playBtn.textContent=v?"Pause":"Play";
+    if(v){ if(t>=TOTAL) t=0; requestAnimationFrame(frame); }
+  }
+  playBtn.addEventListener("click",function(){ setPlay(!playing); });
+  document.getElementById("restart").addEventListener("click",function(){ t=0; render(); });
+  scrub.addEventListener("input",function(){ t=scrub.value/1000*TOTAL; render(); });
+
+  render();
+  if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPlay(true);
+})();
+</script>
