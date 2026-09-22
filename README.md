@@ -33,6 +33,7 @@ npm test       # 7 checks on the page itself, no network
 catalog.json    every product, price and per-warehouse stock — the source of truth
 tools/          build-catalog.mjs, which renders catalog.json into the page
 public/         the entire site — index.html, styles.css, app.js
+public/CNAME    the custom domain; a deploy without it can unset peptra.com.co
 test/           checks on the built page
 brand/          naming rationale, voice, design tokens
 ```
