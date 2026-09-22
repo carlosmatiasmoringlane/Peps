@@ -33,6 +33,19 @@ jobs:
       # Don't publish a page whose own checks fail.
       - run: npm test
 
+      # Surfaces LAUNCH-CHECKLIST.md in the run summary on every deploy, so
+      # the open questions are in front of whoever ships rather than buried
+      # in a chat log. Never fails the build — these are decisions, not bugs.
+      - name: Launch checklist
+        run: |
+          {
+            echo "## ⚠️ Recheck before this is public"
+            echo
+            echo "This deploy publishes the live catalogue. Open items:"
+            echo
+            sed -n '/^## 1\./,$p' LAUNCH-CHECKLIST.md
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

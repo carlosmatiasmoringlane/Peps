@@ -7,7 +7,12 @@ customer asks for it.
 Live domain: **peptra.com.co** · Naming rationale, voice and design tokens:
 [`brand/naming.md`](brand/naming.md)
 
-> **Read [Before you launch](#before-you-launch) first.** The catalogue figures
+> **Read [`LAUNCH-CHECKLIST.md`](LAUNCH-CHECKLIST.md) before the domain goes
+> live.** Four items in the catalogue carry risk that differs in kind from the
+> rest, and two sections of the page describe a business this catalogue is not.
+> Every deploy prints that checklist into its run summary.
+>
+> **Also read [Before you launch](#before-you-launch).** The catalogue figures
 > and the compliance copy are drafts written to be correct in form; they need a
 > real review against your suppliers' COAs and a lawyer's eye before this goes
 > public.
