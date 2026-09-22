@@ -119,7 +119,7 @@ up in the repository.
 | `RATE_LIMIT_WINDOW_MS` | `600000` | Rate limit window |
 | `PUBLIC_URL` | `http://localhost:$PORT` | Base for links in email — **must** be your real domain |
 | `MAIL_PROVIDER` | `console` | `console`, `postmark` or `resend` |
-| `MAIL_FROM` | `Peptra <hello@peptra.com>` | Envelope sender |
+| `MAIL_FROM` | `Peptra <hello@peptra.com.co>` | Envelope sender |
 | `POSTMARK_TOKEN` / `RESEND_API_KEY` | *unset* | Required by the matching provider |
 
 ## Deploying
@@ -185,5 +185,6 @@ made true or removed:
    telehealth-and-prescriber structure, and none of this copy applies. Have a
    regulatory attorney read the page against the jurisdictions you intend to
    ship to.
-4. **`hello@peptra.com`** in the footer, and the domain itself. Neither was
-   verified — outbound DNS is blocked in the environment this was built in.
+4. **`hello@peptra.com.co`** in the footer. The domain is registered, but the
+   mailbox has to exist before anyone writes to it — set up forwarding at the
+   registrar if nothing else.

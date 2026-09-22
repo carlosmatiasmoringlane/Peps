@@ -166,7 +166,7 @@ function resendProvider(apiKey) {
  */
 export function createMailer(env = process.env) {
   const choice = (env.MAIL_PROVIDER || "console").toLowerCase();
-  const from = env.MAIL_FROM || "Peptra <hello@peptra.com>";
+  const from = env.MAIL_FROM || "Peptra <hello@peptra.com.co>";
 
   let provider;
   if (choice === "console") {

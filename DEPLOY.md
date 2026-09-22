@@ -19,10 +19,10 @@ fly open
 Then point the domain at it:
 
 ```bash
-fly certs add peptra.com
-fly certs add www.peptra.com
+fly certs add peptra.com.co
+fly certs add www.peptra.com.co
 # Fly prints the A/AAAA (or CNAME) records to add at your registrar.
-fly certs show peptra.com                  # re-check until it says Ready
+fly certs show peptra.com.co                  # re-check until it says Ready
 ```
 
 ## Render
@@ -55,9 +55,9 @@ nothing is proxying, or the rate limiter will treat everyone as one client.
 ## After the first deploy — check these
 
 ```bash
-curl -fsS https://peptra.com/healthz                       # {"ok":true,...}
-curl -fsSI https://peptra.com/ | grep -i strict-transport  # HSTS present
-curl -fsS -X POST https://peptra.com/api/waitlist \
+curl -fsS https://peptra.com.co/healthz                       # {"ok":true,...}
+curl -fsSI https://peptra.com.co/ | grep -i strict-transport  # HSTS present
+curl -fsS -X POST https://peptra.com.co/api/waitlist \
   -H 'Content-Type: application/json' -d '{"email":"you@yours.com"}'
 ```
 
@@ -65,7 +65,7 @@ Then pull the list back:
 
 ```bash
 curl -H "Authorization: Bearer $ADMIN_TOKEN" \
-     https://peptra.com/api/waitlist/export.csv -o waitlist.csv
+     https://peptra.com.co/api/waitlist/export.csv -o waitlist.csv
 ```
 
 ## Email setup
@@ -77,7 +77,7 @@ are account setup rather than code:
 
 ```bash
 fly secrets set MAIL_PROVIDER=postmark POSTMARK_TOKEN=xxxxx
-fly secrets set PUBLIC_URL=https://peptra.com
+fly secrets set PUBLIC_URL=https://peptra.com.co
 ```
 
 `PUBLIC_URL` is not optional — it is the base for every confirmation link, and
@@ -91,17 +91,17 @@ the launch announcement lands in spam. Start DMARC at `p=none` and tighten once
 the reports look clean:
 
 ```
-_dmarc.peptra.com  TXT  "v=DMARC1; p=none; rua=mailto:dmarc@peptra.com"
+_dmarc.peptra.com.co  TXT  "v=DMARC1; p=none; rua=mailto:dmarc@peptra.com.co"
 ```
 
 ### Verify the round trip on the real domain
 
 ```bash
-curl -fsS -X POST https://peptra.com/api/waitlist \
+curl -fsS -X POST https://peptra.com.co/api/waitlist \
   -H 'Content-Type: application/json' -d '{"email":"you@yours.com"}'
 # -> {"ok":true,"state":"pending","resent":false}
 ```
 
 Then click the link in the inbox. You should land on a page showing position
-#1, and `https://peptra.com/healthz` should report one confirmed subscriber.
+#1, and `https://peptra.com.co/healthz` should report one confirmed subscriber.
 Check the message's raw headers for `List-Unsubscribe` while you are there.

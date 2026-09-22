@@ -10,10 +10,10 @@ primary_region = "iad"
   TRUST_PROXY = "1"
   WAITLIST_FILE = "/data/waitlist.jsonl"
   MAIL_PROVIDER = "postmark"
-  MAIL_FROM = "Peptra <hello@peptra.com>"
+  MAIL_FROM = "Peptra <hello@peptra.com.co>"
   # PUBLIC_URL must match the domain you serve from, or confirmation links
   # point at the wrong host. Set it once the certificate is live:
-  #   fly secrets set PUBLIC_URL=https://peptra.com
+  #   fly secrets set PUBLIC_URL=https://peptra.com.co
   # POSTMARK_TOKEN goes in secrets too, never here.
 
 # Signups live on this volume. Without it a redeploy wipes the list.

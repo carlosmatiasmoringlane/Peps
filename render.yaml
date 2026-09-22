@@ -17,7 +17,7 @@ services:
       - key: MAIL_PROVIDER
         value: postmark
       - key: MAIL_FROM
-        value: Peptra <hello@peptra.com>
+        value: Peptra <hello@peptra.com.co>
       - key: PUBLIC_URL
         sync: false          # set to your real domain in the dashboard
       - key: POSTMARK_TOKEN

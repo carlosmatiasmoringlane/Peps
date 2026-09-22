@@ -319,7 +319,7 @@
         } else if (error && error.code === "read_only") {
           setStatus(statusEl, "error", "This preview is read-only for your account, so the signup wasn't saved.");
         } else {
-          setStatus(statusEl, "error", "We couldn't reach the waitlist just now. Try again, or email hello@peptra.com.");
+          setStatus(statusEl, "error", "We couldn't reach the waitlist just now. Try again, or email hello@peptra.com.co.");
         }
       }).then(function () {
         busy = false;
