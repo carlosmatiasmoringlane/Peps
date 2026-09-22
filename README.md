@@ -7,7 +7,12 @@ customer asks for it.
 Live domain: **peptra.com.co** · Naming rationale, voice and design tokens:
 [`brand/naming.md`](brand/naming.md)
 
-> **Read [Before you launch](#before-you-launch) first.** The catalogue figures
+> **Read [`LAUNCH-CHECKLIST.md`](LAUNCH-CHECKLIST.md) before the domain goes
+> live.** Four items in the catalogue carry risk that differs in kind from the
+> rest, and two sections of the page describe a business this catalogue is not.
+> Every deploy prints that checklist into its run summary.
+>
+> **Also read [Before you launch](#before-you-launch).** The catalogue figures
 > and the compliance copy are drafts written to be correct in form; they need a
 > real review against your suppliers' COAs and a lawyer's eye before this goes
 > public.
@@ -25,10 +30,26 @@ npm test       # 7 checks on the page itself, no network
 ## What's here
 
 ```
+catalog.json    every product, price and per-warehouse stock — the source of truth
+tools/          build-catalog.mjs, which renders catalog.json into the page
 public/         the entire site — index.html, styles.css, app.js
 test/           checks on the built page
 brand/          naming rationale, voice, design tokens
 ```
+
+## Updating prices and stock
+
+Edit `catalog.json`, then:
+
+```bash
+npm run catalog    # regenerates the table in public/index.html
+npm test           # fails if the two have drifted apart
+```
+
+Never hand-edit the rows between `<!-- catalog:start -->` and
+`<!-- catalog:end -->` — the next build overwrites them. Prices are what a
+customer acts on, so a test asserts the rendered table matches `catalog.json`
+exactly.
 
 There is no server, no database and nothing to operate. Enquiries arrive by
 email; the page shows two addresses with copy buttons rather than a form.

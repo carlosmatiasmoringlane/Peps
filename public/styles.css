@@ -424,7 +424,11 @@ img { max-width: 100%; }
 
 /* ---------- spec table ---------- */
 
-.table-scroll { overflow-x: auto; }
+/* position: relative matters. The visually-hidden .vh spans inside the
+   catalogue are absolutely positioned; without a positioned ancestor their
+   containing block is the page, so they escape this container's clipping
+   and widen the whole document at phone width. */
+.table-scroll { overflow-x: auto; position: relative; }
 
 .spec-table {
   width: 100%;
@@ -596,6 +600,128 @@ img { max-width: 100%; }
   .chroma-head .lot { margin-left: 0; width: 100%; }
 }
 
+/* Two header links plus the wordmark do not fit a 320px screen. Contact is
+   the one that has to survive; the catalogue is a scroll away regardless. */
+@media (max-width: 480px) {
+  .site-header .nav-secondary { display: none; }
+}
+
 /* Set as a class rather than a style attribute, so the page carries no
    inline styles for a host's Content-Security-Policy to refuse. */
 figure.chroma-card { margin: 0; }
+
+/* ---------- catalogue controls and stock ---------- */
+
+.vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.cat-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px 18px;
+  padding-bottom: 18px;
+}
+
+.cat-field { display: flex; flex-direction: column; gap: 6px; }
+
+.cat-field label {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.cat-field input,
+.cat-field select {
+  font-family: var(--f-body);
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 9px 11px;
+  min-width: 0;
+}
+
+.cat-field input { width: min(100%, 270px); }
+.cat-field input:focus, .cat-field select:focus { border-color: var(--focus); }
+
+.cat-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--ink-mute);
+  padding-bottom: 9px;
+  cursor: pointer;
+}
+
+.cat-toggle input { accent-color: var(--trace); width: 16px; height: 16px; }
+
+.cat-count { margin: 0 0 9px; margin-left: auto; font-size: 12px; color: var(--ink-faint); }
+
+@media (max-width: 620px) {
+  .cat-count { margin-left: 0; }
+}
+
+/* warehouse chips */
+
+.cat-stock { white-space: nowrap; }
+
+.wh {
+  display: inline-block;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: .06em;
+  padding: 2px 5px;
+  border-radius: 2px;
+  border: 1px solid var(--rule);
+  color: var(--ink-faint);
+  margin-right: 3px;
+  min-width: 26px;
+  text-align: center;
+}
+
+.wh-in {
+  border-color: color-mix(in srgb, var(--trace) 55%, var(--rule));
+  color: var(--trace-ink);
+  background: color-mix(in srgb, var(--trace) 9%, transparent);
+}
+
+.cat-oos th[scope="row"], .cat-oos td { opacity: .55; }
+.cat-format { font-size: 12.5px; color: var(--ink-mute); }
+.cat-unit { color: var(--ink-mute); }
+
+.cat-flag {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  width: 15px;
+  height: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--amber);
+  text-decoration: none;
+  cursor: help;
+  translate: 0 -1px;
+}
+
+.cat-empty {
+  margin: 0;
+  padding: 24px 0;
+  color: var(--ink-mute);
+  font-family: var(--f-mono);
+  font-size: 14px;
+}
+
+.catalog tbody th[scope="row"] { font-family: var(--f-mono); font-size: 12.5px; white-space: nowrap; }

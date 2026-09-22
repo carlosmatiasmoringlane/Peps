@@ -82,3 +82,54 @@ test("no waitlist remnants survive", async () => {
   }
   assert.equal(/<form/i.test(html), false, "a form survived");
 });
+
+test("the rendered catalogue matches catalog.json exactly", async () => {
+  // Prices are the one thing on this page a customer acts on, so the
+  // generated table must never drift from its source. Regenerate with
+  // `npm run catalog` after editing catalog.json.
+  const { renderRows } = await import("../tools/build-catalog.mjs");
+  const catalog = JSON.parse(await readFile(join(ROOT, "catalog.json"), "utf8"));
+
+  const between = html.slice(
+    html.indexOf("<!-- catalog:start -->") + "<!-- catalog:start -->".length,
+    html.indexOf("<!-- catalog:end -->")
+  ).trim();
+
+  assert.equal(between, renderRows(catalog).trim(), "run `npm run catalog`");
+});
+
+test("every catalogue row carries a price, a format and stock data", async () => {
+  const catalog = JSON.parse(await readFile(join(ROOT, "catalog.json"), "utf8"));
+
+  for (const item of catalog.items) {
+    assert.ok(item.price > 0, `${item.code} has no price`);
+    assert.ok(item.format, `${item.code} has no format`);
+    assert.equal(item.stock.length, catalog.warehouses.length, `${item.code} stock/warehouse mismatch`);
+    assert.ok(item.stock.every((s) => typeof s === "boolean"), `${item.code} has non-boolean stock`);
+  }
+
+  const codes = catalog.items.map((i) => i.code);
+  assert.equal(new Set(codes).size, codes.length, "duplicate product codes");
+
+  // Everything the filter reads must be present on every row.
+  const rows = [...html.matchAll(/<tr class="cat-row[^"]*"([^>]*)>/g)].map((m) => m[1]);
+  assert.equal(rows.length, catalog.items.length);
+  for (const attrs of rows) {
+    assert.match(attrs, /data-search="[^"]+"/);
+    assert.match(attrs, /data-stock="[01]{3}"/);
+  }
+});
+
+test("the catalogue makes no therapeutic or dosing claim", async () => {
+  // The research-use-only framing is what the whole page rests on. A price
+  // list is exactly where a treatment claim tends to creep in.
+  const forbidden = [
+    /\bdos(e|ing|age)\b/i, /\btreats?\b/i, /\bcures?\b/i, /\btherapy\b/i,
+    /\bweight loss\b/i, /\bfat loss\b/i, /\banti-aging\b/i, /\bprescri/i,
+    /\binject/i, /\bpatient/i
+  ];
+  const section = html.slice(html.indexOf('id="catalogue"'), html.indexOf('§ 04'));
+  for (const pattern of forbidden) {
+    assert.equal(pattern.test(section), false, `catalogue contains ${pattern}`);
+  }
+});
