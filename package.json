@@ -2,11 +2,14 @@
   "name": "peptra",
   "version": "0.2.0",
   "private": true,
-  "description": "Peptra — static landing page for a research peptide supplier.",
+  "description": "Peptra \u2014 static landing page for a research peptide supplier.",
   "type": "module",
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "start": "npx --yes serve public",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "build": "echo 'static site \u2014 nothing to build'"
   }
 }
