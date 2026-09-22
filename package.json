@@ -1,13 +1,12 @@
 {
   "name": "peptra",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Peptra — landing page and waitlist for a research peptide supplier.",
+  "description": "Peptra — static landing page for a research peptide supplier.",
   "type": "module",
   "engines": { "node": ">=18" },
   "scripts": {
-    "start": "node server/server.js",
-    "dev": "node --watch server/server.js",
+    "start": "npx --yes serve public",
     "test": "node --test test/*.test.js"
   }
 }
