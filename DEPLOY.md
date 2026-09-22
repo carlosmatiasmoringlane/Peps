@@ -58,9 +58,15 @@ works. Build command empty, output directory `public`.
 **Netlify** — *Add new site → Import an existing project*, publish directory
 `public`, build command empty. Reads the same `_headers` file.
 
-**GitHub Pages** — free and simple, but **cannot set response headers at all**,
-so the CSP above would not apply. A deploy workflow for it lived at
-`.github/workflows/pages.yml` and is in git history if wanted.
+**GitHub Pages** — free and simple, and `.github/workflows/pages.yml` deploys
+to it on every push to `main`. It **cannot set response headers at all**, so
+`public/_headers` is ignored there and the CSP does not apply.
+
+Its one real advantage: the build runs in GitHub Actions, so when it breaks the
+log is readable in the Actions tab rather than behind a vendor dashboard.
+
+**Enable it before merging**, or the workflow fails for want of a configured
+Pages source: Settings → Pages → Source → **GitHub Actions**.
 
 ## The mailboxes have to exist
 
