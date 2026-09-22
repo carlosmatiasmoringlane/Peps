@@ -25,10 +25,26 @@ npm test       # 7 checks on the page itself, no network
 ## What's here
 
 ```
+catalog.json    every product, price and per-warehouse stock — the source of truth
+tools/          build-catalog.mjs, which renders catalog.json into the page
 public/         the entire site — index.html, styles.css, app.js
 test/           checks on the built page
 brand/          naming rationale, voice, design tokens
 ```
+
+## Updating prices and stock
+
+Edit `catalog.json`, then:
+
+```bash
+npm run catalog    # regenerates the table in public/index.html
+npm test           # fails if the two have drifted apart
+```
+
+Never hand-edit the rows between `<!-- catalog:start -->` and
+`<!-- catalog:end -->` — the next build overwrites them. Prices are what a
+customer acts on, so a test asserts the rendered table matches `catalog.json`
+exactly.
 
 There is no server, no database and nothing to operate. Enquiries arrive by
 email; the page shows two addresses with copy buttons rather than a form.

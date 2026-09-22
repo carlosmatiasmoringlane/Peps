@@ -260,8 +260,55 @@
     });
   }
 
+  /* ------------------------------------------------------------------ *
+   * Catalogue filtering
+   *
+   * The rows are in the HTML, so the table is complete and readable before
+   * any of this runs. This only hides rows.
+   * ------------------------------------------------------------------ */
+
+  function initCatalogue() {
+    var search = document.getElementById("cat-search");
+    var warehouse = document.getElementById("cat-warehouse");
+    var inStock = document.getElementById("cat-instock");
+    var count = document.getElementById("cat-count");
+    var empty = document.getElementById("cat-empty");
+    var body = document.getElementById("cat-body");
+    if (!search || !body) return;
+
+    var rows = [].slice.call(body.querySelectorAll(".cat-row"));
+
+    function apply() {
+      var term = search.value.trim().toLowerCase();
+      var wh = warehouse.value === "" ? -1 : Number(warehouse.value);
+      var stockOnly = inStock.checked;
+      var shown = 0;
+
+      rows.forEach(function (row) {
+        var stock = row.getAttribute("data-stock");
+        var matchesTerm = !term || row.getAttribute("data-search").indexOf(term) !== -1;
+        var matchesWarehouse = wh === -1 || stock.charAt(wh) === "1";
+        var matchesStock = !stockOnly || stock.indexOf("1") !== -1;
+        var visible = matchesTerm && matchesWarehouse && matchesStock;
+        row.hidden = !visible;
+        if (visible) shown += 1;
+      });
+
+      count.textContent = shown === rows.length
+        ? rows.length + " of " + rows.length + " products"
+        : shown + " of " + rows.length + " products";
+      empty.hidden = shown !== 0;
+    }
+
+    search.addEventListener("input", apply);
+    warehouse.addEventListener("change", apply);
+    inStock.addEventListener("change", apply);
+    apply();
+  }
+
   function init() {
     initChromatogram();
+    initCatalogue();
     initCopyButtons();
   }
 
