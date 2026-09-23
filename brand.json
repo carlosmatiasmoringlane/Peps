@@ -1,0 +1,10 @@
+{
+  "name": "Peakline",
+  "domain": "peakline.example",
+  "emails": {
+    "general": "hello@peakline.example",
+    "coa": "coa@peakline.example"
+  },
+  "year": 2026,
+  "_note": "Single source of truth for the brand. Change these, run `npm run build`, and the whole site follows. Nothing else should hardcode the name, the domain or an address."
+}

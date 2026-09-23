@@ -14,7 +14,7 @@
 
   // Bump to require everyone to confirm again — e.g. if the wording of the
   // confirmations changes.
-  var KEY = "peptra.gate.v1";
+  var KEY = "site.gate.v1";
 
   try {
     if (window.localStorage && window.localStorage.getItem(KEY)) {

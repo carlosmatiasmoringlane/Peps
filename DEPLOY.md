@@ -1,4 +1,4 @@
-# Deploying Peptra
+# Deploying Peakline
 
 Three files in `public/` — no build step, no server, no database.
 
@@ -28,8 +28,13 @@ If the dashboard asks for build settings:
 
 ### Custom domain
 
+The domain comes from `brand.json`. The build writes `public/CNAME` from it —
+**unless the value is a placeholder**, in which case it writes nothing and warns,
+because a CNAME naming a domain that does not resolve takes the live site down.
+Set a real domain there before deploying.
+
 Worker → **Settings → Domains & Routes → Add → Custom domain** →
-`peptra.com.co`. If the domain's DNS is already at Cloudflare, the record and
+`<your-domain>`. If the domain's DNS is already at Cloudflare, the record and
 the certificate are created for you. If it is registered elsewhere, move its
 nameservers to Cloudflare first — custom domains on Workers require it.
 
@@ -43,7 +48,7 @@ Confirm it is actually applied once deployed — support for `_headers` on
 Workers static assets is newer than on Pages:
 
 ```bash
-curl -sSI https://peptra.com.co/ | grep -i content-security-policy
+curl -sSI https://<your-domain>/ | grep -i content-security-policy
 ```
 
 If nothing comes back, the file is being ignored; move the headers into a small
@@ -73,8 +78,8 @@ Pages source: Settings → Pages → Source → **GitHub Actions**.
 The page shows two addresses and nothing else collects enquiries, so a message
 that bounces is a customer lost silently:
 
-- `hello@peptra.com.co`
-- `coa@peptra.com.co`
+- `hello@peakline.example`
+- `coa@peakline.example`
 
 Forwarding is enough to start. Cloudflare Email Routing is free and takes about
 five minutes. **Send a test message to both before you point anyone at the

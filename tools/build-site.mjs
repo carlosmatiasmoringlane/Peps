@@ -12,6 +12,22 @@ import { dirname, join, resolve } from "node:path";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "public");
 
+/**
+ * The brand lives in one file. Renaming the company is an edit to
+ * brand.json and a rebuild — it used to mean touching every page, which is
+ * how a name nobody had cleared ended up baked into 52 files.
+ */
+export const brand = JSON.parse(await readFile(join(ROOT, "brand.json"), "utf8"));
+
+/** Replaces {{name}}, {{emails.coa}} and so on. Unknown tokens throw. */
+export function render(template, data) {
+  return template.replace(/\{\{([a-z.]+)\}\}/g, (_, path) => {
+    const value = path.split(".").reduce((o, k) => (o == null ? o : o[k]), data);
+    if (value == null) throw new Error(`unknown template token {{${path}}}`);
+    return String(value);
+  });
+}
+
 const ESCAPES = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
 export const esc = (v) => String(v).replace(/[&<>"']/g, (c) => ESCAPES[c]);
 const money = (n) => "$" + n.toLocaleString("en-US");
@@ -51,10 +67,10 @@ export function gate() {
   return `
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
   <div class="gate-card">
-    <p class="wordmark gate-mark"><span class="mark" aria-hidden="true"></span>Peptra</p>
+    <p class="wordmark gate-mark"><span class="mark" aria-hidden="true"></span>${brand.name}</p>
     <h1 class="h2" id="gate-title">Confirm before you continue.</h1>
     <p class="gate-lede">
-      Peptra supplies peptides as research reagents. Two confirmations are required
+      ${brand.name} supplies peptides as research reagents. Two confirmations are required
       before the catalogue can be shown.
     </p>
     <div class="gate-checks">
@@ -94,7 +110,7 @@ export function header(up, here) {
   return `
 <header class="site-header" inert>
   <div class="wrap">
-    <a class="wordmark" href="${up}index.html"><span class="mark" aria-hidden="true"></span>Peptra</a>
+    <a class="wordmark" href="${up}index.html"><span class="mark" aria-hidden="true"></span>${brand.name}</a>
     <span class="chip">Research use only</span>
     <span class="spacer"></span>
     ${link("catalogue.html", "Catalogue", "catalogue")}
@@ -107,13 +123,13 @@ export function footer(up) {
   return `
 <footer class="site-footer" inert>
   <div class="wrap">
-    <a class="wordmark" href="${up}index.html"><span class="mark" aria-hidden="true"></span>Peptra</a>
+    <a class="wordmark" href="${up}index.html"><span class="mark" aria-hidden="true"></span>${brand.name}</a>
     <span class="spacer"></span>
     <span class="copy-line">
-      <span class="addr mono" id="footer-address">hello@peptra.com.co</span>
+      <span class="addr mono" id="footer-address">${brand.emails.general}</span>
       <button class="btn btn-quiet btn-sm" data-copy="footer-address" type="button">Copy</button>
     </span>
-    <p class="legal">© 2026 Peptra · Research use only · Not for human or veterinary use</p>
+    <p class="legal">© ${brand.year} ${brand.name} · Research use only · Not for human or veterinary use</p>
   </div>
 </footer>
 <script src="${up}app.js"></script>
@@ -149,8 +165,8 @@ export function directoryPage(catalog) {
   }).join("\n");
 
   return `${head({
-    title: "Catalogue · Peptra",
-    description: "Every Peptra research peptide, with price per box of ten vials and stock at each warehouse.",
+    title: `Catalogue · ${brand.name}`,
+    description: `Every ${brand.name} research peptide, with price per box of ten vials and stock at each warehouse.`,
     up: ""
   })}${gate()}${header("", "catalogue")}
 
@@ -240,7 +256,7 @@ export function productPage(item, catalog) {
   const perVial = (item.price / item.vials).toFixed(2);
 
   return `${head({
-    title: `${item.name} · ${item.code} · Peptra`,
+    title: `${item.name} · ${item.code} · ${brand.name}`,
     description: `${item.name}, ${item.format}, ${money(item.price)} per box. Research use only.`,
     up: "../"
   })}${gate()}${header("../", "catalogue")}
@@ -290,7 +306,7 @@ export function productPage(item, catalog) {
           <div class="buy-contact">
             <p class="contact-label">To order or request the lot certificate</p>
             <p class="copy-line">
-              <span class="addr mono" id="buy-address">hello@peptra.com.co</span>
+              <span class="addr mono" id="buy-address">${brand.emails.general}</span>
               <button class="btn btn-quiet btn-sm" data-copy="buy-address" type="button">Copy</button>
             </p>
             <p class="note">Quote <span class="mono">${esc(item.code)}</span> and the quantity.</p>
@@ -313,6 +329,22 @@ ${footer("../")}`;
 
 const catalog = JSON.parse(await readFile(join(ROOT, "catalog.json"), "utf8"));
 
+// The home page is a template so the brand reaches it too.
+const homeTemplate = await readFile(join(ROOT, "src", "home.html"), "utf8");
+await writeFile(join(OUT, "index.html"), render(homeTemplate, brand), "utf8");
+
+// A CNAME naming a domain that does not resolve takes the live site down,
+// so a placeholder must never reach the deploy. Pages falls back to the
+// github.io address when the file is absent, which is merely ugly.
+const domainIsReal = brand.domain && !/\.(example|invalid|test|localhost)$/.test(brand.domain);
+if (domainIsReal) {
+  await writeFile(join(OUT, "CNAME"), brand.domain + "\n", "utf8");
+} else {
+  await rm(join(OUT, "CNAME"), { force: true });
+  console.warn(`  !! brand.domain is "${brand.domain}" — no CNAME written.`);
+  console.warn("     Set a real domain in brand.json before deploying.");
+}
+
 await writeFile(join(OUT, "catalogue.html"), directoryPage(catalog), "utf8");
 
 const dir = join(OUT, "products");
@@ -322,4 +354,4 @@ for (const item of catalog.items) {
   await writeFile(join(dir, `${item.code}.html`), productPage(item, catalog), "utf8");
 }
 
-console.log(`built catalogue.html and ${catalog.items.length} product pages`);
+console.log(`built ${brand.name}: index.html, catalogue.html and ${catalog.items.length} product pages`);

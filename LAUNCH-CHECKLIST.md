@@ -62,10 +62,15 @@ survive a question.
 
 ## Operational, not legal
 
-- [ ] `hello@peptra.com.co` and `coa@peptra.com.co` exist and were tested —
+- [ ] `hello@peakline.example` and `coa@peakline.example` exist and were tested —
       they are the only way anyone can reach you, so a bounce is a silent loss
-- [ ] Trademark clearance search, Classes 1 and 5. Owning a domain is not
-      owning a mark, and "Pep-" is crowded
+- [ ] **Trademark clearance for Peakline, Classes 1 and 5.** Not a keyword search —
+      an attorney. The previous name, Peptra, was abandoned after `peptra.com`
+      turned out to be an operating telehealth company selling the same
+      compounds under a ™. Nothing about Peakline has been verified either; see
+      `brand/naming.md`
+- [ ] A real domain in `brand.json`. Until then the build writes no CNAME and
+      the site serves from the github.io address
 - [ ] Prices in `catalog.json` re-checked against the supplier sheet
 - [ ] GHRP-6 (G65): source sheet shows "9" rather than a stock tick — confirm
 - [ ] Bacteriostatic water (BA): listed as "3mg", assumed 3 mL — confirm

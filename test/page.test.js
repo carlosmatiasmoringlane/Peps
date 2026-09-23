@@ -196,3 +196,41 @@ test("every copy button names an element holding an address", async () => {
     }
   }
 });
+
+/* ---------------------------------------------------------------- *
+ * The brand lives in exactly one place
+ * ---------------------------------------------------------------- */
+
+test("no page carries a name or address brand.json did not produce", async () => {
+  // The previous name was baked into every page, which is part of why an
+  // uncleared one got as far as it did. This keeps brand.json authoritative.
+  const { brand } = await import("../tools/build-site.mjs");
+  const allowed = [brand.name, brand.emails.general, brand.emails.coa, brand.domain];
+
+  for (const [name, html] of everyPage) {
+    const addresses = [...html.matchAll(/[\w.+-]+@[\w.-]+\.\w+/g)].map((m) => m[0]);
+    for (const address of addresses) {
+      assert.ok(allowed.includes(address), `${name}: ${address} is not in brand.json`);
+    }
+    assert.equal(/\bpeptra\b/i.test(html), false, `${name}: the old brand name survives`);
+  }
+});
+
+test("the home page is generated from its template and brand.json", async () => {
+  const { brand, render } = await import("../tools/build-site.mjs");
+  const template = await readFile(join(ROOT, "src", "home.html"), "utf8");
+  assert.equal(home, render(template, brand), "run `npm run build`");
+});
+
+test("a placeholder domain never writes a CNAME", async () => {
+  // A CNAME naming a domain that does not resolve takes the live site down.
+  const { brand } = await import("../tools/build-site.mjs");
+  const placeholder = /\.(example|invalid|test|localhost)$/.test(brand.domain);
+
+  if (placeholder) {
+    await assert.rejects(access(join(PUBLIC, "CNAME")),
+      `brand.domain is a placeholder (${brand.domain}) but a CNAME was written`);
+  } else {
+    assert.equal((await read("CNAME")).trim(), brand.domain);
+  }
+});

@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Peakline — research peptides, traced to the assay</title>
-<meta name="description" content="Peakline supplies research-grade peptides with the full certificate of analysis published for every lot — HPLC purity, LC-MS identity, endotoxin — before you order.">
-<meta property="og:title" content="Peakline">
+<title>{{name}} — research peptides, traced to the assay</title>
+<meta name="description" content="{{name}} supplies research-grade peptides with the full certificate of analysis published for every lot — HPLC purity, LC-MS identity, endotoxin — before you order.">
+<meta property="og:title" content="{{name}}">
 <meta property="og:description" content="Research-grade peptides with the certificate of analysis published for every lot, before you order.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2300726E'/%3E%3Cpath d='M4 23h6.5l3.5-14 3.5 14H28' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
@@ -24,12 +24,12 @@
      must fail closed. -->
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
   <div class="gate-card">
-    <p class="wordmark gate-mark"><span class="mark" aria-hidden="true"></span>Peakline</p>
+    <p class="wordmark gate-mark"><span class="mark" aria-hidden="true"></span>{{name}}</p>
 
     <h1 class="h2" id="gate-title">Confirm before you continue.</h1>
 
     <p class="gate-lede">
-      Peakline supplies peptides as research reagents. Two confirmations are required
+      {{name}} supplies peptides as research reagents. Two confirmations are required
       before the catalogue can be shown.
     </p>
 
@@ -69,7 +69,7 @@
 
 <header class="site-header" inert>
   <div class="wrap">
-    <a class="wordmark" href="#top"><span class="mark" aria-hidden="true"></span>Peakline</a>
+    <a class="wordmark" href="#top"><span class="mark" aria-hidden="true"></span>{{name}}</a>
     <span class="chip">Research use only</span>
     <span class="spacer"></span>
     <a class="btn btn-quiet btn-sm" href="catalogue.html">Catalogue</a>
@@ -87,7 +87,7 @@
         <p class="eyebrow">Opening 2026</p>
         <h1 class="display">Every vial, traced to <em>its own assay</em>.</h1>
         <p class="lede">
-          Peakline is a research peptide supplier that publishes the complete certificate of
+          {{name}} is a research peptide supplier that publishes the complete certificate of
           analysis for every lot — HPLC purity, LC-MS identity, water content, endotoxin —
           before you order, not after you ask. Same lot number on the vial, the COA and the
           packing slip.
@@ -96,7 +96,7 @@
         <div class="contact-block">
           <p class="contact-label">Enquiries and quotes</p>
           <p class="copy-line">
-            <span class="addr mono" id="hero-address">hello@peakline.example</span>
+            <span class="addr mono" id="hero-address">{{emails.general}}</span>
             <button class="btn btn-quiet btn-sm" data-copy="hero-address" type="button">Copy</button>
           </p>
           <p class="note">
@@ -360,7 +360,7 @@
         <div class="contact-card">
           <p class="contact-label">General and technical enquiries</p>
           <p class="copy-line">
-            <span class="addr mono" id="contact-general">hello@peakline.example</span>
+            <span class="addr mono" id="contact-general">{{emails.general}}</span>
             <button class="btn btn-quiet btn-sm" data-copy="contact-general" type="button">Copy</button>
           </p>
           <p class="note">
@@ -371,7 +371,7 @@
         <div class="contact-card">
           <p class="contact-label">Certificates for a lot you already hold</p>
           <p class="copy-line">
-            <span class="addr mono" id="contact-coa">coa@peakline.example</span>
+            <span class="addr mono" id="contact-coa">{{emails.coa}}</span>
             <button class="btn btn-quiet btn-sm" data-copy="contact-coa" type="button">Copy</button>
           </p>
           <p class="note">
@@ -395,14 +395,14 @@
 
       <div class="compliance">
         <p>
-          <strong>For laboratory research use only.</strong> Peakline products are sold as research
+          <strong>For laboratory research use only.</strong> {{name}} products are sold as research
           reagents for in-vitro and laboratory investigation by qualified personnel. They are not
           drugs, foods, cosmetics or dietary supplements.
         </p>
         <p>
           <strong>Not for human or veterinary use.</strong> These materials are not intended to
           diagnose, treat, cure or prevent any disease, and must not be administered to humans or
-          animals. Peakline makes no therapeutic claim for any sequence it lists, publishes no
+          animals. {{name}} makes no therapeutic claim for any sequence it lists, publishes no
           dosing guidance, and will decline orders where the stated use is not research.
         </p>
         <p>
@@ -419,13 +419,13 @@
 
 <footer class="site-footer" inert>
   <div class="wrap">
-    <a class="wordmark" href="#top"><span class="mark" aria-hidden="true"></span>Peakline</a>
+    <a class="wordmark" href="#top"><span class="mark" aria-hidden="true"></span>{{name}}</a>
     <span class="spacer"></span>
     <span class="copy-line">
-      <span class="addr mono" id="footer-address">hello@peakline.example</span>
+      <span class="addr mono" id="footer-address">{{emails.general}}</span>
       <button class="btn btn-quiet btn-sm" data-copy="footer-address" type="button">Copy</button>
     </span>
-    <p class="legal">© 2026 Peakline · Research use only</p>
+    <p class="legal">© {{year}} {{name}} · Research use only</p>
   </div>
 </footer>
 

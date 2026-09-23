@@ -1,70 +1,86 @@
 # Naming
 
-## The name: Peptra
+## The name: Peakline
 
-**Peptra** — two syllables, `PEP-truh`.
+**Peakline** — `PEEK-line`.
 
-`pept-` is the only morpheme in the category that needs no explanation: anyone
-in the market reads "peptide" on sight. `-ra` closes it short and clinically,
-the way a reagent brand closes rather than the way a supplement brand does
-(`-vive`, `-genix`, `-max`). The result spells itself after one hearing, takes a
-possessive cleanly ("Peptra's release spec"), has no plural problem, and reads
-as a noun rather than a claim — which matters in a category where the regulator
-reads your name along with everything else.
+It comes from the page's own hero: a chromatogram is a baseline with one
+dominant peak, and the whole premise of the business is that you can see that
+trace before you buy. The name says the thesis rather than the category.
 
-It also leaves room. Nothing in it says "peptides only", so a second product
-line — assay services, a COA registry — doesn't require a rename.
+Practical reasons it was chosen over another `pept-` word:
 
-### Alternates, in the order I'd rank them
+- **It is outside the crowded morpheme.** Almost every peptide supplier is
+  built on `pept-`, `pep-` or `-tide`. That thicket is where collisions live,
+  and it is where the last name died.
+- **It is two ordinary English words**, so it spells itself after one hearing
+  and survives being read aloud down a phone line.
+- **It is not descriptive of the goods**, which makes it a stronger mark than
+  "Halcyon Peptides" would be. Descriptive marks are cheap to adopt and hard
+  to defend.
+- **It does not pin the product line.** Assay services or a certificate
+  registry fit under it without a rename.
+
+## Why the previous name was abandoned
+
+The company was called **Peptra** until `peptra.com` turned out to be an
+operating US telehealth business selling doctor-prescribed peptides —
+tirzepatide and semaglutide among them, which are also in this catalogue — with
+a ™ on its wordmark.
+
+Same name, same goods, overlapping customers. That is the ordinary test for
+likelihood of confusion, not a technicality.
+
+**The lesson, recorded because it cost a rename:** the risk was never an
+identical name in an unrelated field. It was an existing company in an adjacent
+one, which is exactly what this document warned about and what nobody checked.
+Clearance comes before the domain, and the domain comes before the build.
+
+## Before you commit to Peakline
+
+**None of this has been verified.** The build environment has no outbound
+network — DNS, RDAP and the web are all blocked — so every line below is an
+action for you, not a claim by me. That is precisely the gap that let the last
+name through.
+
+- [ ] **USPTO TESS**, Class 1 (chemicals for scientific use) and Class 5. A
+      clearance search by an attorney, not a keyword search by you.
+- [ ] **A plain Google search** for the name plus "peptide", "bio", "labs".
+      Look for an operating company in an adjacent field, which is the failure
+      mode that actually bites.
+- [ ] **The domain.** `peakline.com` first; a country or `.co` second best.
+- [ ] **Handles** on X, LinkedIn and Instagram.
+
+Only then set `name` and `domain` in `brand.json` and run `npm run build`.
+
+## Alternates, if Peakline does not clear
 
 | Name | Read | Trade-off |
 | --- | --- | --- |
-| **Sequenta** | Sequence + the `-a` ending of a lab brand | Softer, more European; less obviously peptide |
-| **Corva Bio** | Corvid; short, hard consonants, memorable | Says nothing about the category on its own |
-| **Kestrel Bio** | Precision, a bird that holds dead still before it strikes | "Kestrel" is well used in biotech already — check carefully |
-| **Halcyon Peptides** | Descriptive, calm, trustworthy | Literal; harder to own, and pins you to one product line |
+| **Basepeak** | Chromatography term of art: the most intense peak | Closer to jargon; may read as opaque outside the lab |
+| **Retention** | Retention time — when a compound comes off the column | Common English word, so harder to own |
+| **Corva Bio** | Corvid; short, hard consonants | Close to Corvus Pharmaceuticals — check carefully |
+| **Kestrel Bio** | Precision; a bird that holds still before it strikes | "Kestrel" is well used in biotech already |
 
-### The domain
-
-**`peptra.com.co`**, registered. The `.com` was not available.
-
-The name holds regardless — "Peptra" was always the asset and the TLD is the
-part you can upgrade later. Two consequences worth planning around:
-
-- **Email deliverability needs more care on `.com.co` than it would on `.com`.**
-  Spam filters weight unfamiliar TLDs, and a cold domain sending its first
-  bulk message is the exact profile they score hardest. SPF, DKIM and DMARC
-  are not optional here, and it is worth sending to yourself across Gmail,
-  Outlook and a university address before the first real send.
-- **Watch for `peptra.com` changing hands.** If it lapses or the holder sells,
-  buy it and redirect — a scientific buyer reads the `.com` as the real
-  company, and you do not want someone else holding it.
-
-Still outstanding, and none of it was checkable from the build environment
-(outbound DNS and RDAP are blocked here):
-
-- USPTO TESS, Class 1 (chemicals for scientific use) and Class 5. "Pep-" marks
-  are dense; a clearance search by an attorney is cheap next to a rebrand, and
-  owning a domain is not owning a mark.
-- Handles on X, LinkedIn and Instagram.
-- A Google search for `peptra` — the failure mode is an existing company in an
-  adjacent field, not an identical one.
+Earlier drafts listed **Sequenta**, which should not be used: it is close to a
+genomics company of that name. Its presence in an earlier version of this file
+is itself the point — a list of names nobody had cleared.
 
 ## Voice
 
 The brand thesis is one sentence: **the certificate comes before the order.**
 
-Everything on the page is downstream of it. Consequences for copy:
+Everything on the site is downstream of it:
 
 - **Publish numbers, not adjectives.** "99.21 % by area at 214 nm" everywhere
   "high purity" would sit.
-- **Never make a therapeutic claim**, imply a human use, or publish dosing. Not
-  as a matter of caution — it is the difference between a research reagent
-  supplier and an unapproved drug distributor.
+- **Never make a therapeutic claim**, imply a human use, or publish dosing.
+  Not caution — it is the difference between a research reagent supplier and
+  an unapproved drug distributor. A test enforces it on every page.
 - **Say what you are not.** "We are not a synthesis house and don't pretend to
-  be" earns more trust from a working scientist than any claim of scale.
-- Second person, active voice, British-neutral spelling as set on the page
-  ("lyophilised", "normalisation") — pick one and hold it.
+  be" earns more from a working scientist than any claim of scale.
+- Second person, active voice, British-neutral spelling as set on the site
+  ("lyophilised", "normalisation").
 
 ## Design tokens
 
@@ -81,11 +97,11 @@ Set in `public/styles.css` under `:root`, with a full dark-theme redefinition.
 | Amber (secondary data) | `#8F5400` | `#E0A04A` |
 
 The neutrals are biased toward the teal rather than pure grey, so the accent
-sits in the same family as the page it's on.
+sits in the same family as the page it is on.
 
-**Type**: Archivo (display, 600/700, tight tracking) · Source Sans 3 (body) ·
-IBM Plex Mono (data, lot numbers, section marks). The mono face is doing real
-work — it is the typeface of the instrument printout the whole page imitates.
+**Type**: Archivo (display) · Source Sans 3 (body) · IBM Plex Mono (data, lot
+numbers, section marks). The mono face does real work — it is the typeface of
+the instrument printout the whole site imitates.
 
-**Layout**: a certificate of analysis. Hairline rules, numbered sections (`§ 01`),
-tabular figures, and data set right-aligned in columns that actually line up.
+**Layout**: a certificate of analysis. Hairline rules, numbered sections
+(`§ 01`), tabular figures, data right-aligned in columns that line up.

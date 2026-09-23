@@ -1,4 +1,4 @@
-/* Peptra landing page — chromatogram rendering and copy-to-clipboard. */
+/* Peakline — chromatogram rendering, catalogue filtering, gate, copy buttons. */
 (function () {
   "use strict";
 
@@ -318,7 +318,7 @@
    * code never runs, the gate stays up.
    * ------------------------------------------------------------------ */
 
-  var GATE_KEY = "peptra.gate.v1";
+  var GATE_KEY = "site.gate.v1";
 
   function initGate() {
     var gate = document.getElementById("gate");

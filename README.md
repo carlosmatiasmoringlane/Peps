@@ -1,10 +1,10 @@
-# Peptra
+# Peakline
 
-Static landing page for **Peptra**, a research peptide supplier whose premise is
+Static site for **Peakline**, a research peptide supplier whose premise is
 that the certificate of analysis is published before the order, not after the
 customer asks for it.
 
-Live domain: **peptra.com.co** · Naming rationale, voice and design tokens:
+Naming rationale, voice and design tokens:
 [`brand/naming.md`](brand/naming.md)
 
 > **Read [`LAUNCH-CHECKLIST.md`](LAUNCH-CHECKLIST.md) before the domain goes
@@ -30,14 +30,16 @@ npm test       # 7 checks on the page itself, no network
 ## What's here
 
 ```
+brand.json           the name, domain and addresses — the only place they appear
+src/home.html        the home page template, using {{name}} style tokens
 catalog.json         every product, price and per-warehouse stock — the source of truth
 tools/build-site.mjs generates the directory and the product pages
-public/index.html    the home page — hand-maintained
+public/index.html    the home page — GENERATED from src/home.html
 public/catalogue.html  the directory — GENERATED
 public/products/     one page per product — GENERATED
 public/app.js        chromatogram, catalogue filtering, gate, copy buttons
 public/gate.js       the age and use gate's head script — must stay render-blocking
-public/CNAME         the custom domain; a deploy without it can unset peptra.com.co
+public/CNAME         GENERATED from brand.json, and only for a real domain
 test/                checks on the built site
 brand/               naming rationale, voice, design tokens
 ```
@@ -46,9 +48,11 @@ brand/               naming rationale, voice, design tokens
 
 | Page | Source |
 | --- | --- |
-| `/` | `public/index.html`, hand-maintained |
+| `/` | generated from `src/home.html` + `brand.json` |
 | `/catalogue.html` | generated — the filterable directory of all products |
 | `/products/<CODE>.html` | generated — one per catalogue item |
+
+**Never hand-edit anything in `public/`** — `index.html`, `catalogue.html`, `products/` and `CNAME` are all generated.
 
 **Never hand-edit `catalogue.html` or anything in `products/`** — the next build
 overwrites them. Change `catalog.json` and run `npm run build`. A test
@@ -98,7 +102,9 @@ It is built to fail closed:
   shows, which is the right direction to fail.
 
 To force everyone to confirm again — if the wording changes, say — bump `KEY`
-in `gate.js` and `GATE_KEY` in `app.js` to `peptra.gate.v2`. **They must match.**
+in `gate.js` and `GATE_KEY` in `app.js` to `site.gate.v2`. **They must match.** The
+key is deliberately not brand-derived, so a rename does not silently re-prompt
+everyone who already confirmed.
 
 A client-side gate is a statement of terms, not access control. It records that
 the visitor was asked and answered; it does not stop anyone determined.
@@ -147,9 +153,12 @@ made true or removed:
    telehealth-and-prescriber structure, and none of this copy applies. Have a
    regulatory attorney read the page against the jurisdictions you intend to
    ship to.
-4. **The mailboxes.** `hello@peptra.com.co` and `coa@peptra.com.co` are the only
-   way anyone can reach you. Set up forwarding and send a test to both before
-   pointing anyone at the site.
+4. **The mailboxes.** `hello@peakline.example` and `coa@peakline.example` are
+   the only way anyone can reach you. Set up forwarding and send a test to both
+   before pointing anyone at the site.
+5. **The name.** `Peakline` replaced Peptra after `peptra.com` proved to be an
+   operating company in the same category. **`Peakline` has not been cleared
+   either** — see `brand/naming.md`.
 
 ## History
 
@@ -157,3 +166,17 @@ A waitlist with double opt-in, an append-only consent log and a Node server
 lived here until it was removed in favour of a static page. Nothing is lost —
 it is all in the history under `server/`, and `git log` explains why each part
 worked the way it did, if it is ever wanted back.
+
+## Renaming
+
+Everything brand-related lives in `brand.json`:
+
+```json
+{ "name": "Peakline", "domain": "peakline.example", "emails": { "general": "...", "coa": "..." } }
+```
+
+Change it, run `npm run build`, and all 52 pages plus `CNAME` follow. A test
+fails if any page carries a name or address that `brand.json` did not produce.
+
+This exists because the first rename was not one edit — the old name was baked
+into every page, which is part of why an uncleared name got as far as it did.

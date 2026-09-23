@@ -1,8 +1,8 @@
 {
-  "name": "peptra",
+  "name": "peakline",
   "version": "0.2.0",
   "private": true,
-  "description": "Peptra — static landing page for a research peptide supplier.",
+  "description": "Peakline — static site for a research peptide supplier.",
   "type": "module",
   "engines": {
     "node": ">=18"
