@@ -10,7 +10,6 @@
   "scripts": {
     "start": "npx --yes serve public",
     "test": "node --test test/*.test.js",
-    "build": "echo 'static site — nothing to build'",
-    "catalog": "node tools/build-catalog.mjs"
+    "build": "node tools/build-site.mjs"
   }
 }

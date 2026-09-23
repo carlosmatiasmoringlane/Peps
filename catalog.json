@@ -4,57 +4,763 @@
     "freeOverUsd": 800,
     "note": "Each warehouse ships separately — place a separate order per warehouse."
   },
-  "warehouses": ["W1", "W2", "W3"],
+  "warehouses": [
+    "W1",
+    "W2",
+    "W3"
+  ],
   "items": [
-    { "code": "TR5",   "name": "Tirzepatide",            "label": "TIRZ",  "format": "5 mg × 10 vials",   "mg": 5,     "vials": 10, "price": 72,  "stock": [false, true,  false] },
-    { "code": "TR10",  "name": "Tirzepatide",            "label": "TIRZ",  "format": "10 mg × 10 vials",  "mg": 10,    "vials": 10, "price": 104, "stock": [true,  true,  false] },
-    { "code": "TR15",  "name": "Tirzepatide",            "label": "TIRZ",  "format": "15 mg × 10 vials",  "mg": 15,    "vials": 10, "price": 114, "stock": [true,  false, false] },
-    { "code": "TR30",  "name": "Tirzepatide",            "label": "TIRZ",  "format": "30 mg × 10 vials",  "mg": 30,    "vials": 10, "price": 150, "stock": [true,  true,  true]  },
-    { "code": "TR40",  "name": "Tirzepatide",            "label": "TIRZ",  "format": "40 mg × 10 vials",  "mg": 40,    "vials": 10, "price": 176, "stock": [true,  false, false] },
-    { "code": "TR60",  "name": "Tirzepatide",            "label": "TIRZ",  "format": "60 mg × 10 vials",  "mg": 60,    "vials": 10, "price": 260, "stock": [true,  true,  false] },
-    { "code": "RT5",   "name": "Retatrutide",            "label": "RETA",  "format": "5 mg × 10 vials",   "mg": 5,     "vials": 10, "price": 104, "stock": [true,  true,  false] },
-    { "code": "RT10",  "name": "Retatrutide",            "label": "RETA",  "format": "10 mg × 10 vials",  "mg": 10,    "vials": 10, "price": 130, "stock": [true,  true,  false] },
-    { "code": "RT20",  "name": "Retatrutide",            "label": "RETA",  "format": "20 mg × 10 vials",  "mg": 20,    "vials": 10, "price": 228, "stock": [true,  false, true]  },
-    { "code": "RT30",  "name": "Retatrutide",            "label": "RETA",  "format": "30 mg × 10 vials",  "mg": 30,    "vials": 10, "price": 299, "stock": [true,  true,  true]  },
-    { "code": "RT40",  "name": "Retatrutide",            "label": "RETA",  "format": "40 mg × 10 vials",  "mg": 40,    "vials": 10, "price": 358, "stock": [true,  true,  false] },
-    { "code": "RT50",  "name": "Retatrutide",            "label": "RETA",  "format": "50 mg × 10 vials",  "mg": 50,    "vials": 10, "price": 410, "stock": [true,  true,  true]  },
-    { "code": "RT60",  "name": "Retatrutide",            "label": "RETA",  "format": "60 mg × 10 vials",  "mg": 60,    "vials": 10, "price": 462, "stock": [false, false, true]  },
-    { "code": "H10",   "name": "Somatropin (hGH)",       "label": "HGH",   "format": "10 IU × 10 vials",  "mg": null,  "vials": 10, "price": 65,  "stock": [true,  true,  false] },
-    { "code": "H12",   "name": "Somatropin (hGH)",       "label": "HGH",   "format": "12 IU × 10 vials",  "mg": null,  "vials": 10, "price": 70,  "stock": [false, true,  false] },
-    { "code": "BC10",  "name": "BPC-157",                "label": "BPC 157","format": "10 mg × 10 vials", "mg": 10,    "vials": 10, "price": 98,  "stock": [true,  false, true]  },
-    { "code": "TB5",   "name": "TB-500",                 "label": "TB500", "format": "5 mg × 10 vials",   "mg": 5,     "vials": 10, "price": 98,  "stock": [true,  true,  false] },
-    { "code": "TB10",  "name": "TB-500",                 "label": "TB500", "format": "10 mg × 10 vials",  "mg": 10,    "vials": 10, "price": 189, "stock": [true,  false, false] },
-    { "code": "BB10",  "name": "BPC-157 5 mg + TB-500 5 mg",  "label": "Blend", "format": "10 mg × 10 vials", "mg": 10, "vials": 10, "price": 124, "stock": [true,  true,  false] },
-    { "code": "BB20",  "name": "BPC-157 10 mg + TB-500 10 mg","label": "Blend", "format": "20 mg × 10 vials", "mg": 20, "vials": 10, "price": 215, "stock": [true,  false, false] },
-    { "code": "GLOW70","name": "BPC-157 10 mg + GHK-Cu", "label": "Blend", "format": "70 mg × 10 vials",  "mg": 70,    "vials": 10, "price": 228, "stock": [true,  true,  true]  },
-    { "code": "AOD5",  "name": "AOD-9604",               "label": "AOD",   "format": "5 mg × 10 vials",   "mg": 5,     "vials": 10, "price": 137, "stock": [true,  false, false] },
-    { "code": "MS10",  "name": "MOTS-c",                 "label": "MOTS-c","format": "10 mg × 10 vials",  "mg": 10,    "vials": 10, "price": 91,  "stock": [true,  true,  true]  },
-    { "code": "G65",   "name": "GHRP-6 acetate",         "label": "GHRP-6","format": "5 mg × 10 vials",   "mg": 5,     "vials": 10, "price": 47,  "stock": [true,  false, false], "note": "Source sheet shows \"9\" rather than a stock tick for W1 — confirm before listing." },
-    { "code": "2S10",  "name": "SS-31 (elamipretide)",   "label": "SS-31", "format": "10 mg × 10 vials",  "mg": 10,    "vials": 10, "price": 137, "stock": [true,  false, true]  },
-    { "code": "PT41",  "name": "PT-141 (bremelanotide)", "label": "PT-141","format": "10 mg × 10 vials",  "mg": 10,    "vials": 10, "price": 78,  "stock": [false, false, false] },
-    { "code": "ET10",  "name": "Epithalon",              "label": "Epithalon","format": "10 mg × 10 vials","mg": 10,   "vials": 10, "price": 78,  "stock": [true,  true,  true]  },
-    { "code": "DS10",  "name": "DSIP",                   "label": "DSIP",  "format": "10 mg × 10 vials",  "mg": 10,    "vials": 10, "price": 98,  "stock": [true,  true,  true]  },
-    { "code": "KP10",  "name": "KPV",                    "label": "KPV",   "format": "10 mg × 10 vials",  "mg": 10,    "vials": 10, "price": 78,  "stock": [true,  true,  false] },
-    { "code": "XA10",  "name": "Semax",                  "label": "Semax", "format": "10 mg × 10 vials",  "mg": 10,    "vials": 10, "price": 85,  "stock": [true,  true,  true]  },
-    { "code": "SK10",  "name": "Selank",                 "label": "Selank","format": "10 mg × 10 vials",  "mg": 10,    "vials": 10, "price": 85,  "stock": [true,  true,  true]  },
-    { "code": "CGL5",  "name": "Cagrilintide",           "label": "Cagri", "format": "5 mg × 10 vials",   "mg": 5,     "vials": 10, "price": 124, "stock": [false, true,  false] },
-    { "code": "IP5",   "name": "Ipamorelin",             "label": "Ipamorelin","format": "5 mg × 10 vials","mg": 5,    "vials": 10, "price": 72,  "stock": [true,  true,  false] },
-    { "code": "CU50",  "name": "GHK-Cu",                 "label": "GHK-Cu","format": "50 mg × 10 vials",  "mg": 50,    "vials": 10, "price": 55,  "stock": [false, true,  true]  },
-    { "code": "CU100", "name": "GHK-Cu",                 "label": "GHK-Cu","format": "100 mg × 10 vials", "mg": 100,   "vials": 10, "price": 78,  "stock": [true,  false, true]  },
-    { "code": "G25",   "name": "GHRP-2 acetate",         "label": "GHRP-2","format": "5 mg × 10 vials",   "mg": 5,     "vials": 10, "price": 47,  "stock": [false, false, false] },
-    { "code": "TSM10", "name": "Tesamorelin",            "label": "Tesamorelin","format": "10 mg × 10 vials","mg": 10, "vials": 10, "price": 208, "stock": [true,  true,  true]  },
-    { "code": "NJ500", "name": "NAD+",                   "label": "NAD+",  "format": "500 mg × 10 vials", "mg": 500,   "vials": 10, "price": 111, "stock": [false, false, true]  },
-    { "code": "G10K",  "name": "hCG",                    "label": "HCG",   "format": "10,000 IU × 10 vials","mg": null,"vials": 10, "price": 182, "stock": [true,  true,  false] },
-    { "code": "G5K",   "name": "hCG",                    "label": "HCG",   "format": "5,000 IU × 10 vials","mg": null, "vials": 10, "price": 104, "stock": [true,  true,  true]  },
-    { "code": "BA",    "name": "Bacteriostatic water",   "label": "Diluent","format": "3 mL × 10 vials",  "mg": null,  "vials": 10, "price": 16,  "stock": [true,  false, false], "note": "Source sheet reads \"3mg\"; bacteriostatic water is sold by volume — assumed 3 mL." },
-    { "code": "KLOW80","name": "BPC-157 10 mg + GHK-Cu 50 mg + TB-500","label": "Blend","format": "80 mg × 10 vials","mg": 80,"vials": 10,"price": 254,"stock": [true, true, true] },
-    { "code": "5AM5",  "name": "5-amino-1MQ",            "label": "5-amino","format": "5 mg × 10 vials",  "mg": 5,     "vials": 10, "price": 65,  "stock": [true,  false, true]  },
-    { "code": "TA5",   "name": "Thymosin alpha-1",       "label": "Tα1",   "format": "5 mg × 10 vials",   "mg": 5,     "vials": 10, "price": 98,  "stock": [false, false, true]  },
-    { "code": "SMO10", "name": "Sermorelin acetate",     "label": "Sermorelin","format": "10 mg × 10 vials","mg": 10,  "vials": 10, "price": 163, "stock": [true,  true,  true]  },
-    { "code": "TY10",  "name": "Thymalin",               "label": "Thymalin","format": "10 mg × 10 vials","mg": 10,    "vials": 10, "price": 85,  "stock": [true,  true,  false] },
-    { "code": "KCU60", "name": "KPV 10 mg + GHK-Cu 50 mg","label": "Blend","format": "60 mg × 10 vials",  "mg": 60,    "vials": 10, "price": 98,  "stock": [true,  true,  true]  },
-    { "code": "KS5",   "name": "Kisspeptin-10",          "label": "Kisspeptin","format": "5 mg × 10 vials","mg": 5,    "vials": 10, "price": 72,  "stock": [true,  true,  true]  },
-    { "code": "CP10",  "name": "CJC-1295 no-DAC 5 mg + ipamorelin 5 mg","label": "Blend","format": "10 mg × 10 vials","mg": 10,"vials": 10,"price": 208,"stock": [false, false, true] },
-    { "code": "IGF1",  "name": "IGF-1 LR3",              "label": "IGF-1", "format": "1 mg × 10 vials",   "mg": 1,     "vials": 10, "price": 254, "stock": [true,  false, true]  }
+    {
+      "code": "TR5",
+      "name": "Tirzepatide",
+      "label": "TIRZ",
+      "format": "5 mg × 10 vials",
+      "mg": 5,
+      "vials": 10,
+      "price": 72,
+      "stock": [
+        false,
+        true,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "TR10",
+      "name": "Tirzepatide",
+      "label": "TIRZ",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 104,
+      "stock": [
+        true,
+        true,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "TR15",
+      "name": "Tirzepatide",
+      "label": "TIRZ",
+      "format": "15 mg × 10 vials",
+      "mg": 15,
+      "vials": 10,
+      "price": 114,
+      "stock": [
+        true,
+        false,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "TR30",
+      "name": "Tirzepatide",
+      "label": "TIRZ",
+      "format": "30 mg × 10 vials",
+      "mg": 30,
+      "vials": 10,
+      "price": 150,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "TR40",
+      "name": "Tirzepatide",
+      "label": "TIRZ",
+      "format": "40 mg × 10 vials",
+      "mg": 40,
+      "vials": 10,
+      "price": 176,
+      "stock": [
+        true,
+        false,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "TR60",
+      "name": "Tirzepatide",
+      "label": "TIRZ",
+      "format": "60 mg × 10 vials",
+      "mg": 60,
+      "vials": 10,
+      "price": 260,
+      "stock": [
+        true,
+        true,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "RT5",
+      "name": "Retatrutide",
+      "label": "RETA",
+      "format": "5 mg × 10 vials",
+      "mg": 5,
+      "vials": 10,
+      "price": 104,
+      "stock": [
+        true,
+        true,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "RT10",
+      "name": "Retatrutide",
+      "label": "RETA",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 130,
+      "stock": [
+        true,
+        true,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "RT20",
+      "name": "Retatrutide",
+      "label": "RETA",
+      "format": "20 mg × 10 vials",
+      "mg": 20,
+      "vials": 10,
+      "price": 228,
+      "stock": [
+        true,
+        false,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "RT30",
+      "name": "Retatrutide",
+      "label": "RETA",
+      "format": "30 mg × 10 vials",
+      "mg": 30,
+      "vials": 10,
+      "price": 299,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "RT40",
+      "name": "Retatrutide",
+      "label": "RETA",
+      "format": "40 mg × 10 vials",
+      "mg": 40,
+      "vials": 10,
+      "price": 358,
+      "stock": [
+        true,
+        true,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "RT50",
+      "name": "Retatrutide",
+      "label": "RETA",
+      "format": "50 mg × 10 vials",
+      "mg": 50,
+      "vials": 10,
+      "price": 410,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "RT60",
+      "name": "Retatrutide",
+      "label": "RETA",
+      "format": "60 mg × 10 vials",
+      "mg": 60,
+      "vials": 10,
+      "price": 462,
+      "stock": [
+        false,
+        false,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "H10",
+      "name": "Somatropin (hGH)",
+      "label": "HGH",
+      "format": "10 IU × 10 vials",
+      "mg": null,
+      "vials": 10,
+      "price": 65,
+      "stock": [
+        true,
+        true,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "H12",
+      "name": "Somatropin (hGH)",
+      "label": "HGH",
+      "format": "12 IU × 10 vials",
+      "mg": null,
+      "vials": 10,
+      "price": 70,
+      "stock": [
+        false,
+        true,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "BC10",
+      "name": "BPC-157",
+      "label": "BPC 157",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 98,
+      "stock": [
+        true,
+        false,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "TB5",
+      "name": "TB-500",
+      "label": "TB500",
+      "format": "5 mg × 10 vials",
+      "mg": 5,
+      "vials": 10,
+      "price": 98,
+      "stock": [
+        true,
+        true,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "TB10",
+      "name": "TB-500",
+      "label": "TB500",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 189,
+      "stock": [
+        true,
+        false,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "BB10",
+      "name": "BPC-157 5 mg + TB-500 5 mg",
+      "label": "Blend",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 124,
+      "stock": [
+        true,
+        true,
+        false
+      ],
+      "category": "blend"
+    },
+    {
+      "code": "BB20",
+      "name": "BPC-157 10 mg + TB-500 10 mg",
+      "label": "Blend",
+      "format": "20 mg × 10 vials",
+      "mg": 20,
+      "vials": 10,
+      "price": 215,
+      "stock": [
+        true,
+        false,
+        false
+      ],
+      "category": "blend"
+    },
+    {
+      "code": "GLOW70",
+      "name": "BPC-157 10 mg + GHK-Cu",
+      "label": "Blend",
+      "format": "70 mg × 10 vials",
+      "mg": 70,
+      "vials": 10,
+      "price": 228,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "blend"
+    },
+    {
+      "code": "AOD5",
+      "name": "AOD-9604",
+      "label": "AOD",
+      "format": "5 mg × 10 vials",
+      "mg": 5,
+      "vials": 10,
+      "price": 137,
+      "stock": [
+        true,
+        false,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "MS10",
+      "name": "MOTS-c",
+      "label": "MOTS-c",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 91,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "G65",
+      "name": "GHRP-6 acetate",
+      "label": "GHRP-6",
+      "format": "5 mg × 10 vials",
+      "mg": 5,
+      "vials": 10,
+      "price": 47,
+      "stock": [
+        true,
+        false,
+        false
+      ],
+      "note": "Source sheet shows \"9\" rather than a stock tick for W1 — confirm before listing.",
+      "category": "sequence"
+    },
+    {
+      "code": "2S10",
+      "name": "SS-31 (elamipretide)",
+      "label": "SS-31",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 137,
+      "stock": [
+        true,
+        false,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "PT41",
+      "name": "PT-141 (bremelanotide)",
+      "label": "PT-141",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 78,
+      "stock": [
+        false,
+        false,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "ET10",
+      "name": "Epithalon",
+      "label": "Epithalon",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 78,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "DS10",
+      "name": "DSIP",
+      "label": "DSIP",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 98,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "KP10",
+      "name": "KPV",
+      "label": "KPV",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 78,
+      "stock": [
+        true,
+        true,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "XA10",
+      "name": "Semax",
+      "label": "Semax",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 85,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "SK10",
+      "name": "Selank",
+      "label": "Selank",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 85,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "CGL5",
+      "name": "Cagrilintide",
+      "label": "Cagri",
+      "format": "5 mg × 10 vials",
+      "mg": 5,
+      "vials": 10,
+      "price": 124,
+      "stock": [
+        false,
+        true,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "IP5",
+      "name": "Ipamorelin",
+      "label": "Ipamorelin",
+      "format": "5 mg × 10 vials",
+      "mg": 5,
+      "vials": 10,
+      "price": 72,
+      "stock": [
+        true,
+        true,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "CU50",
+      "name": "GHK-Cu",
+      "label": "GHK-Cu",
+      "format": "50 mg × 10 vials",
+      "mg": 50,
+      "vials": 10,
+      "price": 55,
+      "stock": [
+        false,
+        true,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "CU100",
+      "name": "GHK-Cu",
+      "label": "GHK-Cu",
+      "format": "100 mg × 10 vials",
+      "mg": 100,
+      "vials": 10,
+      "price": 78,
+      "stock": [
+        true,
+        false,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "G25",
+      "name": "GHRP-2 acetate",
+      "label": "GHRP-2",
+      "format": "5 mg × 10 vials",
+      "mg": 5,
+      "vials": 10,
+      "price": 47,
+      "stock": [
+        false,
+        false,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "TSM10",
+      "name": "Tesamorelin",
+      "label": "Tesamorelin",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 208,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "NJ500",
+      "name": "NAD+",
+      "label": "NAD+",
+      "format": "500 mg × 10 vials",
+      "mg": 500,
+      "vials": 10,
+      "price": 111,
+      "stock": [
+        false,
+        false,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "G10K",
+      "name": "hCG",
+      "label": "HCG",
+      "format": "10,000 IU × 10 vials",
+      "mg": null,
+      "vials": 10,
+      "price": 182,
+      "stock": [
+        true,
+        true,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "G5K",
+      "name": "hCG",
+      "label": "HCG",
+      "format": "5,000 IU × 10 vials",
+      "mg": null,
+      "vials": 10,
+      "price": 104,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "BA",
+      "name": "Bacteriostatic water",
+      "label": "Diluent",
+      "format": "3 mL × 10 vials",
+      "mg": null,
+      "vials": 10,
+      "price": 16,
+      "stock": [
+        true,
+        false,
+        false
+      ],
+      "note": "Source sheet reads \"3mg\"; bacteriostatic water is sold by volume — assumed 3 mL.",
+      "category": "ancillary"
+    },
+    {
+      "code": "KLOW80",
+      "name": "BPC-157 10 mg + GHK-Cu 50 mg + TB-500",
+      "label": "Blend",
+      "format": "80 mg × 10 vials",
+      "mg": 80,
+      "vials": 10,
+      "price": 254,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "blend"
+    },
+    {
+      "code": "5AM5",
+      "name": "5-amino-1MQ",
+      "label": "5-amino",
+      "format": "5 mg × 10 vials",
+      "mg": 5,
+      "vials": 10,
+      "price": 65,
+      "stock": [
+        true,
+        false,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "TA5",
+      "name": "Thymosin alpha-1",
+      "label": "Tα1",
+      "format": "5 mg × 10 vials",
+      "mg": 5,
+      "vials": 10,
+      "price": 98,
+      "stock": [
+        false,
+        false,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "SMO10",
+      "name": "Sermorelin acetate",
+      "label": "Sermorelin",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 163,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "TY10",
+      "name": "Thymalin",
+      "label": "Thymalin",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 85,
+      "stock": [
+        true,
+        true,
+        false
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "KCU60",
+      "name": "KPV 10 mg + GHK-Cu 50 mg",
+      "label": "Blend",
+      "format": "60 mg × 10 vials",
+      "mg": 60,
+      "vials": 10,
+      "price": 98,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "blend"
+    },
+    {
+      "code": "KS5",
+      "name": "Kisspeptin-10",
+      "label": "Kisspeptin",
+      "format": "5 mg × 10 vials",
+      "mg": 5,
+      "vials": 10,
+      "price": 72,
+      "stock": [
+        true,
+        true,
+        true
+      ],
+      "category": "sequence"
+    },
+    {
+      "code": "CP10",
+      "name": "CJC-1295 no-DAC 5 mg + ipamorelin 5 mg",
+      "label": "Blend",
+      "format": "10 mg × 10 vials",
+      "mg": 10,
+      "vials": 10,
+      "price": 208,
+      "stock": [
+        false,
+        false,
+        true
+      ],
+      "category": "blend"
+    },
+    {
+      "code": "IGF1",
+      "name": "IGF-1 LR3",
+      "label": "IGF-1",
+      "format": "1 mg × 10 vials",
+      "mg": 1,
+      "vials": 10,
+      "price": 254,
+      "stock": [
+        true,
+        false,
+        true
+      ],
+      "category": "sequence"
+    }
   ]
 }

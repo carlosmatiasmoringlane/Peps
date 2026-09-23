@@ -269,6 +269,7 @@
 
   function initCatalogue() {
     var search = document.getElementById("cat-search");
+    var category = document.getElementById("cat-category");
     var warehouse = document.getElementById("cat-warehouse");
     var inStock = document.getElementById("cat-instock");
     var count = document.getElementById("cat-count");
@@ -281,6 +282,7 @@
     function apply() {
       var term = search.value.trim().toLowerCase();
       var wh = warehouse.value === "" ? -1 : Number(warehouse.value);
+      var cat = category.value;
       var stockOnly = inStock.checked;
       var shown = 0;
 
@@ -289,7 +291,8 @@
         var matchesTerm = !term || row.getAttribute("data-search").indexOf(term) !== -1;
         var matchesWarehouse = wh === -1 || stock.charAt(wh) === "1";
         var matchesStock = !stockOnly || stock.indexOf("1") !== -1;
-        var visible = matchesTerm && matchesWarehouse && matchesStock;
+        var matchesCategory = !cat || row.getAttribute("data-category") === cat;
+        var visible = matchesTerm && matchesWarehouse && matchesStock && matchesCategory;
         row.hidden = !visible;
         if (visible) shown += 1;
       });
@@ -301,6 +304,7 @@
     }
 
     search.addEventListener("input", apply);
+    category.addEventListener("change", apply);
     warehouse.addEventListener("change", apply);
     inStock.addEventListener("change", apply);
     apply();

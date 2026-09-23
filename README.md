@@ -30,28 +30,48 @@ npm test       # 7 checks on the page itself, no network
 ## What's here
 
 ```
-catalog.json    every product, price and per-warehouse stock — the source of truth
-tools/          build-catalog.mjs, which renders catalog.json into the page
-public/         the entire site — index.html, styles.css, app.js
-public/gate.js  the age and use gate's head script — must stay render-blocking
-public/CNAME    the custom domain; a deploy without it can unset peptra.com.co
-test/           checks on the built page
-brand/          naming rationale, voice, design tokens
+catalog.json         every product, price and per-warehouse stock — the source of truth
+tools/build-site.mjs generates the directory and the product pages
+public/index.html    the home page — hand-maintained
+public/catalogue.html  the directory — GENERATED
+public/products/     one page per product — GENERATED
+public/app.js        chromatogram, catalogue filtering, gate, copy buttons
+public/gate.js       the age and use gate's head script — must stay render-blocking
+public/CNAME         the custom domain; a deploy without it can unset peptra.com.co
+test/                checks on the built site
+brand/               naming rationale, voice, design tokens
 ```
+
+## Pages
+
+| Page | Source |
+| --- | --- |
+| `/` | `public/index.html`, hand-maintained |
+| `/catalogue.html` | generated — the filterable directory of all products |
+| `/products/<CODE>.html` | generated — one per catalogue item |
+
+**Never hand-edit `catalogue.html` or anything in `products/`** — the next build
+overwrites them. Change `catalog.json` and run `npm run build`. A test
+regenerates both and fails if what is committed differs.
 
 ## Updating prices and stock
 
 Edit `catalog.json`, then:
 
 ```bash
-npm run catalog    # regenerates the table in public/index.html
-npm test           # fails if the two have drifted apart
+npm run build    # regenerates catalogue.html and every product page
+npm test         # fails if what is committed differs from what the build produces
 ```
 
-Never hand-edit the rows between `<!-- catalog:start -->` and
-`<!-- catalog:end -->` — the next build overwrites them. Prices are what a
-customer acts on, so a test asserts the rendered table matches `catalog.json`
-exactly.
+Prices are what a customer acts on, so the drift test is not optional.
+
+Adding a product means adding one object to `catalog.json` — `code`, `name`,
+`label`, `format`, `vials`, `price`, `stock` (one boolean per warehouse) and
+`category` (`sequence`, `blend` or `ancillary`). The build does the rest.
+
+Categories are **structural, not functional**. A grouping like "recovery" or
+"metabolic" would imply a use, which is precisely what the research-use framing
+cannot carry.
 
 There is no server, no database and nothing to operate. Enquiries arrive by
 email; the page shows two addresses with copy buttons rather than a form.

@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Catalogue · Peptra</title>
+<meta name="description" content="Every Peptra research peptide, with price per box of ten vials and stock at each warehouse.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2300726E'/%3E%3Cpath d='M4 23h6.5l3.5-14 3.5 14H28' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#00726E" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A1113" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+<script src="gate.js"></script>
+</head>
+<body>
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+  <div class="gate-card">
+    <p class="wordmark gate-mark"><span class="mark" aria-hidden="true"></span>Peptra</p>
+    <h1 class="h2" id="gate-title">Confirm before you continue.</h1>
+    <p class="gate-lede">
+      Peptra supplies peptides as research reagents. Two confirmations are required
+      before the catalogue can be shown.
+    </p>
+    <div class="gate-checks">
+      <label class="gate-check" for="gate-age">
+        <input type="checkbox" id="gate-age">
+        <span>I am <strong>21 years of age or older</strong>.</span>
+      </label>
+      <label class="gate-check" for="gate-use">
+        <input type="checkbox" id="gate-use">
+        <span>
+          I am acquiring these materials <strong>for laboratory research use only</strong>.
+          I understand they are not for human or veterinary use, are not drugs, foods or
+          supplements, and are not for diagnostic or therapeutic use.
+        </span>
+      </label>
+    </div>
+    <button class="btn btn-primary gate-enter" id="gate-enter" type="button" disabled>
+      Confirm and enter
+    </button>
+    <p class="gate-fine">
+      Both boxes must be ticked. If you cannot confirm either statement, please close
+      this tab.
+    </p>
+    <noscript>
+      <p class="gate-fine gate-noscript">
+        JavaScript is required to record your confirmation and continue.
+      </p>
+    </noscript>
+  </div>
+</div>
+
+<header class="site-header" inert>
+  <div class="wrap">
+    <a class="wordmark" href="index.html"><span class="mark" aria-hidden="true"></span>Peptra</a>
+    <span class="chip">Research use only</span>
+    <span class="spacer"></span>
+    <a class="btn btn-quiet btn-sm is-here" aria-current="page" href="catalogue.html">Catalogue</a>
+    <a class="btn btn-quiet btn-sm nav-secondary" href="index.html#contact">Contact</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="section section-first">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Catalogue</p>
+        <div class="head-copy">
+          <h1 class="h2">50 products, three warehouses.</h1>
+          <p class="lede">
+            Every price is for a box of ten vials. Stock is held at three separate US
+            warehouses and each ships on its own — an order spanning two warehouses is
+            two orders. Select a code for full details.
+          </p>
+        </div>
+      </div>
+
+      <div class="cat-controls">
+        <div class="cat-field">
+          <label for="cat-search">Filter</label>
+          <input id="cat-search" type="search" placeholder="Name or code — e.g. BPC, GHK, TR30"
+                 autocomplete="off" spellcheck="false">
+        </div>
+        <div class="cat-field">
+          <label for="cat-category">Type</label>
+          <select id="cat-category">
+            <option value="">All</option>
+            <option value="sequence">Single sequences</option>
+            <option value="blend">Blends</option>
+            <option value="ancillary">Ancillary</option>
+          </select>
+        </div>
+        <div class="cat-field">
+          <label for="cat-warehouse">Warehouse</label>
+          <select id="cat-warehouse">
+            <option value="">Any</option>
+            <option value="0">W1</option>
+            <option value="1">W2</option>
+            <option value="2">W3</option>
+          </select>
+        </div>
+        <label class="cat-toggle" for="cat-instock">
+          <input type="checkbox" id="cat-instock">
+          In stock only
+        </label>
+        <p class="cat-count mono" id="cat-count" role="status">50 of 50 products</p>
+      </div>
+
+      <div class="table-scroll">
+        <table class="catalog" id="cat-table">
+          <thead>
+            <tr>
+              <th scope="col">Code</th>
+              <th scope="col">Product</th>
+              <th scope="col">Format</th>
+              <th scope="col">Box of 10</th>
+              <th scope="col">Per vial</th>
+              <th scope="col">Stock</th>
+            </tr>
+          </thead>
+          <tbody id="cat-body">
+        <tr class="cat-row" data-category="sequence" data-search="tr5 tirzepatide tirz" data-stock="010">
+          <th scope="row" class="mono"><a href="products/TR5.html">TR5</a></th>
+          <td><a class="cat-name" href="products/TR5.html">Tirzepatide</a></td>
+          <td class="mono cat-format">5 mg × 10 vials</td>
+          <td class="num">$72</td>
+          <td class="num cat-unit">$7.20</td>
+          <td class="cat-stock"><span class="vh">In stock at W2</span><span aria-hidden="true"><span class="wh">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="tr10 tirzepatide tirz" data-stock="110">
+          <th scope="row" class="mono"><a href="products/TR10.html">TR10</a></th>
+          <td><a class="cat-name" href="products/TR10.html">Tirzepatide</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$104</td>
+          <td class="num cat-unit">$10.40</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="tr15 tirzepatide tirz" data-stock="100">
+          <th scope="row" class="mono"><a href="products/TR15.html">TR15</a></th>
+          <td><a class="cat-name" href="products/TR15.html">Tirzepatide</a></td>
+          <td class="mono cat-format">15 mg × 10 vials</td>
+          <td class="num">$114</td>
+          <td class="num cat-unit">$11.40</td>
+          <td class="cat-stock"><span class="vh">In stock at W1</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="tr30 tirzepatide tirz" data-stock="111">
+          <th scope="row" class="mono"><a href="products/TR30.html">TR30</a></th>
+          <td><a class="cat-name" href="products/TR30.html">Tirzepatide</a></td>
+          <td class="mono cat-format">30 mg × 10 vials</td>
+          <td class="num">$150</td>
+          <td class="num cat-unit">$15.00</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="tr40 tirzepatide tirz" data-stock="100">
+          <th scope="row" class="mono"><a href="products/TR40.html">TR40</a></th>
+          <td><a class="cat-name" href="products/TR40.html">Tirzepatide</a></td>
+          <td class="mono cat-format">40 mg × 10 vials</td>
+          <td class="num">$176</td>
+          <td class="num cat-unit">$17.60</td>
+          <td class="cat-stock"><span class="vh">In stock at W1</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="tr60 tirzepatide tirz" data-stock="110">
+          <th scope="row" class="mono"><a href="products/TR60.html">TR60</a></th>
+          <td><a class="cat-name" href="products/TR60.html">Tirzepatide</a></td>
+          <td class="mono cat-format">60 mg × 10 vials</td>
+          <td class="num">$260</td>
+          <td class="num cat-unit">$26.00</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="rt5 retatrutide reta" data-stock="110">
+          <th scope="row" class="mono"><a href="products/RT5.html">RT5</a></th>
+          <td><a class="cat-name" href="products/RT5.html">Retatrutide</a></td>
+          <td class="mono cat-format">5 mg × 10 vials</td>
+          <td class="num">$104</td>
+          <td class="num cat-unit">$10.40</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="rt10 retatrutide reta" data-stock="110">
+          <th scope="row" class="mono"><a href="products/RT10.html">RT10</a></th>
+          <td><a class="cat-name" href="products/RT10.html">Retatrutide</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$130</td>
+          <td class="num cat-unit">$13.00</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="rt20 retatrutide reta" data-stock="101">
+          <th scope="row" class="mono"><a href="products/RT20.html">RT20</a></th>
+          <td><a class="cat-name" href="products/RT20.html">Retatrutide</a></td>
+          <td class="mono cat-format">20 mg × 10 vials</td>
+          <td class="num">$228</td>
+          <td class="num cat-unit">$22.80</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="rt30 retatrutide reta" data-stock="111">
+          <th scope="row" class="mono"><a href="products/RT30.html">RT30</a></th>
+          <td><a class="cat-name" href="products/RT30.html">Retatrutide</a></td>
+          <td class="mono cat-format">30 mg × 10 vials</td>
+          <td class="num">$299</td>
+          <td class="num cat-unit">$29.90</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="rt40 retatrutide reta" data-stock="110">
+          <th scope="row" class="mono"><a href="products/RT40.html">RT40</a></th>
+          <td><a class="cat-name" href="products/RT40.html">Retatrutide</a></td>
+          <td class="mono cat-format">40 mg × 10 vials</td>
+          <td class="num">$358</td>
+          <td class="num cat-unit">$35.80</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="rt50 retatrutide reta" data-stock="111">
+          <th scope="row" class="mono"><a href="products/RT50.html">RT50</a></th>
+          <td><a class="cat-name" href="products/RT50.html">Retatrutide</a></td>
+          <td class="mono cat-format">50 mg × 10 vials</td>
+          <td class="num">$410</td>
+          <td class="num cat-unit">$41.00</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="rt60 retatrutide reta" data-stock="001">
+          <th scope="row" class="mono"><a href="products/RT60.html">RT60</a></th>
+          <td><a class="cat-name" href="products/RT60.html">Retatrutide</a></td>
+          <td class="mono cat-format">60 mg × 10 vials</td>
+          <td class="num">$462</td>
+          <td class="num cat-unit">$46.20</td>
+          <td class="cat-stock"><span class="vh">In stock at W3</span><span aria-hidden="true"><span class="wh">W1</span><span class="wh">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="h10 somatropin (hgh) hgh" data-stock="110">
+          <th scope="row" class="mono"><a href="products/H10.html">H10</a></th>
+          <td><a class="cat-name" href="products/H10.html">Somatropin (hGH)</a></td>
+          <td class="mono cat-format">10 IU × 10 vials</td>
+          <td class="num">$65</td>
+          <td class="num cat-unit">$6.50</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="h12 somatropin (hgh) hgh" data-stock="010">
+          <th scope="row" class="mono"><a href="products/H12.html">H12</a></th>
+          <td><a class="cat-name" href="products/H12.html">Somatropin (hGH)</a></td>
+          <td class="mono cat-format">12 IU × 10 vials</td>
+          <td class="num">$70</td>
+          <td class="num cat-unit">$7.00</td>
+          <td class="cat-stock"><span class="vh">In stock at W2</span><span aria-hidden="true"><span class="wh">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="bc10 bpc-157 bpc 157" data-stock="101">
+          <th scope="row" class="mono"><a href="products/BC10.html">BC10</a></th>
+          <td><a class="cat-name" href="products/BC10.html">BPC-157</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$98</td>
+          <td class="num cat-unit">$9.80</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="tb5 tb-500 tb500" data-stock="110">
+          <th scope="row" class="mono"><a href="products/TB5.html">TB5</a></th>
+          <td><a class="cat-name" href="products/TB5.html">TB-500</a></td>
+          <td class="mono cat-format">5 mg × 10 vials</td>
+          <td class="num">$98</td>
+          <td class="num cat-unit">$9.80</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="tb10 tb-500 tb500" data-stock="100">
+          <th scope="row" class="mono"><a href="products/TB10.html">TB10</a></th>
+          <td><a class="cat-name" href="products/TB10.html">TB-500</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$189</td>
+          <td class="num cat-unit">$18.90</td>
+          <td class="cat-stock"><span class="vh">In stock at W1</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="blend" data-search="bb10 bpc-157 5 mg + tb-500 5 mg blend" data-stock="110">
+          <th scope="row" class="mono"><a href="products/BB10.html">BB10</a></th>
+          <td><a class="cat-name" href="products/BB10.html">BPC-157 5 mg + TB-500 5 mg</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$124</td>
+          <td class="num cat-unit">$12.40</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="blend" data-search="bb20 bpc-157 10 mg + tb-500 10 mg blend" data-stock="100">
+          <th scope="row" class="mono"><a href="products/BB20.html">BB20</a></th>
+          <td><a class="cat-name" href="products/BB20.html">BPC-157 10 mg + TB-500 10 mg</a></td>
+          <td class="mono cat-format">20 mg × 10 vials</td>
+          <td class="num">$215</td>
+          <td class="num cat-unit">$21.50</td>
+          <td class="cat-stock"><span class="vh">In stock at W1</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="blend" data-search="glow70 bpc-157 10 mg + ghk-cu blend" data-stock="111">
+          <th scope="row" class="mono"><a href="products/GLOW70.html">GLOW70</a></th>
+          <td><a class="cat-name" href="products/GLOW70.html">BPC-157 10 mg + GHK-Cu</a></td>
+          <td class="mono cat-format">70 mg × 10 vials</td>
+          <td class="num">$228</td>
+          <td class="num cat-unit">$22.80</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="aod5 aod-9604 aod" data-stock="100">
+          <th scope="row" class="mono"><a href="products/AOD5.html">AOD5</a></th>
+          <td><a class="cat-name" href="products/AOD5.html">AOD-9604</a></td>
+          <td class="mono cat-format">5 mg × 10 vials</td>
+          <td class="num">$137</td>
+          <td class="num cat-unit">$13.70</td>
+          <td class="cat-stock"><span class="vh">In stock at W1</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="ms10 mots-c mots-c" data-stock="111">
+          <th scope="row" class="mono"><a href="products/MS10.html">MS10</a></th>
+          <td><a class="cat-name" href="products/MS10.html">MOTS-c</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$91</td>
+          <td class="num cat-unit">$9.10</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="g65 ghrp-6 acetate ghrp-6" data-stock="100">
+          <th scope="row" class="mono"><a href="products/G65.html">G65</a></th>
+          <td><a class="cat-name" href="products/G65.html">GHRP-6 acetate</a></td>
+          <td class="mono cat-format">5 mg × 10 vials</td>
+          <td class="num">$47</td>
+          <td class="num cat-unit">$4.70</td>
+          <td class="cat-stock"><span class="vh">In stock at W1</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="2s10 ss-31 (elamipretide) ss-31" data-stock="101">
+          <th scope="row" class="mono"><a href="products/2S10.html">2S10</a></th>
+          <td><a class="cat-name" href="products/2S10.html">SS-31 (elamipretide)</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$137</td>
+          <td class="num cat-unit">$13.70</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row cat-oos" data-category="sequence" data-search="pt41 pt-141 (bremelanotide) pt-141" data-stock="000">
+          <th scope="row" class="mono"><a href="products/PT41.html">PT41</a></th>
+          <td><a class="cat-name" href="products/PT41.html">PT-141 (bremelanotide)</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$78</td>
+          <td class="num cat-unit">$7.80</td>
+          <td class="cat-stock"><span class="vh">Out of stock at every warehouse</span><span aria-hidden="true"><span class="wh">W1</span><span class="wh">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="et10 epithalon epithalon" data-stock="111">
+          <th scope="row" class="mono"><a href="products/ET10.html">ET10</a></th>
+          <td><a class="cat-name" href="products/ET10.html">Epithalon</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$78</td>
+          <td class="num cat-unit">$7.80</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="ds10 dsip dsip" data-stock="111">
+          <th scope="row" class="mono"><a href="products/DS10.html">DS10</a></th>
+          <td><a class="cat-name" href="products/DS10.html">DSIP</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$98</td>
+          <td class="num cat-unit">$9.80</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="kp10 kpv kpv" data-stock="110">
+          <th scope="row" class="mono"><a href="products/KP10.html">KP10</a></th>
+          <td><a class="cat-name" href="products/KP10.html">KPV</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$78</td>
+          <td class="num cat-unit">$7.80</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="xa10 semax semax" data-stock="111">
+          <th scope="row" class="mono"><a href="products/XA10.html">XA10</a></th>
+          <td><a class="cat-name" href="products/XA10.html">Semax</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$85</td>
+          <td class="num cat-unit">$8.50</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="sk10 selank selank" data-stock="111">
+          <th scope="row" class="mono"><a href="products/SK10.html">SK10</a></th>
+          <td><a class="cat-name" href="products/SK10.html">Selank</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$85</td>
+          <td class="num cat-unit">$8.50</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="cgl5 cagrilintide cagri" data-stock="010">
+          <th scope="row" class="mono"><a href="products/CGL5.html">CGL5</a></th>
+          <td><a class="cat-name" href="products/CGL5.html">Cagrilintide</a></td>
+          <td class="mono cat-format">5 mg × 10 vials</td>
+          <td class="num">$124</td>
+          <td class="num cat-unit">$12.40</td>
+          <td class="cat-stock"><span class="vh">In stock at W2</span><span aria-hidden="true"><span class="wh">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="ip5 ipamorelin ipamorelin" data-stock="110">
+          <th scope="row" class="mono"><a href="products/IP5.html">IP5</a></th>
+          <td><a class="cat-name" href="products/IP5.html">Ipamorelin</a></td>
+          <td class="mono cat-format">5 mg × 10 vials</td>
+          <td class="num">$72</td>
+          <td class="num cat-unit">$7.20</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="cu50 ghk-cu ghk-cu" data-stock="011">
+          <th scope="row" class="mono"><a href="products/CU50.html">CU50</a></th>
+          <td><a class="cat-name" href="products/CU50.html">GHK-Cu</a></td>
+          <td class="mono cat-format">50 mg × 10 vials</td>
+          <td class="num">$55</td>
+          <td class="num cat-unit">$5.50</td>
+          <td class="cat-stock"><span class="vh">In stock at W2, W3</span><span aria-hidden="true"><span class="wh">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="cu100 ghk-cu ghk-cu" data-stock="101">
+          <th scope="row" class="mono"><a href="products/CU100.html">CU100</a></th>
+          <td><a class="cat-name" href="products/CU100.html">GHK-Cu</a></td>
+          <td class="mono cat-format">100 mg × 10 vials</td>
+          <td class="num">$78</td>
+          <td class="num cat-unit">$7.80</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row cat-oos" data-category="sequence" data-search="g25 ghrp-2 acetate ghrp-2" data-stock="000">
+          <th scope="row" class="mono"><a href="products/G25.html">G25</a></th>
+          <td><a class="cat-name" href="products/G25.html">GHRP-2 acetate</a></td>
+          <td class="mono cat-format">5 mg × 10 vials</td>
+          <td class="num">$47</td>
+          <td class="num cat-unit">$4.70</td>
+          <td class="cat-stock"><span class="vh">Out of stock at every warehouse</span><span aria-hidden="true"><span class="wh">W1</span><span class="wh">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="tsm10 tesamorelin tesamorelin" data-stock="111">
+          <th scope="row" class="mono"><a href="products/TSM10.html">TSM10</a></th>
+          <td><a class="cat-name" href="products/TSM10.html">Tesamorelin</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$208</td>
+          <td class="num cat-unit">$20.80</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="nj500 nad+ nad+" data-stock="001">
+          <th scope="row" class="mono"><a href="products/NJ500.html">NJ500</a></th>
+          <td><a class="cat-name" href="products/NJ500.html">NAD+</a></td>
+          <td class="mono cat-format">500 mg × 10 vials</td>
+          <td class="num">$111</td>
+          <td class="num cat-unit">$11.10</td>
+          <td class="cat-stock"><span class="vh">In stock at W3</span><span aria-hidden="true"><span class="wh">W1</span><span class="wh">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="g10k hcg hcg" data-stock="110">
+          <th scope="row" class="mono"><a href="products/G10K.html">G10K</a></th>
+          <td><a class="cat-name" href="products/G10K.html">hCG</a></td>
+          <td class="mono cat-format">10,000 IU × 10 vials</td>
+          <td class="num">$182</td>
+          <td class="num cat-unit">$18.20</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="g5k hcg hcg" data-stock="111">
+          <th scope="row" class="mono"><a href="products/G5K.html">G5K</a></th>
+          <td><a class="cat-name" href="products/G5K.html">hCG</a></td>
+          <td class="mono cat-format">5,000 IU × 10 vials</td>
+          <td class="num">$104</td>
+          <td class="num cat-unit">$10.40</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="ancillary" data-search="ba bacteriostatic water diluent" data-stock="100">
+          <th scope="row" class="mono"><a href="products/BA.html">BA</a></th>
+          <td><a class="cat-name" href="products/BA.html">Bacteriostatic water</a></td>
+          <td class="mono cat-format">3 mL × 10 vials</td>
+          <td class="num">$16</td>
+          <td class="num cat-unit">$1.60</td>
+          <td class="cat-stock"><span class="vh">In stock at W1</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="blend" data-search="klow80 bpc-157 10 mg + ghk-cu 50 mg + tb-500 blend" data-stock="111">
+          <th scope="row" class="mono"><a href="products/KLOW80.html">KLOW80</a></th>
+          <td><a class="cat-name" href="products/KLOW80.html">BPC-157 10 mg + GHK-Cu 50 mg + TB-500</a></td>
+          <td class="mono cat-format">80 mg × 10 vials</td>
+          <td class="num">$254</td>
+          <td class="num cat-unit">$25.40</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="5am5 5-amino-1mq 5-amino" data-stock="101">
+          <th scope="row" class="mono"><a href="products/5AM5.html">5AM5</a></th>
+          <td><a class="cat-name" href="products/5AM5.html">5-amino-1MQ</a></td>
+          <td class="mono cat-format">5 mg × 10 vials</td>
+          <td class="num">$65</td>
+          <td class="num cat-unit">$6.50</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="ta5 thymosin alpha-1 tα1" data-stock="001">
+          <th scope="row" class="mono"><a href="products/TA5.html">TA5</a></th>
+          <td><a class="cat-name" href="products/TA5.html">Thymosin alpha-1</a></td>
+          <td class="mono cat-format">5 mg × 10 vials</td>
+          <td class="num">$98</td>
+          <td class="num cat-unit">$9.80</td>
+          <td class="cat-stock"><span class="vh">In stock at W3</span><span aria-hidden="true"><span class="wh">W1</span><span class="wh">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="smo10 sermorelin acetate sermorelin" data-stock="111">
+          <th scope="row" class="mono"><a href="products/SMO10.html">SMO10</a></th>
+          <td><a class="cat-name" href="products/SMO10.html">Sermorelin acetate</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$163</td>
+          <td class="num cat-unit">$16.30</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="ty10 thymalin thymalin" data-stock="110">
+          <th scope="row" class="mono"><a href="products/TY10.html">TY10</a></th>
+          <td><a class="cat-name" href="products/TY10.html">Thymalin</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$85</td>
+          <td class="num cat-unit">$8.50</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="blend" data-search="kcu60 kpv 10 mg + ghk-cu 50 mg blend" data-stock="111">
+          <th scope="row" class="mono"><a href="products/KCU60.html">KCU60</a></th>
+          <td><a class="cat-name" href="products/KCU60.html">KPV 10 mg + GHK-Cu 50 mg</a></td>
+          <td class="mono cat-format">60 mg × 10 vials</td>
+          <td class="num">$98</td>
+          <td class="num cat-unit">$9.80</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="ks5 kisspeptin-10 kisspeptin" data-stock="111">
+          <th scope="row" class="mono"><a href="products/KS5.html">KS5</a></th>
+          <td><a class="cat-name" href="products/KS5.html">Kisspeptin-10</a></td>
+          <td class="mono cat-format">5 mg × 10 vials</td>
+          <td class="num">$72</td>
+          <td class="num cat-unit">$7.20</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W2, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh wh-in">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="blend" data-search="cp10 cjc-1295 no-dac 5 mg + ipamorelin 5 mg blend" data-stock="001">
+          <th scope="row" class="mono"><a href="products/CP10.html">CP10</a></th>
+          <td><a class="cat-name" href="products/CP10.html">CJC-1295 no-DAC 5 mg + ipamorelin 5 mg</a></td>
+          <td class="mono cat-format">10 mg × 10 vials</td>
+          <td class="num">$208</td>
+          <td class="num cat-unit">$20.80</td>
+          <td class="cat-stock"><span class="vh">In stock at W3</span><span aria-hidden="true"><span class="wh">W1</span><span class="wh">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+        <tr class="cat-row" data-category="sequence" data-search="igf1 igf-1 lr3 igf-1" data-stock="101">
+          <th scope="row" class="mono"><a href="products/IGF1.html">IGF1</a></th>
+          <td><a class="cat-name" href="products/IGF1.html">IGF-1 LR3</a></td>
+          <td class="mono cat-format">1 mg × 10 vials</td>
+          <td class="num">$254</td>
+          <td class="num cat-unit">$25.40</td>
+          <td class="cat-stock"><span class="vh">In stock at W1, W3</span><span aria-hidden="true"><span class="wh wh-in">W1</span><span class="wh">W2</span><span class="wh wh-in">W3</span></span></td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="cat-empty" id="cat-empty" hidden>Nothing matches that filter.</p>
+
+      <p class="catalog-note mono">
+        Shipping $35 flat · free over $800 ·
+        separate order per warehouse · prices in USD and subject to change
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" inert>
+  <div class="wrap">
+    <a class="wordmark" href="index.html"><span class="mark" aria-hidden="true"></span>Peptra</a>
+    <span class="spacer"></span>
+    <span class="copy-line">
+      <span class="addr mono" id="footer-address">hello@peptra.com.co</span>
+      <button class="btn btn-quiet btn-sm" data-copy="footer-address" type="button">Copy</button>
+    </span>
+    <p class="legal">© 2026 Peptra · Research use only · Not for human or veterinary use</p>
+  </div>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
