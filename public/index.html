@@ -15,10 +15,59 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="./styles.css">
+<script src="./gate.js"></script>
 </head>
 <body>
 
-<header class="site-header">
+<!-- Shown to every visitor until confirmed. Rendered in HTML rather than
+     built by script, so it is present even if app.js fails to load — this
+     must fail closed. -->
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+  <div class="gate-card">
+    <p class="wordmark gate-mark"><span class="mark" aria-hidden="true"></span>Peptra</p>
+
+    <h1 class="h2" id="gate-title">Confirm before you continue.</h1>
+
+    <p class="gate-lede">
+      Peptra supplies peptides as research reagents. Two confirmations are required
+      before the catalogue can be shown.
+    </p>
+
+    <div class="gate-checks">
+      <label class="gate-check" for="gate-age">
+        <input type="checkbox" id="gate-age">
+        <span>I am <strong>21 years of age or older</strong>.</span>
+      </label>
+
+      <label class="gate-check" for="gate-use">
+        <input type="checkbox" id="gate-use">
+        <span>
+          I am acquiring these materials <strong>for laboratory research use only</strong>.
+          I understand they are not for human or veterinary use, are not drugs, foods or
+          supplements, and are not for diagnostic or therapeutic use.
+        </span>
+      </label>
+    </div>
+
+    <button class="btn btn-primary gate-enter" id="gate-enter" type="button" disabled>
+      Confirm and enter
+    </button>
+
+    <p class="gate-fine" id="gate-help">
+      Both boxes must be ticked. If you cannot confirm either statement, please close
+      this tab.
+    </p>
+
+    <noscript>
+      <p class="gate-fine gate-noscript">
+        JavaScript is required to record your confirmation and continue.
+      </p>
+    </noscript>
+  </div>
+</div>
+
+
+<header class="site-header" inert>
   <div class="wrap">
     <a class="wordmark" href="#top"><span class="mark" aria-hidden="true"></span>Peptra</a>
     <span class="chip">Research use only</span>
@@ -28,7 +77,7 @@
   </div>
 </header>
 
-<main id="top">
+<main id="top" inert>
 
   <!-- ============ HERO ============ -->
   <section class="hero">
@@ -781,7 +830,7 @@
 
 </main>
 
-<footer class="site-footer">
+<footer class="site-footer" inert>
   <div class="wrap">
     <a class="wordmark" href="#top"><span class="mark" aria-hidden="true"></span>Peptra</a>
     <span class="spacer"></span>

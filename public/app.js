@@ -306,7 +306,84 @@
     apply();
   }
 
+  /* ------------------------------------------------------------------ *
+   * Age and use gate
+   *
+   * The overlay is in the HTML and the head script decides whether to hide
+   * it, so this only handles the confirming. It must fail closed: if this
+   * code never runs, the gate stays up.
+   * ------------------------------------------------------------------ */
+
+  var GATE_KEY = "peptra.gate.v1";
+
+  function initGate() {
+    var gate = document.getElementById("gate");
+    if (!gate) return;
+
+    var age = document.getElementById("gate-age");
+    var use = document.getElementById("gate-use");
+    var enter = document.getElementById("gate-enter");
+    var root = document.documentElement;
+
+    // The background is marked inert in the markup so it is out of the tab
+    // order and the accessibility tree while the gate is up, not merely
+    // covered by an opaque layer.
+    function release() {
+      var landmarks = document.querySelectorAll("header.site-header, main, footer.site-footer");
+      for (var i = 0; i < landmarks.length; i++) landmarks[i].removeAttribute("inert");
+    }
+
+    if (root.getAttribute("data-gate") === "passed") {
+      release();
+      return;
+    }
+
+    function sync() {
+      enter.disabled = !(age.checked && use.checked);
+    }
+
+    age.addEventListener("change", sync);
+    use.addEventListener("change", sync);
+    sync();
+
+    enter.addEventListener("click", function () {
+      if (enter.disabled) return;
+      try {
+        window.localStorage.setItem(GATE_KEY, new Date().toISOString());
+      } catch (error) {
+        // Private window or blocked storage: let them through for this
+        // visit, and ask again next time rather than failing the click.
+      }
+      root.setAttribute("data-gate", "passed");
+      release();
+      var heading = document.querySelector("main h1, main .display");
+      if (heading) {
+        heading.setAttribute("tabindex", "-1");
+        heading.focus({ preventScroll: true });
+      }
+    });
+
+    // Keep focus inside the gate while it is up.
+    gate.addEventListener("keydown", function (event) {
+      if (event.key !== "Tab") return;
+      var focusable = gate.querySelectorAll("input, button:not(:disabled)");
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    age.focus({ preventScroll: true });
+  }
+
   function init() {
+    initGate();
     initChromatogram();
     initCatalogue();
     initCopyButtons();

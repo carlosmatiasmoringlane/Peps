@@ -133,3 +133,31 @@ test("the catalogue makes no therapeutic or dosing claim", async () => {
     assert.equal(pattern.test(section), false, `catalogue contains ${pattern}`);
   }
 });
+
+test("the gate is in the HTML and fails closed", async () => {
+  // It must be markup, not something a script builds: if app.js fails to
+  // load, the catalogue must stay behind the gate rather than be exposed.
+  assert.match(html, /<div class="gate" id="gate"/);
+  assert.match(html, /role="dialog"/);
+  assert.match(html, /aria-modal="true"/);
+  assert.match(html, /id="gate-age"/);
+  assert.match(html, /id="gate-use"/);
+
+  // Disabled in the markup, so it is never clickable before the script runs.
+  assert.match(html, /id="gate-enter"[^>]*disabled/);
+
+  // Both confirmations have to be stated, not implied.
+  assert.match(html, /21 years of age or older/i);
+  assert.match(html, /laboratory research use only/i);
+  assert.match(html, /not for human or veterinary use/i);
+
+  assert.match(html, /<noscript>/);
+});
+
+test("gate.js is loaded in the head, before the body paints", async () => {
+  const head = html.slice(0, html.indexOf("<body"));
+  assert.match(head, /<script src="\.\/gate\.js"><\/script>/,
+    "gate.js must be in <head> or returning visitors see the gate flash");
+  assert.equal(/<script[^>]*src="\.\/gate\.js"[^>]*(defer|async)/.test(head), false,
+    "gate.js must block rendering — defer or async reintroduces the flash");
+});

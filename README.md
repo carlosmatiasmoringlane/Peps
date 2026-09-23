@@ -33,6 +33,7 @@ npm test       # 7 checks on the page itself, no network
 catalog.json    every product, price and per-warehouse stock — the source of truth
 tools/          build-catalog.mjs, which renders catalog.json into the page
 public/         the entire site — index.html, styles.css, app.js
+public/gate.js  the age and use gate's head script — must stay render-blocking
 public/CNAME    the custom domain; a deploy without it can unset peptra.com.co
 test/           checks on the built page
 brand/          naming rationale, voice, design tokens
@@ -54,6 +55,33 @@ exactly.
 
 There is no server, no database and nothing to operate. Enquiries arrive by
 email; the page shows two addresses with copy buttons rather than a form.
+
+## The age and use gate
+
+Every visitor confirms two things before the catalogue is shown: that they are
+21 or over, and that they are acquiring the materials for laboratory research
+use only. The confirmation is remembered per browser.
+
+It is built to fail closed:
+
+- The overlay is **in the HTML**, not built by script. If `app.js` fails to
+  load, the gate stays up rather than the catalogue being exposed.
+- The button carries `disabled` in the markup, so it is never clickable before
+  the script runs.
+- `public/gate.js` is **render-blocking in `<head>`** so a returning visitor
+  never sees the gate flash. Do not add `defer` or `async` — a test enforces
+  this.
+- The header, main and footer are marked `inert` in the markup, so the page
+  behind is out of the tab order and the accessibility tree rather than just
+  covered.
+- Storage access is wrapped in try/catch; a private window throws, the gate
+  shows, which is the right direction to fail.
+
+To force everyone to confirm again — if the wording changes, say — bump `KEY`
+in `gate.js` and `GATE_KEY` in `app.js` to `peptra.gate.v2`. **They must match.**
+
+A client-side gate is a statement of terms, not access control. It records that
+the visitor was asked and answered; it does not stop anyone determined.
 
 ## The chromatogram
 
